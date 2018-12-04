@@ -1,0 +1,9 @@
+.Cell {
+    background: rgb(230,230,250);
+    margin: 0;
+    padding: 0;
+}
+
+.Cell:hover {
+    box-shadow: inset 0px 0px 5px 3px rgba(220, 220, 120, .6); 
+}

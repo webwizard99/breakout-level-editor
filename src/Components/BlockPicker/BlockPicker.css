@@ -1,0 +1,21 @@
+.BlockPicker {
+    width: 100%;
+    height: 28%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: solid 1px rgba(240, 240, 240, 0.8);
+}
+
+.PickerView {
+    /* width: 90%;
+    height: 90%; */
+    background: rgb(230,230,250);
+    margin: auto;
+}
+
+.leftArrow, .rightArrow {
+    cursor: pointer;
+    font-size: 2rem;
+    user-select: none;
+}

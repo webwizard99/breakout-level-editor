@@ -1,0 +1,9 @@
+.MenuBar {
+    height: 100%;
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(30, 30, 30, .6);
+}

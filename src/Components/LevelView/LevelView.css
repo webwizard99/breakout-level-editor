@@ -1,0 +1,26 @@
+.LevelView {
+    /* height: 66vh; */
+    width: 67vw;
+    background: rgb(60, 60, 60);
+    padding: 0;
+    margin: 0;
+    /* padding-top: 6px;
+    padding-left: 6px; */
+    border: 1px solid rgba(30, 30, 30, .6);
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ViewRow {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.LevelViewCanvas {
+    /* height: 100%;
+    width: 640px; */
+    
+    background: rgb(230,230,250);
+}

@@ -1,0 +1,14 @@
+.Title {
+    width: 100%;
+    height: 10%;
+    border-bottom: solid 1px rgba(240, 240, 240, 0.8);
+
+}
+
+.Title-text {
+    font-family: 'Bungee', cursive;
+    font-size: 1.8rem;
+
+    color: inherit;
+    text-shadow: 1px 1px 8px rgba(30, 30, 30, .6);
+}

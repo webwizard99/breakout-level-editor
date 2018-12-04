@@ -1,0 +1,6 @@
+.LevelList {
+    height: 34vh;
+    width: 90%;
+    overflow-y: scroll;
+    text-shadow: 1px 1px 3px rgba(30, 30, 30, .6);
+}
