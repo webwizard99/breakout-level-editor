@@ -17,7 +17,8 @@ class MenuBar extends React.Component {
                     onChangeBlock={this.props.onChangeBlock}
                 />
                 <ColorPicker />
-                <Utilities />
+                <Utilities 
+                    saveLevel={this.props.saveLevel}   />
             </div>
         );
     }

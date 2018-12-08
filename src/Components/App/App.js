@@ -16,20 +16,24 @@ class App extends React.Component {
             type: 'basic',
             color: `rgb(80, 100, 140)`,
             hp: 5
-          }
+          },
+          blockMap: []
       }
       this.setCurrentBlock = this.setCurrentBlock.bind(this);
+      this.setBlockMap = this.setBlockMap.bind(this);
+      this.saveLevel = this.saveLevel.bind(this);
+      this.getLevelForOutput = this.getLevelForOutput.bind(this);
       
   }
 
   blocksAvailable = [{
         type: 'basic',
-        color: `rgb(80, 100, 140)`,
+        color: `rgba(80, 100, 140)`,
         hp: 5
     },
     {
         type: 'basic',
-        color: `rgb(140, 90, 100)`,
+        color: `rgba(140, 90, 100)`,
         hp: 5
     }, 
     false
@@ -44,7 +48,52 @@ class App extends React.Component {
       }
   }
 
-  
+  setBlockMap(map) {
+    this.setState({
+        blockMap: map
+    });
+  }
+
+  saveLevel() {
+    const levelDupe = this.getLevelForOutput();
+    const el = document.createElement('textarea');
+    el.value = JSON.stringify(levelDupe);
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    console.log(levelDupe);
+  }
+
+  getLevelForOutput() {
+     const tBlockMap = this.state.blockMap;
+     let outputBlockMap = [];
+     tBlockMap.forEach((row, rowN) => {
+        let tRow = [];
+        row.map((col, colN) => {
+            if (!col) {
+                return false
+            } else {
+                const tBlock = col;
+                const colorOut = tBlock.color
+                    .replace('rgb', 'rgba')
+                    .replace(')', ', %alpha)');
+                tRow.push({
+                    width: 1,
+                    hp: tBlock.hp,
+                    density: 1,
+                    type: tBlock.type,
+                    row: rowN,
+                    col: colN,
+                    color: colorOut
+                    
+                });
+            }
+        });
+        outputBlockMap.push(tRow);
+     });
+    return outputBlockMap;
+  }
   
   render() {
     return (
@@ -55,11 +104,14 @@ class App extends React.Component {
             blocksAvailable={this.blocksAvailable}
             blockIndex={this.state.currentBlockIndex}
             onChangeBlock={this.setCurrentBlock}
+            saveLevel={this.saveLevel}
         />
         <div className="ViewColumn">
             <LevelView 
                 setBlock={this.setViewBlock}
                 block={this.state.currentBlock}
+                setBlockMap={this.setBlockMap}
+                blockMap={this.state.blockMap}
             />
             <LevelList />
         </div>
