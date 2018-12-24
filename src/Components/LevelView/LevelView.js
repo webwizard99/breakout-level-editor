@@ -1,6 +1,6 @@
 import React from 'react';
 import './LevelView.css';
-import Constants from '../../Utils/Constants';
+import Constants from '../../Game/breakout/resources/js/utils/Constants';
 import Cell from '../Cell/Cell'
 
 class LevelView extends React.Component {
@@ -11,6 +11,7 @@ class LevelView extends React.Component {
         this.setViewBlock = this.setViewBlock.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.getLevelForRender = this.getLevelForRender.bind(this);
     }
     
     ////**//**//**//**//**//**//
@@ -45,13 +46,14 @@ class LevelView extends React.Component {
                 levelMap.map((row, rowN) => {
                     return ( <div className="ViewRow" key={rowN}>
                     {row.map((col, colN) => {
+                        
                         const tCell = col;
                         keyCount += 1;
 
                         return (
                             <Cell 
-                                height={Constants.cell.height}
-                                width={Constants.cell.width}
+                                height={Constants.getCell().height}
+                                width={Constants.getCell().width}
                                 row={rowN}
                                 col={colN}
                                 block={tCell}
@@ -70,10 +72,10 @@ class LevelView extends React.Component {
     
     generateBlankLevel() {
         let tMap = [];
-        for (let row = 0; row < Constants.rowsProto; row++) {
+        for (let row = 0; row < Constants.getRowsProto(); row++) {
             
             let tRow = [];
-            for (let col= 0; col < Constants.columnsProto; col++ ) {
+            for (let col= 0; col < Constants.getColumnsProto(); col++ ) {
                 tRow.push(false);
             }
 
@@ -88,7 +90,7 @@ class LevelView extends React.Component {
         return (
             <div className="LevelView"
                 
-                height={Constants.levelSize.y + 10}
+                height={Constants.getLevelSize().y + 10}
                 
             >
             {this.getLevelForRender()}

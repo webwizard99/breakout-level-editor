@@ -3,6 +3,7 @@ import './App.css';
 import MenuBar from '../MenuBar/MenuBar';
 import LevelView from '../LevelView/LevelView';
 import LevelList from '../LevelList/LevelList';
+import Levels from '../../Game/breakout/resources/js/utils/Levels';
 
 class App extends React.Component {
   constructor(props) {
@@ -52,27 +53,31 @@ class App extends React.Component {
     this.setState({
         blockMap: map
     });
+    
   }
 
   saveLevel() {
     const levelDupe = this.getLevelForOutput();
+    Levels.push(levelDupe);
     const el = document.createElement('textarea');
     el.value = JSON.stringify(levelDupe);
     document.body.appendChild(el);
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
-    console.log(levelDupe);
+    
   }
 
   getLevelForOutput() {
      const tBlockMap = this.state.blockMap;
+
      let outputBlockMap = [];
      tBlockMap.forEach((row, rowN) => {
         let tRow = [];
         row.map((col, colN) => {
             if (!col) {
-                return false
+                tRow.push(false);
+                
             } else {
                 const tBlock = col;
                 const colorOut = tBlock.color

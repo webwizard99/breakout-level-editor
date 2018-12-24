@@ -1,6 +1,6 @@
 import React from 'react';
 import './BlockPicker.css';
-import Constants from '../../Utils/Constants';
+import Constants from '../../Game/breakout/resources/js/utils/Constants';
 
 class BlockPicker extends React.Component {
     constructor(props) {
@@ -79,8 +79,8 @@ class BlockPicker extends React.Component {
     drawBlock() {
         const blockCanvas = document.querySelector('.PickerView');
         const blockCTX = blockCanvas.getContext('2d');
-        const startX = ((Constants.cell.width * this.state.pickerMain) - (Constants.blockProto.width * this.state.pickerMain)) / 2;
-        const startY = ((Constants.cell.height * this.state.pickerMain) - (Constants.blockProto.height * this.state.pickerMain)) / 2;
+        const startX = ((Constants.getCell().width * this.state.pickerMain) - (Constants.getBlockProto().width * this.state.pickerMain)) / 2;
+        const startY = ((Constants.getCell().height * this.state.pickerMain) - (Constants.getBlockProto().height * this.state.pickerMain)) / 2;
 
         blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
 
@@ -90,8 +90,8 @@ class BlockPicker extends React.Component {
             this.props.block.color,
             startX,
             startY,
-            Constants.blockProto.height * this.state.pickerMain,
-            Constants.blockProto.width * this.state.pickerMain);
+            Constants.getBlockProto().height * this.state.pickerMain,
+            Constants.getBlockProto().width * this.state.pickerMain);
     }
     
     render() {
@@ -101,8 +101,8 @@ class BlockPicker extends React.Component {
                     onClick={this.handleChangeBlock}
                 >{`<`}</span>
                 <canvas className="PickerView" 
-                    width={Constants.cell.width * this.state.pickerMain} 
-                    height={Constants.cell.height * this.state.pickerMain}
+                    width={Constants.getCell().width * this.state.pickerMain} 
+                    height={Constants.getCell().height * this.state.pickerMain}
                 >
                 </canvas>
                 <span className="rightArrow"

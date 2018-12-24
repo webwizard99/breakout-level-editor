@@ -1,6 +1,6 @@
 import React from 'react';
 import './Cell.css';
-import Constants from '../../Utils/Constants';
+import Constants from '../../Game/breakout/resources/js/utils/Constants';
 
 class Cell extends React.Component {
     constructor(props) {
@@ -30,8 +30,8 @@ class Cell extends React.Component {
         if (!this.props.block) return;
         const blockCanvas = document.querySelector(`.cell-${this.props.row}-${this.props.col}`);
         const blockCTX = blockCanvas.getContext('2d');
-        const startX = ((Constants.cell.width) - (Constants.blockProto.width)) / 2;
-        const startY = ((Constants.cell.height) - (Constants.blockProto.height)) / 2;
+        const startX = ((Constants.getCell().width) - (Constants.getBlockProto().width)) / 2;
+        const startY = ((Constants.getCell().height) - (Constants.getBlockProto().height)) / 2;
 
         blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
 
@@ -41,8 +41,8 @@ class Cell extends React.Component {
             this.props.block.color,
             startX,
             startY,
-            Constants.blockProto.height,
-            Constants.blockProto.width);
+            Constants.getBlockProto().height,
+            Constants.getBlockProto().width);
     }
 
     drawRect(ctx, fill, x, y, h, w) {
@@ -55,10 +55,12 @@ class Cell extends React.Component {
     }
 
 
-    handleClick() {
-        this.props.setViewBlock(
-            this.props.row,
-            this.props.col);
+    handleClick(e) {
+        if (e.buttons === 1 || e.type === 'mouseDown') {
+            this.props.setViewBlock(
+                this.props.row,
+                this.props.col);
+        }
     }
 
     render() {
@@ -67,9 +69,10 @@ class Cell extends React.Component {
             className={`Cell cell-${this.props.row}-${this.props.col}`}
             row={this.props.row}
             col={this.props.col}
-            width={Constants.cell.width} 
-            height={Constants.cell.height}
-            onClick={this.handleClick}
+            width={Constants.getCell().width} 
+            height={Constants.getCell().height}
+            onMouseOver={this.handleClick}
+            onMouseDown={this.handleClick}
             />
 
             
