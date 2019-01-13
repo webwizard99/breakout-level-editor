@@ -1,4 +1,26 @@
 .Utilities {
     height: 33%;
     width: 100%;
+    display: flex;
+    
+}
+
+.SaveButton , .NewButton {
+    height: 1.4rem;
+    width: 1.4rem;
+    overflow: hidden;
+    margin:.5rem;  
+    cursor: pointer;
+}
+
+.SaveButton {
+    background: url('./disk_save.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.NewButton {
+    background: url('./blue-plus-sign-md.png');
+    background-size: contain;
+    background-repeat: no-repeat;
 }

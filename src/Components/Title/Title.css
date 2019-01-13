@@ -6,9 +6,20 @@
 }
 
 .Title-text {
+    position: relative;
+    top: -10px;
     font-family: 'Bungee', cursive;
     font-size: 1.8rem;
-
+    border: none;
+    background-color: inherit;
     color: inherit;
     text-shadow: 1px 1px 8px rgba(30, 30, 30, .6);
+}
+
+.Title-text::placeholder {
+    color: inherit;
+}
+
+.Title-text:focus {
+    outline: none;
 }

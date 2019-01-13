@@ -9,7 +9,9 @@ class MenuBar extends React.Component {
     render() {
         return (
             <div className="MenuBar">
-                <Title title={this.props.title} />
+                <Title title={this.props.title}
+                        changeTitle={this.props.changeTitle}
+                />
                 <BlockPicker 
                     block={this.props.block}
                     blocksAvailable={this.props.blocksAvailable}
@@ -18,7 +20,9 @@ class MenuBar extends React.Component {
                 />
                 <ColorPicker />
                 <Utilities 
-                    saveLevel={this.props.saveLevel}   />
+                    saveLevel={this.props.saveLevel}
+                    newLevel={this.props.newLevel}
+                />
             </div>
         );
     }

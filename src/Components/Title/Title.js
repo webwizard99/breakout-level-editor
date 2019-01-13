@@ -3,10 +3,27 @@ import './Title.css';
 
 class Title extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.handleTitleChange = this.handleTitleChange.bind(this);
+    }
+
+    handleTitleChange(e) {
+        e.preventDefault();
+        this.props.changeTitle(e.target.value);
+    }
+    
     render() {
         return (
             <div className="Title">
-                <h2 className="Title-text">{this.props.title}</h2>
+                <input className="Title-text"
+                    onChange={this.handleTitleChange}
+                    placeholder="New Level"
+                    spellCheck="false"
+                    value={this.props.title}
+                    />
+                
+                    
             </div>
         );
     }

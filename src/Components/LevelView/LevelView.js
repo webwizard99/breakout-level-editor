@@ -23,6 +23,10 @@ class LevelView extends React.Component {
     }
 
     componentDidUpdate() {
+        if (this.props.blockMap.length < 1) {
+            this.generateBlankLevel();
+        }
+
         this.getLevelForRender();
     }
 
@@ -33,12 +37,14 @@ class LevelView extends React.Component {
     setViewBlock(row, col) {
         let tMap = this.props.blockMap;
         tMap[row][col] = this.props.block;
-        this.props.setBlockMap(tMap);
-      
+        this.props.setBlockMap(tMap, true);
+        
     }
 
     getLevelForRender() {
+        
         const levelMap = this.props.blockMap;
+        
         if (levelMap.length > 1) {
             
             let keyCount = -1;
@@ -83,7 +89,7 @@ class LevelView extends React.Component {
 
         }
 
-        this.props.setBlockMap(tMap);
+        this.props.setBlockMap(tMap, false);
     }
 
     render() {

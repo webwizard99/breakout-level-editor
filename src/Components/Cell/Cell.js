@@ -27,13 +27,17 @@ class Cell extends React.Component {
     //*//*//*//*//*//*//*//*//
 
     drawBlock() {
-        if (!this.props.block) return;
+        
         const blockCanvas = document.querySelector(`.cell-${this.props.row}-${this.props.col}`);
         const blockCTX = blockCanvas.getContext('2d');
+        blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
+
+        if (!this.props.block) return;
+        
         const startX = ((Constants.getCell().width) - (Constants.getBlockProto().width)) / 2;
         const startY = ((Constants.getCell().height) - (Constants.getBlockProto().height)) / 2;
 
-        blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
+        
 
         
 
