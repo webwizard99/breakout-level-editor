@@ -4,6 +4,8 @@ import MenuBar from '../MenuBar/MenuBar';
 import LevelView from '../LevelView/LevelView';
 import LevelList from '../LevelList/LevelList';
 import DialogLayer from '../DialogLayer/DialogLayer';
+import GameLayer from '../GameLayer/GameLayer';
+
 import Levels from '../../Game/breakout/resources/js/utils/Levels';
 import LevelStorage from '../../Utils/LevelStorage';
 
@@ -16,9 +18,11 @@ class App extends React.Component {
           deleteApproved: false,
           dialogVisible: false,
           dialogPointer: false,
+          gameActive: false,
           confirmationType: '',
           confirmationNeeded: false,
           levelToLoad: -1,
+          levelToDelete: -1,
           readyToLoad: false,
           id: -1,
           hasBlocks: false,
@@ -48,7 +52,9 @@ class App extends React.Component {
       this.discardLevel = this.discardLevel.bind(this);
       this.newLevel = this.newLevel.bind(this);
       this.loadLevel = this.loadLevel.bind(this);
+      this.deleteLevel = this.deleteLevel.bind(this);
       this.promptLoad = this.promptLoad.bind(this);
+      this.promptDelete = this.promptDelete.bind(this);
       this.commitChanges = this.commitChanges.bind(this);
       this.getLevelForStorage = this.getLevelForStorage.bind(this);
       this.getLevelForListState = this.getLevelForListState.bind(this);
@@ -57,6 +63,7 @@ class App extends React.Component {
       this.exportLevel = this.exportLevel.bind(this);
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
       this.changeTitle = this.changeTitle.bind(this);
+      this.launchGame = this.launchGame.bind(this);
 
   }
 
@@ -201,7 +208,7 @@ class App extends React.Component {
         blockMap: newLvl.map,
         readyToLoad: false
     });
-    console.log(lvlId);
+    
   }
 
   confirmChanges() {
@@ -234,7 +241,7 @@ class App extends React.Component {
   }
 
   processDialog(res) {
-
+    // var res = response from dialog box
     switch (this.state.confirmationType) {
         case 'new':
             if (res) {
@@ -247,6 +254,11 @@ class App extends React.Component {
                     readyToLoad: true,
                     blockMap: []
                 });
+            }
+            break;
+        case 'delete':
+            if (res) {
+                this.deleteLevel()
             }
             break;
         default:
@@ -277,6 +289,20 @@ class App extends React.Component {
       }
   }
 
+  deleteLevel() {
+    console.log('delete level');
+    const lvlToDelete = this.state.levelToDelete;
+    console.log(lvlToDelete);
+    LevelStorage.deleteLevel(lvlToDelete);
+    if (lvlToDelete === this.state.id) {
+        this.setState({
+            deleteApproved: true
+        });
+    }
+    LevelStorage.saveLevels();
+    this.syncListStateWithStorage();
+  }
+
   approveDelete() {
       this.setState({deleteApproved: true});
   }
@@ -289,7 +315,13 @@ class App extends React.Component {
     } else {
         this.loadLevel(id);
     }
+  }
 
+  promptDelete(id) {
+      console.log(`prompt delete id: ${id}`);
+      this.setState({confirmationType: 'delete'});
+      this.setState({levelToDelete:id});
+      this.callDialog();
   }
 
   commitChanges() {
@@ -314,7 +346,9 @@ class App extends React.Component {
 
     this.setState({
         readyToSave: false
-    })
+    });
+
+    
   }
 
   syncListStateWithStorage() {
@@ -402,9 +436,21 @@ class App extends React.Component {
   }
 
   getDialogMessage() {
-      if (this.state.dialogVisible) {  
-        return `Changes to ${this.state.title.toUpperCase() || 'LEVEL'} will be lost. Proceed anyway?`
+      if (this.state.dialogVisible) {
+        let levelName = '';
+        if (this.state.confirmationType === 'delete') {
+            const deleteId = this.state.levelToDelete;
+            const deleteName = LevelStorage.getLevel(deleteId).name.toUpperCase();
+            levelName = deleteName;
+        } else {
+            levelName = this.state.title.toUpperCase() || 'LEVEL';
+        }
+        return `Changes to ${levelName} will be lost. Proceed anyway?`
       }
+  }
+
+  launchGame() {
+      console.table(LevelStorage.getLevels());
   }
   
   render() {
@@ -430,6 +476,7 @@ class App extends React.Component {
             />
             <LevelList levelList={this.state.levelList}
                 loadConfirm={this.promptLoad}
+                deleteConfirm={this.promptDelete}
                 
             />
         </div>
@@ -438,6 +485,9 @@ class App extends React.Component {
             dialogEnabled={this.state.dialogVisible}
             dialogMessage={this.getDialogMessage()}
             processDialog={this.processDialog}
+        />
+        <GameLayer
+            vis={this.state.gameActive ? 'visible' : 'hidden'}
         />
       </div>
     );

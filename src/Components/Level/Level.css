@@ -39,11 +39,20 @@
     font-weight: 400;   
 }
 
-.loadSign {
-    float: right;
+.loadSign, .deleteSign {
     font-family: 'Bungee', cursive;
     font-size: 1.2rem;
     cursor: pointer;
-    
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.loadSign {
+    width: 4rem;
     color: rgba(120, 130, 200, 0.95);
+}
+.deleteSign {
+    width: 2rem;
+    margin-left: 1rem;
+    color: rgba(220, 35, 80, 0.95);
 }

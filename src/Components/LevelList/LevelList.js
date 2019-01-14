@@ -41,6 +41,7 @@ class LevelList extends React.Component {
                             name={level.name}
                             lvlId={level.id}
                             loadConfirm={this.props.loadConfirm}
+                            deleteConfirm={this.props.deleteConfirm}
                         />
                     )
                 })

@@ -14,9 +14,6 @@ class Cell extends React.Component {
     //*//*//*//*//*//*//*//*//
     //*//*//*//*//*//*//*//*//
     // lifecycle methods
-    // componentDidMount() {
-    //     this.drawBlock();
-    // }
 
     componentDidUpdate() {
         this.drawBlock();
