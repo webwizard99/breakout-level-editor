@@ -4,6 +4,7 @@ import MenuBar from '../MenuBar/MenuBar';
 import LevelView from '../LevelView/LevelView';
 import LevelList from '../LevelList/LevelList';
 import DialogLayer from '../DialogLayer/DialogLayer';
+import MouseoverLayer from '../MouseoverLayer/MouseoverLayer';
 import GameLayer from '../GameLayer/GameLayer';
 
 import Levels from '../../Game/breakout/resources/js/utils/Levels';
@@ -64,6 +65,7 @@ class App extends React.Component {
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
       this.changeTitle = this.changeTitle.bind(this);
       this.launchGame = this.launchGame.bind(this);
+      this.closeGame = this.closeGame.bind(this);
 
   }
 
@@ -450,7 +452,19 @@ class App extends React.Component {
   }
 
   launchGame() {
-      console.table(LevelStorage.getLevels());
+    const tLvls = LevelStorage.getLevels();
+    Levels.slice(0, Levels.length);
+    Levels.push(tLvls);
+    this.setState({
+        gameActive: true
+    })
+    
+  }
+
+  closeGame() {
+    this.setState({
+        gameActive: false
+    });
   }
   
   render() {
@@ -465,6 +479,7 @@ class App extends React.Component {
             onChangeBlock={this.setCurrentBlock}
             newLevel={this.newLevel}
             saveLevel={this.saveLevel}
+            launchGame={this.launchGame}
         />
         <div className="ViewColumn">
             <LevelView 
@@ -473,6 +488,7 @@ class App extends React.Component {
                 setBlockMap={this.setBlockMap}
                 blockMap={this.state.blockMap}
                 readyToLoad={this.state.readyToLoad}
+                currentBlock={this.state.currentBlock}
             />
             <LevelList levelList={this.state.levelList}
                 loadConfirm={this.promptLoad}
@@ -486,8 +502,10 @@ class App extends React.Component {
             dialogMessage={this.getDialogMessage()}
             processDialog={this.processDialog}
         />
+        <MouseoverLayer />
         <GameLayer
             vis={this.state.gameActive ? 'visible' : 'hidden'}
+            closeGame={this.closeGame}
         />
       </div>
     );

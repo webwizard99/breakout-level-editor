@@ -5,9 +5,11 @@ import Constants from '../../Game/breakout/resources/js/utils/Constants';
 class Cell extends React.Component {
     constructor(props) {
         super(props);
+
         this.handleClick = this.handleClick.bind(this);
-        // this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.drawBlock = this.drawBlock.bind(this);
     }
     
@@ -15,7 +17,19 @@ class Cell extends React.Component {
     //*//*//*//*//*//*//*//*//
     // lifecycle methods
 
-    componentDidUpdate() {
+    componentDidMount() {
+        this.drawBlock();
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.block === nextProps.block) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {    
         this.drawBlock();
     }
 
@@ -27,13 +41,15 @@ class Cell extends React.Component {
         
         const blockCanvas = document.querySelector(`.cell-${this.props.row}-${this.props.col}`);
         const blockCTX = blockCanvas.getContext('2d');
-        blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
-
-        if (!this.props.block) return;
         
+
+        if (!this.props.block) {
+            blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
+            return;
+        }
         const startX = ((Constants.getCell().width) - (Constants.getBlockProto().width)) / 2;
         const startY = ((Constants.getCell().height) - (Constants.getBlockProto().height)) / 2;
-
+        blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
         
 
         
@@ -44,6 +60,7 @@ class Cell extends React.Component {
             startY,
             Constants.getBlockProto().height,
             Constants.getBlockProto().width);
+
     }
 
     drawRect(ctx, fill, x, y, h, w) {
@@ -58,9 +75,11 @@ class Cell extends React.Component {
 
     handleClick(e) {
         if (e.buttons === 1 || e.type === 'mouseDown') {
-            this.props.setViewBlock(
-                this.props.row,
-                this.props.col);
+            if (this.props.block !== this.props.currentBlock) {
+                this.props.setViewBlock(
+                    this.props.row,
+                    this.props.col);
+            }
         }
     }
 

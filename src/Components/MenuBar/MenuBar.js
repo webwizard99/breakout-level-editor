@@ -22,6 +22,7 @@ class MenuBar extends React.Component {
                 <Utilities 
                     saveLevel={this.props.saveLevel}
                     newLevel={this.props.newLevel}
+                    launchGame={this.props.launchGame}
                 />
             </div>
         );

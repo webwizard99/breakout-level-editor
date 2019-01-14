@@ -64,6 +64,7 @@ class LevelView extends React.Component {
                                 col={colN}
                                 block={tCell}
                                 key={keyCount}
+                                currentBlock={this.props.currentBlock}
                                 serial={keyCount}
                                 setViewBlock={this.setViewBlock}
                             />

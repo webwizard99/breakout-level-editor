@@ -1,0 +1,29 @@
+.GameLayer {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    bottom: 300vh;
+    pointer-events: none;
+}
+
+.GameFrame {
+    height: 100%;
+    width: 100%;
+}
+
+.CloseButton {
+    height: 1.5rem;
+    width: 1.5rem;
+    position: relative;
+    bottom: 100vh;
+    margin-top: 1rem;
+    left: 95vh;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    pointer-events: all;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 700;
+    color: rgba(248, 252, 253, 0.85);
+    line-height: 2rem;
+}

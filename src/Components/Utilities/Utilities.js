@@ -6,6 +6,7 @@ class Utilities extends React.Component {
         super(props);
         this.saveLevel = this.saveLevel.bind(this);
         this.handleNewLevel = this.handleNewLevel.bind(this);
+        this.handleLaunch = this.handleLaunch.bind(this);
     }
     
     saveLevel() {
@@ -14,6 +15,10 @@ class Utilities extends React.Component {
 
     handleNewLevel() {
         this.props.newLevel();
+    }
+
+    handleLaunch() {
+        this.props.launchGame();
     }
     
     render() {
@@ -28,6 +33,15 @@ class Utilities extends React.Component {
                 <div className="NewButton"
                     title="new level"
                     onClick={this.handleNewLevel}>
+                </div>
+                <div className="LaunchGameButton"
+                    title="launch game"
+                    onClick={this.handleLaunch}>
+                    <a className="launchLink"
+                        href="../../Game/breakout/index.html"
+                        target="_blank"
+                    >
+                    </a>
                 </div>
                 
             </div>

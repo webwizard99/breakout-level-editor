@@ -112,6 +112,15 @@ const LevelStorage = (function(){
             return true;
         },
 
+        deleteLevel: function(id) {
+            if (!id) return -1;
+            const tLvl = getLevelById(id);
+            if (!tLvl) return -1;
+            const deleteIndex = levels.indexOf(tLvl);
+            levels.splice(deleteIndex, 1);
+            return true;
+        },
+
         addLevel: function(lvl) {
             levels.push(lvl);
         },

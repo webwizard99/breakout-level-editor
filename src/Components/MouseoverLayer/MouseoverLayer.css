@@ -1,0 +1,7 @@
+.MouseoverLayer {
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+    pointer-events: none;
+    bottom: 200vh;
+}
