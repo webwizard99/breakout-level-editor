@@ -22,7 +22,8 @@ class Level extends React.Component {
     render() {
         return (
             <div className="Level">
-                <p><span className="levelListNumber">{this.props.num}</span> {this.props.name}</p>
+                <span className="levelListNumber">{this.props.num}</span>
+                <p>{this.props.name}</p>
                 <span className="loadSign"
                     onClick={this.handleLoad}
                 >LOAD</span>

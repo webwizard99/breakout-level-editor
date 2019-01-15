@@ -75,6 +75,9 @@ class Cell extends React.Component {
 
     handleClick(e) {
         if (e.buttons === 1 || e.type === 'mouseDown') {
+            if (!Constants.checkBounds(this.props.row, this.props.col)) {
+                return;
+            }
             if (this.props.block !== this.props.currentBlock) {
                 this.props.setViewBlock(
                     this.props.row,

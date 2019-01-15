@@ -34,9 +34,15 @@
 }
 
 .levelListNumber {
-    margin-right: 0.2rem;
+    margin-right: 0.6rem;
+    margin-left: 0.2rem;
+    margin-top: auto;
+    margin-bottom: auto;
     font-family: 'Bungee', cursive;
-    font-weight: 400;   
+    font-weight: 400;
+    font-size: 1.3rem;
+    text-align: right;
+    width: 2rem;
 }
 
 .loadSign, .deleteSign {

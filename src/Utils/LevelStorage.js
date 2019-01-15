@@ -67,6 +67,34 @@ const LevelStorage = (function(){
             levels = lvls;
         },
 
+        getLevelsForGame: function() {
+            if (!levels || levels.length < 1) return;
+            let tLevels = [];
+            levels.forEach(level => {
+                const tLevel = {};
+                tLevel.name = level.name;
+                tLevel.id = level.id;
+                tLevel.map = [];
+                level.map.forEach(row => {
+                    let rowT =  row.map(cell => {
+                        if (cell) {
+                            return {
+                                type: cell.type,
+                                color: cell.color.replace(')', ', %alpha)'),
+                                hp: cell.hp
+                            }
+                        } else {
+                            return false;
+                        }
+                        
+                    });
+                    tLevel.map.push(rowT);
+                });
+                tLevels.push(tLevel);
+            });
+            return tLevels;
+        },
+
         getNewId: function() {
             let newId = 0;
             if (levels.length < 1) {
@@ -136,7 +164,7 @@ const LevelStorage = (function(){
                 }
                 tLvl.push(tRow);
             }
-            console.table(tLvl);
+            
             return tLvl;
         },
 
@@ -152,13 +180,25 @@ const LevelStorage = (function(){
 
         retrieveLevels: function() {
             if (!hasStorage) return;
-            levels = JSON.parse(localStorage.getItem(name));
+            const tLevels = JSON.parse(localStorage.getItem(name));
+            if (tLevels === null || tLevels === undefined) {
+                return;
+            }
+            levels = tLevels;
+            
             
         },
 
         retrieveRecords: function() {
             if (!hasStorage) return;
-            records = JSON.parse(localStorage.getItem('records'));
+            const tRecords = JSON.parse(localStorage.getItem('records'));
+            
+            if (tRecords === null || tRecords === undefined) {
+                return;
+            }
+            records = tRecords;
+            
+
         },
         
         getListName: function() {

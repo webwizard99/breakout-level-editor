@@ -27,11 +27,7 @@
 
 .LaunchGameButton {
     background: url('./noun_joystick_22520.svg');
+    background-color: rgb(98, 163, 224);
     background-size: 100%;
     background-repeat: no-repeat;
-}
-
-.launchLink {
-    height: 1rem;
-    width: 1rem;
 }

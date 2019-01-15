@@ -12,17 +12,17 @@
 }
 
 .CloseButton {
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 4.5rem;
+    width: 4.5rem;
     position: relative;
     bottom: 100vh;
-    margin-top: 1rem;
-    left: 95vh;
+    margin-top: 2rem;
+    left: 5vw;
     font-family: 'Nunito', sans-serif;
     cursor: pointer;
     pointer-events: all;
     display: flex;
-    font-size: 1rem;
+    font-size: 4rem;
     font-weight: 700;
     color: rgba(248, 252, 253, 0.85);
     line-height: 2rem;

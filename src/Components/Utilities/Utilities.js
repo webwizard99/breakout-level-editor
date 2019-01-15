@@ -37,11 +37,7 @@ class Utilities extends React.Component {
                 <div className="LaunchGameButton"
                     title="launch game"
                     onClick={this.handleLaunch}>
-                    <a className="launchLink"
-                        href="../../Game/breakout/index.html"
-                        target="_blank"
-                    >
-                    </a>
+                    
                 </div>
                 
             </div>

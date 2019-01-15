@@ -31,7 +31,7 @@ class App extends React.Component {
           currentBlockIndex: 0,
           currentBlock: {
             type: 'basic',
-            color: `rgb(80, 100, 140)`,
+            color: `rgba(80, 100, 140)`,
             hp: 5
           },
           blockMap: [],
@@ -66,6 +66,7 @@ class App extends React.Component {
       this.changeTitle = this.changeTitle.bind(this);
       this.launchGame = this.launchGame.bind(this);
       this.closeGame = this.closeGame.bind(this);
+      this.getGameLayer = this.getGameLayer.bind(this);
 
   }
 
@@ -452,9 +453,16 @@ class App extends React.Component {
   }
 
   launchGame() {
-    const tLvls = LevelStorage.getLevels();
-    Levels.slice(0, Levels.length);
-    Levels.push(tLvls);
+    
+    const tLvls = LevelStorage.getLevelsForGame();
+
+    
+    if (!tLvls) return;
+    Levels.setLevels(tLvls);
+    // tLvls.forEach(tLvl => {
+    //     Levels.push(tLvl);
+    // })
+    
     this.setState({
         gameActive: true
     })
@@ -465,6 +473,21 @@ class App extends React.Component {
     this.setState({
         gameActive: false
     });
+  }
+
+  getGameLayer() {
+      if (this.state.gameActive) {
+          return (
+            <GameLayer
+                vis={this.state.gameActive ? 'visible' : 'hidden'}
+                closeGame={this.closeGame}
+            />
+          );
+      } else {
+          return (
+              <div></div>
+          )
+      }
   }
   
   render() {
@@ -503,10 +526,7 @@ class App extends React.Component {
             processDialog={this.processDialog}
         />
         <MouseoverLayer />
-        <GameLayer
-            vis={this.state.gameActive ? 'visible' : 'hidden'}
-            closeGame={this.closeGame}
-        />
+        {this.getGameLayer()}
       </div>
     );
   }
