@@ -23,9 +23,9 @@ class LevelView extends React.Component {
     }
 
     componentDidUpdate() {
-        if (this.props.blockMap.length < 1) {
-            this.generateBlankLevel();
-        }
+        // if (this.props.blockMap.length < 1) {
+        //     //this.generateBlankLevel();
+        // }
 
         this.getLevelForRender();
     }
