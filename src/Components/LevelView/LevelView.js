@@ -10,6 +10,7 @@ class LevelView extends React.Component {
         this.generateBlankLevel = this.generateBlankLevel.bind(this);
         this.setViewBlock = this.setViewBlock.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.getLevelForRender = this.getLevelForRender.bind(this);
     }
@@ -19,15 +20,19 @@ class LevelView extends React.Component {
     ///**//**//**//**//**//**///
 
     componentWillMount() {
-        this.generateBlankLevel();
+        //this.generateBlankLevel();
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (this.props === nextProps) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     componentDidUpdate() {
-        // if (this.props.blockMap.length < 1) {
-        //     //this.generateBlankLevel();
-        // }
-
-        this.getLevelForRender();
+        // no code?
     }
 
     ////**//**//**//**//**//**//
@@ -50,16 +55,21 @@ class LevelView extends React.Component {
             let keyCount = -1;
             return ( 
                 levelMap.map((row, rowN) => {
-                    return ( <div className="ViewRow" key={rowN}>
+                    return ( <div className="ViewRow" 
+                                key={rowN}
+                                width={Constants.getLevelSize().x}
+                            >
                     {row.map((col, colN) => {
-                        
+                        // if (colN > Constants.getColumnsProto()) {
+                        //     console.log('getLevelForRender: tried to make more columns than ColumnsProto!');
+                        //     return;
+                        // }
                         const tCell = col;
                         keyCount += 1;
 
                         return (
                             <Cell 
-                                height={Constants.getCell().height}
-                                width={Constants.getCell().width}
+                                
                                 row={rowN}
                                 col={colN}
                                 block={tCell}
@@ -94,13 +104,17 @@ class LevelView extends React.Component {
     }
 
     render() {
+        
         return (
             <div className="LevelView"
                 
                 height={Constants.getLevelSize().y + 10}
+                width={Constants.getLevelSize().x}        
                 
             >
             {this.getLevelForRender()}
+            
+            
             </div>
         );
     }

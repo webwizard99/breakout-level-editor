@@ -1,0 +1,34 @@
+.LevelListTitle {
+  display: flex;
+  margin-top: auto;
+  margin-bottom: auto;
+  background-color: rgb(160, 160, 160);
+}
+
+.ListTitle, .HighScore, .HighScoreLabel {
+  font-family: 'Bungee', cursive;
+  line-height: 1.5rem;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.HighScoreLabel {
+  font-family: 'Nunito', sans-serif;
+}
+
+.ListTitle {
+  padding: 0.4rem;
+  padding-left: 1.3rem;
+  margin-right: 9rem;
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+  background-color: rgb(160, 160, 160);
+  color: inherit;
+  text-shadow: 1px 1px 8px rgba(30, 30, 30, .6); 
+}
+
+.HighScore {
+  font-size: 1.4rem;
+  margin-left: 0.4rem;
+  color: rgb(132, 162, 202);
+}

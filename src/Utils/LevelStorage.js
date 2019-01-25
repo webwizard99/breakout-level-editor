@@ -2,8 +2,11 @@ import Constants from '../Game/breakout/resources/js/utils/Constants';
 
 const LevelStorage = (function(){
     let name = 'levelList';
+    let id = 1;
 
     let records = ['levelList'];
+
+    let highScore = 0;
 
     let hasStorage = true;
 
@@ -55,6 +58,7 @@ const LevelStorage = (function(){
     }
 
     const saveRecords = function() {
+        
         localStorage.setItem('records', JSON.stringify(records));
     }
 
@@ -156,6 +160,7 @@ const LevelStorage = (function(){
         getBlankLevel: function() {
             const r = Constants.getRowsProto();
             const c = Constants.getColumnsProto();
+            console.log(`getBlankLevel: r: ${r}, c: ${c}`);
             let tLvl = [];
             for (let row = 0; row < r; row++) {
                 let tRow = [];
@@ -172,10 +177,11 @@ const LevelStorage = (function(){
             
             if (!checkRecord(name)) {
                 records.push(name);
-                saveRecords();
+                
             }
             localStorage.setItem(name, JSON.stringify(levels));
             hasStorage = true;
+            saveRecords();
         },
 
         retrieveLevels: function() {
@@ -207,6 +213,48 @@ const LevelStorage = (function(){
 
         setListName: function(tName) {
             name = tName;
+        },
+
+        getListId: function() {
+            return id;
+        },
+
+        setListId: function(val) {
+            if (val) {
+                id = val;
+            }
+        },
+
+        getHighScore: function() {
+            return highScore;
+        },
+
+        setHighScore: function(val) {
+            if (val) {
+                highScore = val;
+            }
+        },
+
+        saveHighScore: function() {
+            const recName = `${name}HighScore`;
+            localStorage.setItem(recName, JSON.stringify(highScore));
+        },
+
+        retrieveHighScore: function() {
+            const recName = `${name}HighScore`;
+            const tScore = JSON.parse(localStorage.getItem(recName));
+            highScore = tScore;
+        },
+
+        swapLevels: function(id1, id2) {
+          
+          const index1 = getIndexById(id1);
+          const lvl1 = levels.slice(index1, index1 + 1)[0];
+          const index2 = getIndexById(id2);
+          const lvl2 = levels.slice(index2, index2 + 1)[0];
+          levels[index1] = lvl2;
+          levels[index2] = lvl1;
+
         }
     }
 }());

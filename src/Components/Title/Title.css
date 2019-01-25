@@ -23,3 +23,7 @@
 .Title-text:focus {
     outline: none;
 }
+
+.error::placeholder {
+    color: red;
+}

@@ -1,8 +1,8 @@
 import React from 'react';
-import Sound from 'react-sound';
 import Breakout from '../../Game/breakout/resources/js/modules/Controller';
 
 import './GameLayer.css';
+import '../../Game/breakout/resources/css/reset.css';
 import '../../Game/breakout/resources/css/style.css';
 import soundfile from './Crystal_Jewel_Collect_2.wav';
 
@@ -14,7 +14,6 @@ class GameLayer extends React.Component {
 
         this.handleCloseGame = this.handleCloseGame.bind(this);
         this.launchGame = this.launchGame.bind(this);
-        this.launchInWindow = this.launchInWindow.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentWillUpdate = this.componentWillUpdate.bind(this);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
@@ -37,6 +36,7 @@ class GameLayer extends React.Component {
         } else {
             return false;
         }
+  
     }
 
     componentWillUpdate(nextProps, nextState) {
@@ -47,16 +47,17 @@ class GameLayer extends React.Component {
 
     componentWillUnmount() {
         clearInterval(this.timer);
+        let tScore = Breakout.getHighScoreReact();
+        if (tScore > this.props.highScore) {
+            this.props.setHighScore(tScore);
+            
+        }
+        
     }
 
     ////**//**//**//**//**//**//
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
-
-    launchInWindow(frameRef, url) {
-        const frame = document.querySelector(frameRef);
-        frame.src = url;
-    }
     
     handleCloseGame(e) {
         e.preventDefault();
@@ -71,13 +72,7 @@ class GameLayer extends React.Component {
         
         Breakout.initReact();
         this.timer = setInterval(Breakout.updateReact, Breakout.getUpdateRateReact());
-        // this.launchInWindow('.GameFrame', 'https://webwizard99.github.io/breakout/');
-        // this.launchInWindow('.GameFrame', './breakout/index.html');
-                
-        // const frame = document.querySelector('.GameFrame');
-        // console.dir(frame);
-        // // frame.load('../../Game/breakout/index.html');
-        // frame.baseURI = '../../Game/breakout/index.html';
+        Breakout.setHighScoreReact(this.props.highScore);
     }
 
     render() {

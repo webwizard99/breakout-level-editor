@@ -20,6 +20,7 @@ class App extends React.Component {
           dialogVisible: false,
           dialogPointer: false,
           gameActive: false,
+          titleFail: false,
           confirmationType: '',
           confirmationNeeded: false,
           levelToLoad: -1,
@@ -35,7 +36,10 @@ class App extends React.Component {
             hp: 5
           },
           blockMap: [],
-          levelList: []
+          levelList: [],
+          listName: '',
+          highScore: 0,
+          resetHighScore: false
       }
 
       this.componentWillMount = this.componentWillMount.bind(this);
@@ -67,7 +71,12 @@ class App extends React.Component {
       this.launchGame = this.launchGame.bind(this);
       this.closeGame = this.closeGame.bind(this);
       this.getGameLayer = this.getGameLayer.bind(this);
-
+      this.getMenuBar = this.getMenuBar.bind(this);
+      this.getViewColumn = this.getViewColumn.bind(this);
+      this.highScoreReset = this.highScoreReset.bind(this);
+      this.setHighScore = this.setHighScore.bind(this);
+      this.saveHighScore = this.saveHighScore.bind(this);
+      this.swapLevels = this.swapLevels.bind(this);
   }
 
   blocksAvailable = [{
@@ -92,6 +101,14 @@ class App extends React.Component {
         // LevelStorage.retrieveRecords();
         LevelStorage.retrieveLevels();
         this.syncListStateWithStorage();
+        // this.setState({
+        //     blockMap: LevelStorage.getBlankLevel()
+        // });
+        this.setBlockMap(LevelStorage.getBlankLevel(), false);
+        LevelStorage.retrieveHighScore();
+        this.setState({
+            highScore: LevelStorage.getHighScore()
+        });
         
     }
     
@@ -99,10 +116,12 @@ class App extends React.Component {
         if (this.state.readyToSave) {
             this.commitChanges();
             LevelStorage.saveLevels();
+            this.highScoreReset();
         }
 
         if (this.state.deleteApproved) {
             this.discardLevel();
+            this.highScoreReset();
         }
 
         if (this.state.confirmationNeeded && !this.state.dialogVisible) {
@@ -111,6 +130,15 @@ class App extends React.Component {
 
         if (this.state.readyToLoad) {
             this.loadLevel(this.state.levelToLoad);
+            this.highScoreReset();
+        }
+
+        if (this.state.resetHighScore) {
+            this.setState({
+                resetHighScore: false
+            });
+            this.setHighScore(0);
+
         }
         
         // this.syncListStateWithStorage();
@@ -119,6 +147,20 @@ class App extends React.Component {
     ////**//**//**//**//**//**//
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
+
+
+  highScoreReset() {
+    this.setState({
+        resetHighScore: true
+    });
+  }
+
+  setHighScore(val) {
+    this.setState({
+        highScore: val
+    });
+    this.saveHighScore(val);
+  }
 
   changeTitle(newTitle) {
     if (newTitle !== '') {
@@ -141,16 +183,16 @@ class App extends React.Component {
       }
   }
 
-  setBlockMap(map, change) {
+  setBlockMap(map, val) {
     
     this.setState({
         blockMap: map    
     });
     this.setState({
-        hasChanges: change     
+        hasChanges: val     
     });
     this.setState({
-        hasBlocks: change
+        hasBlocks: val
     });  
   }
 
@@ -168,7 +210,16 @@ class App extends React.Component {
 
      if (this.state.title === '') {
          console.log(`can't save a level without a name!`);
+         this.setState({
+             titleFail: true
+         });
          return;
+     } else {
+         if (this.state.titleFail) {
+             this.setState({
+                 titleFail: false
+             });
+         }
      }
 
      if (!this.state.hasBlocks) {
@@ -287,15 +338,13 @@ class App extends React.Component {
             readyToSave: false,
             dialogVisible: false,
             dialogPointer: false,
-            blockMap: []
+            blockMap: LevelStorage.getBlankLevel()
         });
       }
   }
 
   deleteLevel() {
-    console.log('delete level');
-    const lvlToDelete = this.state.levelToDelete;
-    console.log(lvlToDelete);
+    const lvlToDelete = this.state.levelToDelete
     LevelStorage.deleteLevel(lvlToDelete);
     if (lvlToDelete === this.state.id) {
         this.setState({
@@ -303,6 +352,11 @@ class App extends React.Component {
         });
     }
     LevelStorage.saveLevels();
+    LevelStorage.setHighScore(0);
+    LevelStorage.saveHighScore();
+    this.setState({
+        highScore: 0
+    });
     this.syncListStateWithStorage();
   }
 
@@ -321,7 +375,6 @@ class App extends React.Component {
   }
 
   promptDelete(id) {
-      console.log(`prompt delete id: ${id}`);
       this.setState({confirmationType: 'delete'});
       this.setState({levelToDelete:id});
       this.callDialog();
@@ -340,6 +393,11 @@ class App extends React.Component {
     LevelStorage.setLevel(this.getLevelForStorage());
     }
 
+    LevelStorage.setHighScore(0);
+    LevelStorage.saveHighScore();
+    this.setState({
+        highScore: 0
+    });
     
     this.syncListStateWithStorage();
 
@@ -356,6 +414,7 @@ class App extends React.Component {
 
   syncListStateWithStorage() {
       const tLevels = LevelStorage.getLevels();
+      const tListName = LevelStorage.getListName();
     //   const tListState = this.state.levelList;
       const tList = [];
 
@@ -368,10 +427,12 @@ class App extends React.Component {
       });
 
       this.setState({
-        levelList: tList
+        levelList: tList,
+        listName: tListName
       });
   }
 
+  //placeholder
   exportLevel() {
     const levelDupe = this.getLevelForOutput();
     Levels.push(levelDupe);
@@ -389,8 +450,6 @@ class App extends React.Component {
         id: this.state.id,
         name: this.state.title,
         map: this.state.blockMap };
-
-    // console.log(outputLevel);
     return outputLevel;
   }
 
@@ -452,6 +511,15 @@ class App extends React.Component {
       }
   }
 
+  saveHighScore(val) {
+    
+    const tHighScore = val;
+    if (tHighScore > LevelStorage.getHighScore()) {
+        LevelStorage.setHighScore(tHighScore);
+        LevelStorage.saveHighScore();
+    }
+  }
+
   launchGame() {
     
     const tLvls = LevelStorage.getLevelsForGame();
@@ -481,6 +549,9 @@ class App extends React.Component {
             <GameLayer
                 vis={this.state.gameActive ? 'visible' : 'hidden'}
                 closeGame={this.closeGame}
+                highScore={this.state.highScore}
+                setHighScore={this.setHighScore}
+                
             />
           );
       } else {
@@ -489,36 +560,77 @@ class App extends React.Component {
           )
       }
   }
+
+  getMenuBar() {
+      if (!this.state.gameActive) {
+          return (
+            <MenuBar 
+                title={this.state.title}
+                block={this.state.currentBlock}
+                blocksAvailable={this.blocksAvailable}
+                blockIndex={this.state.currentBlockIndex}
+                changeTitle={this.changeTitle}
+                titleFail={this.state.titleFail}
+                onChangeBlock={this.setCurrentBlock}
+                newLevel={this.newLevel}
+                saveLevel={this.saveLevel}
+                launchGame={this.launchGame}
+            />
+          )
+      } else {
+          return (
+              <div style={{height: "100vh", width: "100vw"}}>
+              </div>
+          )
+      }
+  }
+
+  getViewColumn() {
+      if (!this.state.gameActive) {
+          return (
+            <div className="ViewColumn">
+                <LevelView 
+                    setBlock={this.setViewBlock}
+                    block={this.state.currentBlock}
+                    setBlockMap={this.setBlockMap}
+                    blockMap={this.state.blockMap}
+                    readyToLoad={this.state.readyToLoad}
+                    currentBlock={this.state.currentBlock}
+                />
+                <LevelList levelList={this.state.levelList}
+                    loadConfirm={this.promptLoad}
+                    deleteConfirm={this.promptDelete}
+                    listName={this.state.listName}
+                    highScore={this.state.highScore}
+                    swapLevels={this.swapLevels}
+                />
+            </div>
+          )
+      } else {
+          return (
+              <div>
+
+              </div>
+          )
+      }
+  }
+
+  swapLevels(id1, id2) {
+    LevelStorage.swapLevels(id1, id2);
+    this.syncListStateWithStorage();
+    LevelStorage.setHighScore(0);
+    LevelStorage.saveHighScore();
+    this.setState({
+        highScore: 0
+    });
+    LevelStorage.saveLevels();
+  }  
   
   render() {
     return (
       <div className="App">
-        <MenuBar 
-            title={this.state.title}
-            block={this.state.currentBlock}
-            blocksAvailable={this.blocksAvailable}
-            blockIndex={this.state.currentBlockIndex}
-            changeTitle={this.changeTitle}
-            onChangeBlock={this.setCurrentBlock}
-            newLevel={this.newLevel}
-            saveLevel={this.saveLevel}
-            launchGame={this.launchGame}
-        />
-        <div className="ViewColumn">
-            <LevelView 
-                setBlock={this.setViewBlock}
-                block={this.state.currentBlock}
-                setBlockMap={this.setBlockMap}
-                blockMap={this.state.blockMap}
-                readyToLoad={this.state.readyToLoad}
-                currentBlock={this.state.currentBlock}
-            />
-            <LevelList levelList={this.state.levelList}
-                loadConfirm={this.promptLoad}
-                deleteConfirm={this.promptDelete}
-                
-            />
-        </div>
+        {this.getMenuBar()}
+        {this.getViewColumn()}
         <DialogLayer pointer={this.state.dialogPointer ? 'all' : 'none'}
             vis={this.state.dialogVisible ? 'visible' : 'hidden'}
             dialogEnabled={this.state.dialogVisible}

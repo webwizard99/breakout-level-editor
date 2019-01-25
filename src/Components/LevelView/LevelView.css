@@ -6,8 +6,10 @@
     margin: 0;
     /* padding-top: 6px;
     padding-left: 6px; */
+    overflow: hidden;
     border: 1px solid rgba(30, 30, 30, .6);
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
 }
 
@@ -16,6 +18,7 @@
     margin: 0;
     display: flex;
     flex-wrap: wrap;
+    overflow: hidden;
 }
 
 .LevelViewCanvas {

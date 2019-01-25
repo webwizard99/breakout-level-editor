@@ -6,11 +6,26 @@ import ColorPicker from '../ColorPicker/ColorPicker';
 import Utilities from '../Utilities/Utilities';
 
 class MenuBar extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props === nextProps) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
     render() {
         return (
             <div className="MenuBar">
                 <Title title={this.props.title}
                         changeTitle={this.props.changeTitle}
+                        titleFail={this.props.titleFail}
                 />
                 <BlockPicker 
                     block={this.props.block}

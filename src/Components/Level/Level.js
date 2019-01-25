@@ -7,6 +7,9 @@ class Level extends React.Component {
 
         this.handleLoad = this.handleLoad.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleSortUp = this.handleSortUp.bind(this);
+        this.handleSortDown = this.handleSortDown.bind(this);
+        this.handleSort = this.handleSort.bind(this);
     }
 
     handleLoad = function() {
@@ -18,10 +21,23 @@ class Level extends React.Component {
         const tId = this.props.lvlId;
         this.props.deleteConfirm(tId);
     }
+
+    handleSortUp = function() {
+      this.handleSort(this.props.num, this.props.num -1);
+    }
+
+    handleSortDown = function() {
+      this.handleSort(this.props.num, this.props.num + 1);
+    }
+
+    handleSort = function(val1, val2) {
+      this.props.sortLevels(val1, val2);
+    }
     
     render() {
         return (
-            <div className="Level">
+            <div className="Level"
+              draggable="true">
                 <span className="levelListNumber">{this.props.num}</span>
                 <p>{this.props.name}</p>
                 <span className="loadSign"
@@ -30,6 +46,12 @@ class Level extends React.Component {
                 <span className="deleteSign"
                     onClick={this.handleDelete}
                 >X</span>
+                <div className="sortColumn">
+                  <p className="sortUp"
+                    onClick={this.handleSortUp}>&#x25B2;</p>
+                  <p className="sortDown"
+                    onClick={this.handleSortDown}>&#x25BC;</p>
+                </div>
             </div>
         );
     };
