@@ -77,6 +77,7 @@ class App extends React.Component {
       this.setHighScore = this.setHighScore.bind(this);
       this.saveHighScore = this.saveHighScore.bind(this);
       this.swapLevels = this.swapLevels.bind(this);
+      this.insertLevel = this.insertLevel.bind(this);
   }
 
   blocksAvailable = [{
@@ -603,6 +604,7 @@ class App extends React.Component {
                     listName={this.state.listName}
                     highScore={this.state.highScore}
                     swapLevels={this.swapLevels}
+                    insertLevel={this.insertLevel}
                 />
             </div>
           )
@@ -616,6 +618,7 @@ class App extends React.Component {
   }
 
   swapLevels(id1, id2) {
+    console.log(`swapLevels: id1: ${id1}, id2: ${id2}`);
     LevelStorage.swapLevels(id1, id2);
     this.syncListStateWithStorage();
     LevelStorage.setHighScore(0);
@@ -624,7 +627,18 @@ class App extends React.Component {
         highScore: 0
     });
     LevelStorage.saveLevels();
-  }  
+  }
+
+  insertLevel(id1, id2, direction) {
+    LevelStorage.insertLevel(id1, id2, direction);
+    this.syncListStateWithStorage();
+    LevelStorage.setHighScore(0);
+    LevelStorage.saveHighScore();
+    this.setState({
+        highScore: 0
+    });
+    LevelStorage.saveLevels();
+  }
   
   render() {
     return (

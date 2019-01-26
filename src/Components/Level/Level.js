@@ -10,6 +10,7 @@ class Level extends React.Component {
         this.handleSortUp = this.handleSortUp.bind(this);
         this.handleSortDown = this.handleSortDown.bind(this);
         this.handleSort = this.handleSort.bind(this);
+        this.handleDragEnd = this.handleDragEnd.bind(this);
     }
 
     handleLoad = function() {
@@ -33,11 +34,23 @@ class Level extends React.Component {
     handleSort = function(val1, val2) {
       this.props.sortLevels(val1, val2);
     }
+
+    handleDragEnd = function(e) {
+      e.preventDefault();
+      const loc = {
+        x: e.clientX,
+        y: e.clientY
+      };
+      const tId = this.props.lvlId;
+      this.props.handleDrag(tId, loc.x, loc.y);
+      
+    }
     
     render() {
         return (
             <div className="Level"
-              draggable="true">
+              draggable="true"
+              onDragEnd={this.handleDragEnd}>
                 <span className="levelListNumber">{this.props.num}</span>
                 <p>{this.props.name}</p>
                 <span className="loadSign"

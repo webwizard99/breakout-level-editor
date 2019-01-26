@@ -255,6 +255,13 @@ const LevelStorage = (function(){
           levels[index1] = lvl2;
           levels[index2] = lvl1;
 
+        },
+
+        insertLevel: function(id1, id2, direction) {
+          const index1 = getIndexById(id1);
+          const lvl1 = levels.splice(index1, 1)[0];
+          const index2 = getIndexById(id2);
+          levels.splice(index2 + direction, 0, lvl1);
         }
     }
 }());
