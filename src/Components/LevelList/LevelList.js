@@ -3,6 +3,7 @@ import './LevelList.css';
 import Level from '../Level/Level';
 import LevelListTitle from '../LevelListTitle/LevelListTitle';
 
+
 class LevelList extends React.Component {
     constructor(props) {
         super(props);
@@ -76,17 +77,26 @@ class LevelList extends React.Component {
     }
 
     handleDrag(id, x, y) {
+      // get position info on all Level components
       const clientMaster = document.querySelector('.LevelList');
       const clientHeights = Array.from(clientMaster.querySelectorAll('.Level'))
         .map(lev => {
+          const levRect = lev.getBoundingClientRect();
           return {
-            x: lev.getBoundingClientRect().x,
-            y: lev.getBoundingClientRect().y
+            x: levRect.x,
+            y: levRect.y,
+            height: levRect.height
           }
         });
+      
+
+      // find the nearest Level component to the
+      // dragEnd positon
       let matchY = Math.abs(clientHeights[0].y - y);
       let replaceTarget = 0;
+      // direction: is target above or below element
       let direction = 0;
+      
       clientHeights.forEach((tLvlHeight, lvlN) => {
         const tMatchY = Math.abs(tLvlHeight.y - y);
         if (tMatchY < matchY) {
@@ -95,7 +105,14 @@ class LevelList extends React.Component {
           direction = (tLvlHeight.y - y) > 0 ? 0 : -1;
         }
       });
+      
       this.props.insertLevel(id, this.props.levelList[replaceTarget].id, direction);
+
+      // remove any borders from Level divs
+      const lvls = document.querySelectorAll('.Level');
+      lvls.forEach(lvl => {
+        lvl.style.borderBottom = "none";
+      });
     }
     
     render() {

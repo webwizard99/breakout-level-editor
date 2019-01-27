@@ -1,9 +1,12 @@
 import React from 'react';
 import './Level.css';
+import ReactPos from '../../Utils/ReactPosition';
+
 
 class Level extends React.Component {
     constructor(props) {
         super(props);
+
 
         this.handleLoad = this.handleLoad.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
@@ -11,6 +14,8 @@ class Level extends React.Component {
         this.handleSortDown = this.handleSortDown.bind(this);
         this.handleSort = this.handleSort.bind(this);
         this.handleDragEnd = this.handleDragEnd.bind(this);
+        this.handleDragOver = this.handleDragOver.bind(this);
+        this.handleDragLeave = this.handleDragLeave.bind(this);
     }
 
     handleLoad = function() {
@@ -37,20 +42,67 @@ class Level extends React.Component {
 
     handleDragEnd = function(e) {
       e.preventDefault();
+      e.persist();
+      const reactPos = ReactPos.getCurrentDragPos();
       const loc = {
-        x: e.clientX,
-        y: e.clientY
+        x: reactPos.x,
+        y: reactPos.y
       };
       const tId = this.props.lvlId;
       this.props.handleDrag(tId, loc.x, loc.y);
+      this.handleDragLeave(e);
+    }
+
+    handleDragOver = function(e) {
       
+      let fTarget = e.target;
+      if (!fTarget.classList.contains('Level')) {
+        fTarget = fTarget.parentNode;
+      }
+
+      console.log(fTarget.style.borderBottom);
+      if (fTarget.classList.contains('Level')) {
+        if (fTarget.style.borderBottom !== '8px solid rgba(240, 245, 250, 0.8)') {
+          fTarget.style.borderBottom = '8px solid rgba(240, 245, 250, 0.8)';
+        }  
+      }
+
+    }
+
+    handleDragLeave = function(e) {
+      
+      let fTarget = e.target;
+      if (!fTarget.classList.contains('Level')) {
+        fTarget = fTarget.parentNode;
+      }
+      console.log(fTarget.style.borderBottom);
+      if (fTarget.classList.contains('Level')) {
+        if (fTarget === e.target ||
+          e.target.classList.contains('loadSign') ||
+          e.target.classList.contains('deleteSign')) {
+          // fTarget.style.borderBottom = 'none';
+          // remove any borders from Level divs
+          const lvls = document.querySelectorAll('.Level');
+          lvls.forEach(lvl => {
+            lvl.style.borderBottom = "none";
+          });
+        }
+      }
     }
     
     render() {
         return (
             <div className="Level"
               draggable="true"
-              onDragEnd={this.handleDragEnd}>
+              style={{borderBottom: "none"}}
+              onDragEnd={this.handleDragEnd}
+              onDragOver={this.handleDragOver}
+              onDragLeave={this.handleDragLeave}
+              onDragStart={(e) => {
+                e.dataTransfer.setData('text',''); 
+                
+                console.log('drag start');}}
+              >
                 <span className="levelListNumber">{this.props.num}</span>
                 <p>{this.props.name}</p>
                 <span className="loadSign"

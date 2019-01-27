@@ -230,8 +230,8 @@ const LevelStorage = (function(){
         },
 
         setHighScore: function(val) {
-            if (val) {
-                highScore = val;
+          if (val !== false && val!== undefined) {
+              highScore = val;
             }
         },
 

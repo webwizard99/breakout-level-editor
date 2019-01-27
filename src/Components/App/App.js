@@ -618,7 +618,7 @@ class App extends React.Component {
   }
 
   swapLevels(id1, id2) {
-    console.log(`swapLevels: id1: ${id1}, id2: ${id2}`);
+    
     LevelStorage.swapLevels(id1, id2);
     this.syncListStateWithStorage();
     LevelStorage.setHighScore(0);
