@@ -7,6 +7,7 @@ import DialogLayer from '../DialogLayer/DialogLayer';
 import MouseoverLayer from '../MouseoverLayer/MouseoverLayer';
 import GameLayer from '../GameLayer/GameLayer';
 
+
 import Levels from '../../Game/breakout/resources/js/utils/Levels';
 import LevelStorage from '../../Utils/LevelStorage';
 
@@ -35,6 +36,7 @@ class App extends React.Component {
             color: `rgba(80, 100, 140)`,
             hp: 5
           },
+          currentColor: `rgba(80, 100, 140, 1)`,
           blockMap: [],
           levelList: [],
           listName: '',
@@ -78,6 +80,7 @@ class App extends React.Component {
       this.saveHighScore = this.saveHighScore.bind(this);
       this.swapLevels = this.swapLevels.bind(this);
       this.insertLevel = this.insertLevel.bind(this);
+      this.changeColor = this.changeColor.bind(this);
   }
 
   blocksAvailable = [{
@@ -194,7 +197,8 @@ class App extends React.Component {
     });
     this.setState({
         hasBlocks: val
-    });  
+    });
+    console.log(this.state.blockMap);
   }
 
   setLevelList(list) {
@@ -446,11 +450,14 @@ class App extends React.Component {
   }
 
   getLevelForStorage() {
-    
+    const storeMap = this.getLevelForOutput().map;
+    // console.dir(storeMap);
     let outputLevel = { 
         id: this.state.id,
         name: this.state.title,
-        map: this.state.blockMap };
+        map: storeMap };
+
+    console.log(outputLevel);
     return outputLevel;
   }
 
@@ -463,39 +470,39 @@ class App extends React.Component {
   }
 
   getLevelForOutput() {
-     const tBlockMap = this.state.blockMap;
-    
-     let outputLevel = { name: '', map: [] };
-     let outputBlockMap = [];
-     tBlockMap.forEach((row, rowN) => {
-        let tRow = [];
-        row.forEach((col, colN) => {
-            if (!col) {
-                tRow.push(false);
-                
-            } else {
-                const tBlock = col;
-                const colorOut = tBlock.color
-                    
-                    .replace(')', ', %alpha)');
-                tRow.push({
-                    width: 1,
-                    hp: tBlock.hp,
-                    density: 1,
-                    type: tBlock.type,
-                    row: rowN,
-                    col: colN,
-                    color: colorOut
-                    
-                });
-            }
-        });
-        outputBlockMap.push(tRow);
-     });
-    
-     outputLevel.name = this.state.title;
-     outputLevel.map = outputBlockMap;
-     return outputLevel;
+    const tBlockMap = this.state.blockMap;
+    console.log(tBlockMap);
+    let outputLevel = { name: '', map: [] };
+    let outputBlockMap = [];
+    tBlockMap.forEach((row, rowN) => {
+      let tRow = [];
+      row.forEach((col, colN) => {
+          if (!col) {
+              tRow.push(false);
+              
+          } else {
+              const tBlock = col;
+              const colorOut = tBlock.color
+                  
+                  .replace(', 1)', ')');
+              tRow.push({
+                  width: 1,
+                  hp: tBlock.hp,
+                  density: 1,
+                  type: tBlock.type,
+                  row: rowN,
+                  col: colN,
+                  color: colorOut
+                  
+              });
+          }
+      });
+      outputBlockMap.push(tRow);
+    });
+  
+    outputLevel.name = this.state.title;
+    outputLevel.map = outputBlockMap;
+    return outputLevel;
   }
 
   getDialogMessage() {
@@ -571,11 +578,14 @@ class App extends React.Component {
                 blocksAvailable={this.blocksAvailable}
                 blockIndex={this.state.currentBlockIndex}
                 changeTitle={this.changeTitle}
+                changeColor={this.changeColor}
+                color={this.state.currentColor}
                 titleFail={this.state.titleFail}
                 onChangeBlock={this.setCurrentBlock}
                 newLevel={this.newLevel}
                 saveLevel={this.saveLevel}
                 launchGame={this.launchGame}
+                currentColor={this.state.currentColor}
             />
           )
       } else {
@@ -592,7 +602,7 @@ class App extends React.Component {
             <div className="ViewColumn">
                 <LevelView 
                     setBlock={this.setViewBlock}
-                    block={this.state.currentBlock}
+                    currentColor={this.state.currentColor}
                     setBlockMap={this.setBlockMap}
                     blockMap={this.state.blockMap}
                     readyToLoad={this.state.readyToLoad}
@@ -638,6 +648,19 @@ class App extends React.Component {
         highScore: 0
     });
     LevelStorage.saveLevels();
+  }
+
+  changeColor(color) {
+    this.setState({
+      currentColor: color
+    });
+
+    let tBlock = this.state.currentBlock;
+    tBlock.color = color;
+    console.dir(tBlock);
+    this.setState({
+      currentBlock: tBlock
+    });
   }
   
   render() {

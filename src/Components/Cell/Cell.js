@@ -78,10 +78,11 @@ class Cell extends React.Component {
             if (!Constants.checkBounds(this.props.row, this.props.col)) {
                 return;
             }
-            if (this.props.block !== this.props.currentBlock) {
+            if (this.props.block.color !== this.props.currentColor) {
                 this.props.setViewBlock(
                     this.props.row,
-                    this.props.col);
+                    this.props.col,
+                    this.props.currentColor);
             }
         }
     }

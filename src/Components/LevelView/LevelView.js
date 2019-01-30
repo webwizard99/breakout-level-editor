@@ -6,7 +6,7 @@ import Cell from '../Cell/Cell'
 class LevelView extends React.Component {
     constructor(props) {
         super(props);
-        
+ 
         this.generateBlankLevel = this.generateBlankLevel.bind(this);
         this.setViewBlock = this.setViewBlock.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
@@ -39,9 +39,12 @@ class LevelView extends React.Component {
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
 
-    setViewBlock(row, col) {
+    setViewBlock(row, col, color) {
         let tMap = this.props.blockMap;
-        tMap[row][col] = this.props.block;
+        let tBlock = JSON.parse(JSON.stringify(this.props.currentBlock));
+        tBlock.color = color;
+        console.dir(tBlock);
+        tMap[row][col] = tBlock;
         this.props.setBlockMap(tMap, true);
         
     }
@@ -75,6 +78,7 @@ class LevelView extends React.Component {
                                 block={tCell}
                                 key={keyCount}
                                 currentBlock={this.props.currentBlock}
+                                currentColor={this.props.currentColor}
                                 serial={keyCount}
                                 setViewBlock={this.setViewBlock}
                             />

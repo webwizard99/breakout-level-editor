@@ -50,17 +50,17 @@ class Level extends React.Component {
       };
       const tId = this.props.lvlId;
       this.props.handleDrag(tId, loc.x, loc.y);
-      this.handleDragLeave(e);
+      
     }
 
     handleDragOver = function(e) {
-      
+
+      // get the Level object to apply border
       let fTarget = e.target;
       if (!fTarget.classList.contains('Level')) {
         fTarget = fTarget.parentNode;
       }
 
-      console.log(fTarget.style.borderBottom);
       if (fTarget.classList.contains('Level')) {
         if (fTarget.style.borderBottom !== '8px solid rgba(240, 245, 250, 0.8)') {
           fTarget.style.borderBottom = '8px solid rgba(240, 245, 250, 0.8)';
@@ -71,16 +71,17 @@ class Level extends React.Component {
 
     handleDragLeave = function(e) {
       
+      // get the Level object to apply border
       let fTarget = e.target;
       if (!fTarget.classList.contains('Level')) {
         fTarget = fTarget.parentNode;
       }
-      console.log(fTarget.style.borderBottom);
+
       if (fTarget.classList.contains('Level')) {
         if (fTarget === e.target ||
           e.target.classList.contains('loadSign') ||
           e.target.classList.contains('deleteSign')) {
-          // fTarget.style.borderBottom = 'none';
+          
           // remove any borders from Level divs
           const lvls = document.querySelectorAll('.Level');
           lvls.forEach(lvl => {

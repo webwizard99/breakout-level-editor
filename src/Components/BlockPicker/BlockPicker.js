@@ -87,7 +87,7 @@ class BlockPicker extends React.Component {
         
 
         this.drawRect(blockCTX, 
-            this.props.block.color,
+            this.props.color,
             startX,
             startY,
             Constants.getBlockProto().height * this.state.pickerMain,

@@ -1,6 +1,20 @@
 .ColorPicker {
     width: 100%;
-    height: 28%;
+    height: 36%;
     border-bottom: solid 1px rgba(240, 240, 240, 0.8);
     margin: auto;
+}
+
+.SaturationContainer {
+  width: 12rem;
+  height: 8rem;
+  position: relative;
+  margin-top: .3rem;
+}
+
+.HueContainer {
+  width: 12rem;
+  height: .6rem;
+  margin-top: .1rem;
+  position: relative;
 }
