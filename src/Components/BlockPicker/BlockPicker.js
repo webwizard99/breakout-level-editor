@@ -41,6 +41,8 @@ class BlockPicker extends React.Component {
         this.drawBlock();
     }
 
+    
+
     componentDidUpdate() {
         this.drawBlock();
     }
@@ -87,7 +89,7 @@ class BlockPicker extends React.Component {
         
 
         this.drawRect(blockCTX, 
-            this.props.color,
+            this.props.block.color,
             startX,
             startY,
             Constants.getBlockProto().height * this.state.pickerMain,
@@ -96,18 +98,12 @@ class BlockPicker extends React.Component {
     
     render() {
         return (
-            <div className="BlockPicker"> 
-                <span className="leftArrow"
-                    onClick={this.handleChangeBlock}
-                >{`<`}</span>
+            <div className="BlockPicker">
                 <canvas className="PickerView" 
                     width={Constants.getCell().width * this.state.pickerMain} 
                     height={Constants.getCell().height * this.state.pickerMain}
                 >
                 </canvas>
-                <span className="rightArrow"
-                    onClick={this.handleChangeBlock}
-                >{`>`}</span>
             </div>
         );
     };

@@ -1,0 +1,12 @@
+.PaletteBlockContainer {
+  height: auto;
+  width: auto;
+  flex-grow: 0;
+  margin: .1rem;
+}
+
+.PaletteBlock {
+  background: rgb(230,230,250);
+  margin: 0;
+  padding: 0;
+}

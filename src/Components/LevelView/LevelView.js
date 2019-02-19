@@ -43,7 +43,6 @@ class LevelView extends React.Component {
         let tMap = this.props.blockMap;
         let tBlock = JSON.parse(JSON.stringify(this.props.currentBlock));
         tBlock.color = color;
-        console.dir(tBlock);
         tMap[row][col] = tBlock;
         this.props.setBlockMap(tMap, true);
         
@@ -81,6 +80,7 @@ class LevelView extends React.Component {
                                 currentColor={this.props.currentColor}
                                 serial={keyCount}
                                 setViewBlock={this.setViewBlock}
+                                eyedrop={this.props.eyedrop}
                             />
                         );
                     })}

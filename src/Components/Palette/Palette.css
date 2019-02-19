@@ -1,0 +1,17 @@
+.PaletteContainer {
+  height: auto;
+  max-width: 233.4px;
+  margin: auto;
+}
+
+.Palette {
+  height: auto;
+  width: auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  border: solid 1px rgba(240, 240, 240, 0.6);
+  padding: .2rem;
+}
+

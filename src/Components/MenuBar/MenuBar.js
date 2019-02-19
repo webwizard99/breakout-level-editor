@@ -3,7 +3,7 @@ import './MenuBar.css';
 import Title from '../Title/Title';
 import BlockPicker from '../BlockPicker/BlockPicker';
 import ColorPicker from '../ColorPicker/ColorPicker';
-
+import Palette from '../Palette/Palette';
 import Utilities from '../Utilities/Utilities';
 
 class MenuBar extends React.Component {
@@ -28,13 +28,16 @@ class MenuBar extends React.Component {
                   changeTitle={this.props.changeTitle}
                   titleFail={this.props.titleFail}
                 />
-                <BlockPicker 
-                  block={this.props.block}
-                  blocksAvailable={this.props.blocksAvailable}
-                  blockIndex={this.props.blockIndex}
-                  color={this.props.color}
-                  onChangeBlock={this.props.onChangeBlock}
-                />
+                <div className="Blocks">
+                  <BlockPicker 
+                    block={this.props.block}
+                    blocksAvailable={this.props.blocksAvailable}
+                    blockIndex={this.props.blockIndex}
+                    color={this.props.color}
+                    onChangeBlock={this.props.onChangeBlock}
+                  />
+                  <Palette/>
+                </div>
                 <ColorPicker 
                   color={this.props.currentColor}
                   changeColor={this.props.changeColor}

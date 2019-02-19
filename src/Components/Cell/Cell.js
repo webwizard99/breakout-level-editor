@@ -22,7 +22,7 @@ class Cell extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.block === nextProps.block) {
+        if (JSON.stringify(this.props.block) === JSON.stringify(nextProps.block)) {
             return false;
         } else {
             return true;
@@ -78,7 +78,16 @@ class Cell extends React.Component {
             if (!Constants.checkBounds(this.props.row, this.props.col)) {
                 return;
             }
-            if (this.props.block.color !== this.props.currentColor) {
+
+            if (e.shiftKey) {
+              // set current block to block in cell
+              if (this.props.block) {
+                this.props.eyedrop(this.props.block);
+              }
+              return;
+            }
+
+            if (this.props.block !== this.props.currentBlock) {
                 this.props.setViewBlock(
                     this.props.row,
                     this.props.col,

@@ -1,9 +1,17 @@
 .MenuBar {
     
     width: 30vw;
+    min-width: 360px;
     display: flex;
     flex-direction: column;
     padding: 1rem;
     color: white;
     text-shadow: 1px 1px 3px rgba(30, 30, 30, .6);
+}
+
+.Blocks {
+  height: 28%;
+  width: 100%;
+  display: flex;
+  border-bottom: solid 1px rgba(240, 240, 240, 0.8);
 }

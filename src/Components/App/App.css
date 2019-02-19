@@ -16,6 +16,7 @@ body {
 
 .ViewColumn {
     width: 66vw;
+    flex-basis: 600px;
     height: 100%;
 }
 

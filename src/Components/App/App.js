@@ -70,6 +70,7 @@ class App extends React.Component {
       this.exportLevel = this.exportLevel.bind(this);
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
       this.changeTitle = this.changeTitle.bind(this);
+      this.setBlockFromCell = this.setBlockFromCell.bind(this);
       this.launchGame = this.launchGame.bind(this);
       this.closeGame = this.closeGame.bind(this);
       this.getGameLayer = this.getGameLayer.bind(this);
@@ -198,7 +199,7 @@ class App extends React.Component {
     this.setState({
         hasBlocks: val
     });
-    console.log(this.state.blockMap);
+    
   }
 
   setLevelList(list) {
@@ -450,14 +451,12 @@ class App extends React.Component {
   }
 
   getLevelForStorage() {
-    const storeMap = this.getLevelForOutput().map;
-    // console.dir(storeMap);
+    const storeMap = this.getLevelForOutput().map;    
     let outputLevel = { 
         id: this.state.id,
         name: this.state.title,
         map: storeMap };
 
-    console.log(outputLevel);
     return outputLevel;
   }
 
@@ -471,7 +470,6 @@ class App extends React.Component {
 
   getLevelForOutput() {
     const tBlockMap = this.state.blockMap;
-    console.log(tBlockMap);
     let outputLevel = { name: '', map: [] };
     let outputBlockMap = [];
     tBlockMap.forEach((row, rowN) => {
@@ -526,6 +524,16 @@ class App extends React.Component {
         LevelStorage.setHighScore(tHighScore);
         LevelStorage.saveHighScore();
     }
+  }
+
+  setBlockFromCell(cellBlock) {
+    this.setState({
+      currentBlock: cellBlock
+    });
+    const tColor = cellBlock.color.replace(")", ", 1)");
+    this.setState({
+      currentColor: tColor
+    })
   }
 
   launchGame() {
@@ -607,6 +615,7 @@ class App extends React.Component {
                     blockMap={this.state.blockMap}
                     readyToLoad={this.state.readyToLoad}
                     currentBlock={this.state.currentBlock}
+                    eyedrop={this.setBlockFromCell}
                 />
                 <LevelList levelList={this.state.levelList}
                     loadConfirm={this.promptLoad}
@@ -657,7 +666,6 @@ class App extends React.Component {
 
     let tBlock = this.state.currentBlock;
     tBlock.color = color;
-    console.dir(tBlock);
     this.setState({
       currentBlock: tBlock
     });
