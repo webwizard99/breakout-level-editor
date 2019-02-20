@@ -10,6 +10,7 @@ import GameLayer from '../GameLayer/GameLayer';
 
 import Levels from '../../Game/breakout/resources/js/utils/Levels';
 import LevelStorage from '../../Utils/LevelStorage';
+import BlockManager from '../../Utils/BlockManager';
 
 class App extends React.Component {
   constructor(props) {
@@ -39,6 +40,8 @@ class App extends React.Component {
           currentColor: `rgba(80, 100, 140, 1)`,
           blockMap: [],
           levelList: [],
+          paletteBlocks: [],
+          currentPaletteIndex: 0,
           listName: '',
           highScore: 0,
           resetHighScore: false
@@ -67,6 +70,7 @@ class App extends React.Component {
       this.getLevelForListState = this.getLevelForListState.bind(this);
       this.getDialogMessage = this.getDialogMessage.bind(this);
       this.syncListStateWithStorage = this.syncListStateWithStorage.bind(this);
+      this.syncPaletteStateWithStorage = this.syncPaletteStateWithStorage.bind(this);
       this.exportLevel = this.exportLevel.bind(this);
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
       this.changeTitle = this.changeTitle.bind(this);
@@ -103,12 +107,13 @@ class App extends React.Component {
     ///**//**//**//**//**//**///
 
     componentWillMount() {
-        // LevelStorage.retrieveRecords();
+        
         LevelStorage.retrieveLevels();
         this.syncListStateWithStorage();
-        // this.setState({
-        //     blockMap: LevelStorage.getBlankLevel()
-        // });
+        
+        BlockManager.initPalette(this.state.currentBlock);
+        this.syncPaletteStateWithStorage();
+
         this.setBlockMap(LevelStorage.getBlankLevel(), false);
         LevelStorage.retrieveHighScore();
         this.setState({
@@ -438,6 +443,28 @@ class App extends React.Component {
       });
   }
 
+  syncPaletteStateWithStorage() {
+      const tPalette = BlockManager.getPalette();
+
+      const tBlocks = [];
+
+      if (!tPalette) {
+          return;
+      }
+
+      tPalette.forEach(paletteBlock => {
+          const tType = paletteBlock.type;
+          const tColor = paletteBlock.color;
+          const tHp = paletteBlock.hp;
+          
+          tBlocks.push({type: tType, color: tColor, hp: tHp});
+
+          this.setState({
+            paletteBlocks: tBlocks
+          });
+      })
+  }
+
   //placeholder
   exportLevel() {
     const levelDupe = this.getLevelForOutput();
@@ -594,6 +621,7 @@ class App extends React.Component {
                 saveLevel={this.saveLevel}
                 launchGame={this.launchGame}
                 currentColor={this.state.currentColor}
+                paletteBlocks={this.state.paletteBlocks}
             />
           )
       } else {

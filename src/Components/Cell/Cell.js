@@ -1,6 +1,7 @@
 import React from 'react';
 import './Cell.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants';
+import CanvasTools from '../../Utils/CanvasTools';
 
 class Cell extends React.Component {
     constructor(props) {
@@ -50,26 +51,14 @@ class Cell extends React.Component {
         const startX = ((Constants.getCell().width) - (Constants.getBlockProto().width)) / 2;
         const startY = ((Constants.getCell().height) - (Constants.getBlockProto().height)) / 2;
         blockCTX.clearRect(0,0, blockCanvas.width, blockCanvas.height);
-        
 
-        
-
-        this.drawRect(blockCTX, 
+        CanvasTools.drawRect(blockCTX, 
             this.props.block.color,
             startX,
             startY,
             Constants.getBlockProto().height,
             Constants.getBlockProto().width);
 
-    }
-
-    drawRect(ctx, fill, x, y, h, w) {
-        
-        ctx.beginPath();
-        ctx.rect(x, y, w, h);
-        ctx.fillStyle = fill;
-        ctx.fill();
-        ctx.closePath();
     }
 
 

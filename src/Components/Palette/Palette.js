@@ -14,23 +14,14 @@ class Palette extends React.Component {
 
   getPaletteBlocks() {
     const numberOfBlocks = Constants.getPaletteBlocks();
-    const tColor = "white";
 
-    let paletteBlocksT = [];
-
-    for (let i = 0; i < numberOfBlocks; i++) {
-      paletteBlocksT.push(tColor);
-    }
-
-    console.log(paletteBlocksT);
-
-    
-    
+    let paletteBlocksT = this.props.paletteBlocks;
 
     return (
       paletteBlocksT.map((block, n) => {
-        return <PaletteBlock color={block}
+        return <PaletteBlock color={block.color}
           key={n}
+          blockNumber={n}
           width={Constants.getCell().width * sizeFactor}
           height={Constants.getCell().height}
           />
