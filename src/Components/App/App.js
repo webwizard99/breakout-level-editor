@@ -16,7 +16,6 @@ class App extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-          title: '',
           hasChanges: false,
           deleteApproved: false,
           dialogVisible: false,
@@ -73,7 +72,7 @@ class App extends React.Component {
       this.syncPaletteStateWithStorage = this.syncPaletteStateWithStorage.bind(this);
       this.exportLevel = this.exportLevel.bind(this);
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
-      this.changeTitle = this.changeTitle.bind(this);
+      // this.changeTitle = this.changeTitle.bind(this);
       this.setBlockFromCell = this.setBlockFromCell.bind(this);
       this.launchGame = this.launchGame.bind(this);
       this.closeGame = this.closeGame.bind(this);
@@ -123,7 +122,8 @@ class App extends React.Component {
     }
     
     componentDidUpdate() {
-        if (this.state.readyToSave) {
+      
+      if (this.state.readyToSave) {
             this.commitChanges();
             LevelStorage.saveLevels();
             this.highScoreReset();
@@ -172,17 +172,17 @@ class App extends React.Component {
     this.saveHighScore(val);
   }
 
-  changeTitle(newTitle) {
-    if (newTitle !== '') {
-        this.setState({
-            title: newTitle
-        });
-        this.setState({
-            hasChanges: true
+  // changeTitle(newTitle) {
+  //   if (newTitle !== '') {
+  //       this.setState({
+  //           title: newTitle
+  //       });
+  //       this.setState({
+  //           hasChanges: true
             
-        });
-    }
-  }
+  //       });
+  //   }
+  // }
 
   setCurrentBlock(block, index) {
       if(block) {
@@ -608,11 +608,9 @@ class App extends React.Component {
       if (!this.state.gameActive) {
           return (
             <MenuBar 
-                title={this.state.title}
                 block={this.state.currentBlock}
                 blocksAvailable={this.blocksAvailable}
                 blockIndex={this.state.currentBlockIndex}
-                changeTitle={this.changeTitle}
                 changeColor={this.changeColor}
                 color={this.state.currentColor}
                 titleFail={this.state.titleFail}

@@ -24,8 +24,7 @@ class MenuBar extends React.Component {
     render() {
         return (
             <div className="MenuBar">
-                <Title title={this.props.title}
-                  changeTitle={this.props.changeTitle}
+                <Title 
                   titleFail={this.props.titleFail}
                 />
                 <div className="Blocks">

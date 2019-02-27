@@ -32,7 +32,7 @@ const BlockManager = (function(){
     },
 
     getPalette: function() {
-        return blocks;
+      return blocks;
     },
 
     setPalette: function(newPalette) {

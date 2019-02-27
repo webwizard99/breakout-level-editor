@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { CHANGE_TITLE } from '../../actions/types';
+import { titleDispatch } from '../../actions';
+
 import './Title.css';
 
 class Title extends React.Component {
@@ -34,7 +38,7 @@ class Title extends React.Component {
 
     handleTitleChange(e) {
         e.preventDefault();
-        this.props.changeTitle(e.target.value);
+        this.props.changeTitleRedux(e.target.value);
     }
     
     render() {
@@ -53,4 +57,16 @@ class Title extends React.Component {
     }
 };
 
-export default Title;
+const mapStateToProps = state => {
+  return {
+    title: state.title.title
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changeTitleRedux: (title) => dispatch({type: CHANGE_TITLE, title: title})
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Title);
