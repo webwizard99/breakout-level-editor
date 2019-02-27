@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CHANGE_PALETTE_BLOCK } from '../../actions/types';
+import { CHANGE_PALETTE_BLOCK_COLOR, CHANGE_COLOR } from '../../actions/types';
 import './ColorPicker.css';
 import convert from 'color-convert';
 import { CustomPicker } from 'react-color';
@@ -18,6 +18,7 @@ class ColorPicker extends React.Component {
     const rgbColor = convert.hsv.rgb(color.h, color.s, color.v);
     const rgbText = `rgba(${rgbColor[0]}, ${rgbColor[1]}, ${rgbColor[2]}, 1)`;
     this.props.changeColor(rgbText);
+    this.props.changePaletteBlockColor(rgbText);
     this.props.onChange(color);
   }
 
@@ -47,9 +48,10 @@ const mapStateToProps = state => {
   }
 }
 
-const mapPropsToDispatch = state => {
+const mapDispatchToProps = dispatch => {
   return {
-    
+    changeColor: (color) => dispatch({type: CHANGE_COLOR, color: color }),
+    changePaletteBlockColor: (color) => dispatch({type: CHANGE_PALETTE_BLOCK_COLOR, color: color })
   }
 }
 

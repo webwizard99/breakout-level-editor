@@ -38,7 +38,7 @@ class Title extends React.Component {
 
     handleTitleChange(e) {
         e.preventDefault();
-        this.props.changeTitleRedux(e.target.value);
+        this.props.changeTitle(e.target.value);
     }
     
     render() {
@@ -65,7 +65,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeTitleRedux: (title) => dispatch({type: CHANGE_TITLE, title: title})
+    changeTitle: (title) => dispatch({type: CHANGE_TITLE, title: title})
   }
 }
 

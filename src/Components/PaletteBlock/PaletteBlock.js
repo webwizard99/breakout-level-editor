@@ -58,7 +58,7 @@ class PaletteBlock extends React.Component {
         <canvas className={`PaletteBlock PaletteBlock-${this.props.blockNumber}`}
           width={Constants.getCell().width}
           height={Constants.getCell().height}
-          onClick={() => this.props.changePaletteIndex(this.props.BlockNumber)}
+          onClick={() => this.props.changePaletteIndex(this.props.blockNumber)}
           color={this.props.color}
         >
         </canvas>

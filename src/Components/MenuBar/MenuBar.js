@@ -34,10 +34,7 @@ class MenuBar extends React.Component {
                   />
                   <Palette/>
                 </div>
-                <ColorPicker 
-                  color={this.props.currentColor}
-                  changeColor={this.props.changeColor}
-                />
+                <ColorPicker/>
                 <Utilities 
                   saveLevel={this.props.saveLevel}
                   newLevel={this.props.newLevel}
