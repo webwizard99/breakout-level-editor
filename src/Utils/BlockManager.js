@@ -22,13 +22,12 @@ const BlockManager = (function(){
   }
 
   return {
-    initPalette: function(firstBlock) {
+    initPalette: function() {
         blocks = [];
         if (blocks.length !== 0) {
             return false;
         }
         generateBlankPalette();
-        blocks[0] = JSON.parse(JSON.stringify(firstBlock));
     },
 
     getPalette: function() {

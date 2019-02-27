@@ -30,12 +30,6 @@ class App extends React.Component {
           id: -1,
           hasBlocks: false,
           readyToSave: false,
-          currentBlockIndex: 0,
-          currentBlock: {
-            type: 'basic',
-            color: `rgba(80, 100, 140)`,
-            hp: 5
-          },
           currentColor: `rgba(80, 100, 140, 1)`,
           blockMap: [],
           levelList: [],
@@ -87,19 +81,6 @@ class App extends React.Component {
       this.changeColor = this.changeColor.bind(this);
   }
 
-  blocksAvailable = [{
-        type: 'basic',
-        color: `rgba(80, 100, 140)`,
-        hp: 5
-    },
-    {
-        type: 'basic',
-        color: `rgba(140, 90, 100)`,
-        hp: 5
-    }, 
-    false
-  ];
-
 
     ////**//**//**//**//**//**//
     // lifecycle Methods
@@ -110,7 +91,7 @@ class App extends React.Component {
         LevelStorage.retrieveLevels();
         this.syncListStateWithStorage();
         
-        BlockManager.initPalette(this.state.currentBlock);
+        BlockManager.initPalette();
         this.syncPaletteStateWithStorage();
 
         this.setBlockMap(LevelStorage.getBlankLevel(), false);
@@ -608,9 +589,6 @@ class App extends React.Component {
       if (!this.state.gameActive) {
           return (
             <MenuBar 
-                block={this.state.currentBlock}
-                blocksAvailable={this.blocksAvailable}
-                blockIndex={this.state.currentBlockIndex}
                 changeColor={this.changeColor}
                 color={this.state.currentColor}
                 titleFail={this.state.titleFail}
@@ -619,7 +597,6 @@ class App extends React.Component {
                 saveLevel={this.saveLevel}
                 launchGame={this.launchGame}
                 currentColor={this.state.currentColor}
-                paletteBlocks={this.state.paletteBlocks}
             />
           )
       } else {

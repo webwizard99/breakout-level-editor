@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { CHANGE_PALETTE_INDEX } from '../../actions/types';
 import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
 import CanvasTools from '../../Utils/CanvasTools';
 import './PaletteBlock.css';
@@ -56,6 +58,7 @@ class PaletteBlock extends React.Component {
         <canvas className={`PaletteBlock PaletteBlock-${this.props.blockNumber}`}
           width={Constants.getCell().width}
           height={Constants.getCell().height}
+          onClick={() => this.props.changePaletteIndex(this.props.BlockNumber)}
           color={this.props.color}
         >
         </canvas>
@@ -64,4 +67,11 @@ class PaletteBlock extends React.Component {
   }
 }
 
-export default PaletteBlock;
+const mapDispatchToProps = dispatch => {
+  return {
+    changePaletteIndex: (index) => dispatch({type: CHANGE_PALETTE_INDEX, index: index})
+  }
+}
+
+
+export default connect(null, mapDispatchToProps)(PaletteBlock);

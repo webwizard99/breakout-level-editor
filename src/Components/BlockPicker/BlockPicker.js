@@ -1,37 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './BlockPicker.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants';
+import CanvasTools from '../../Utils/CanvasTools';
 
 class BlockPicker extends React.Component {
     constructor(props) {
         super(props);
         this.drawBlock = this.drawBlock.bind(this);
-        this.handleChangeBlock = this.handleChangeBlock.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.state = {
             pickerMain: 2.4
         }
-    }
-
-    // blocksAvailable = [{
-    //     type: 'basic',
-    //     color: `rgb(80, 100, 140)`,
-    //     hp: 5
-    //   },
-    //   {
-    //     type: 'basic',
-    //     color: `rgb(140, 90, 100)`,
-    //     hp: 5
-    //   }
-    // ];
-
-    drawRect(ctx, fill, x, y, h, w) {
-        
-        ctx.beginPath();
-        ctx.rect(x, y, w, h);
-        ctx.fillStyle = fill;
-        ctx.fill();
-        ctx.closePath();
     }
 
     //*//*//*//*//*//*//*//*//
@@ -51,33 +31,6 @@ class BlockPicker extends React.Component {
     //*//*//*//*//*//*//*//*//
     //*//*//*//*//*//*//*//*//
     
-    handleChangeBlock(e) {
-        
-                
-        let index = this.props.blockIndex;
-        
-        let valence;
-        if (e.target.className === 'leftArrow') {
-            valence = -1;
-        }
-        if (e.target.className === 'rightArrow') {
-            valence = 1;
-        }
-        
-        let target = index + valence;
-        if ((target) <= 0) {
-            target = 0;
-        }
-        if ((target) > this.props.blocksAvailable.length) {
-            target = this.props.blocksAvailable.length;
-        }
-
-        
-        this.props.onChangeBlock(this.props.blocksAvailable[target], target);
-        // this.drawBlock();
-
-    }
-
     drawBlock() {
         const blockCanvas = document.querySelector('.PickerView');
         const blockCTX = blockCanvas.getContext('2d');
@@ -88,7 +41,7 @@ class BlockPicker extends React.Component {
 
         
 
-        this.drawRect(blockCTX, 
+        CanvasTools.drawRect(blockCTX, 
             this.props.block.color,
             startX,
             startY,
@@ -109,4 +62,10 @@ class BlockPicker extends React.Component {
     };
 };
 
-export default BlockPicker;
+const mapStateToProps = state => {
+    return {
+        block: state.palette.blocks[state.palette.currentIndex]
+    }
+}
+
+export default connect(mapStateToProps)(BlockPicker);

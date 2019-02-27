@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PaletteBlock from '../PaletteBlock/PaletteBlock';
 import './Palette.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
@@ -43,4 +44,11 @@ class Palette extends React.Component {
   }
 }
 
-export default Palette;
+const mapStateToProps = state => {
+  return {
+    paletteBlocks: state.palette.blocks
+  }
+}
+
+
+export default connect(mapStateToProps)(Palette);

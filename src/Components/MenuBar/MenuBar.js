@@ -29,15 +29,10 @@ class MenuBar extends React.Component {
                 />
                 <div className="Blocks">
                   <BlockPicker 
-                    block={this.props.block}
-                    blocksAvailable={this.props.blocksAvailable}
-                    blockIndex={this.props.blockIndex}
                     color={this.props.color}
                     onChangeBlock={this.props.onChangeBlock}
                   />
-                  <Palette
-                    paletteBlocks={this.props.paletteBlocks}
-                  />
+                  <Palette/>
                 </div>
                 <ColorPicker 
                   color={this.props.currentColor}

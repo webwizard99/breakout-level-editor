@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { CHANGE_PALETTE_BLOCK } from '../../actions/types';
 import './ColorPicker.css';
 import convert from 'color-convert';
 import { CustomPicker } from 'react-color';
@@ -39,4 +41,16 @@ class ColorPicker extends React.Component {
   };
 };
 
-export default CustomPicker(ColorPicker);
+const mapStateToProps = state => {
+  return {
+    color: state.color.color
+  }
+}
+
+const mapPropsToDispatch = state => {
+  return {
+    
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomPicker(ColorPicker));
