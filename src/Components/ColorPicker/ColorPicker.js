@@ -12,10 +12,28 @@ class ColorPicker extends React.Component {
     super(props);
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleHueChange = this.handleHueChange.bind(this);
   }
   
   handleChange(color) {
     const rgbColor = convert.hsv.rgb(color.h, color.s, color.v);
+    const rgbText = `rgba(${rgbColor[0]}, ${rgbColor[1]}, ${rgbColor[2]}, 1)`;
+    this.props.changeColor(rgbText);
+    this.props.changePaletteBlockColor(rgbText);
+    this.props.onChange(color);
+  }
+
+  handleHueChange(color) {
+    const colorSplit = (this.props.color).match(/(\d)+,\s*(\d)+,\s*(\d)+,\s*(\d)+/)[0]
+      .split(',');
+      
+    const hslColor = convert.rgb.hsl(
+      [colorSplit[0],
+      colorSplit[1],
+      colorSplit[2]]);
+    
+    const hslComposite = {h: color.h, s: hslColor[1], l: hslColor[2]};
+    const rgbColor = convert.hsl.rgb(hslComposite.h, hslComposite.s, hslComposite.l);
     const rgbText = `rgba(${rgbColor[0]}, ${rgbColor[1]}, ${rgbColor[2]}, 1)`;
     this.props.changeColor(rgbText);
     this.props.changePaletteBlockColor(rgbText);
@@ -33,7 +51,7 @@ class ColorPicker extends React.Component {
         </div>
         <div className="HueContainer">
           <Hue {...this.props}
-            onChange={this.handleChange}
+            onChange={this.handleHueChange}
             direction="horizontal"
           />
         </div>

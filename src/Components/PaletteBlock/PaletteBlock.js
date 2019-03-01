@@ -10,7 +10,7 @@ class PaletteBlock extends React.Component {
     this.drawBlock = this.drawBlock.bind(this);
     this.componentDidMount = this.componentDidMount.bind(this);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
-    
+    this.handleClick = this.handleClick.bind(this);
   }
 
   //*//*//*//*//*//*//*//*//
@@ -25,6 +25,12 @@ class PaletteBlock extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {    
     this.drawBlock();
+  }
+
+  handleClick() {
+    this.props.changePaletteIndex(this.props.blockNumber);
+    const rgbaColor = this.props.color.replace(')', ", 1)");
+    this.props.changeColor(rgbaColor);
   }
 
   drawBlock() {
@@ -56,7 +62,7 @@ class PaletteBlock extends React.Component {
         <canvas className={`PaletteBlock PaletteBlock-${this.props.blockNumber}`}
           width={Constants.getCell().width}
           height={Constants.getCell().height}
-          onClick={() => this.props.changePaletteIndex(this.props.blockNumber)}
+          onClick={this.handleClick}
           color={this.props.color}
         >
         </canvas>
