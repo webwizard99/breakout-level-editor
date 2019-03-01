@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './LevelList.css';
 import Level from '../Level/Level';
 import LevelListTitle from '../LevelListTitle/LevelListTitle';
+import { INITIALIZE_LEVEL_LIST } from '../../actions/types';
 
 
 class LevelList extends React.Component {
@@ -127,4 +129,16 @@ class LevelList extends React.Component {
     }
 };
 
-export default LevelList;
+const mapStateToProps = state => {
+  return {
+    
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initLevelList: (list, id, name) => dispatch({type: INITIALIZE_LEVEL_LIST, list: list, id: id, name: name })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LevelList);

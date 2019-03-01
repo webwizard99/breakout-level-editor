@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CHANGE_TITLE } from '../../actions/types';
+import { CHANGE_TITLE,
+  SET_HAS_CHANGES } from '../../actions/types';
 import { titleDispatch } from '../../actions';
 
 import './Title.css';
@@ -39,6 +40,7 @@ class Title extends React.Component {
     handleTitleChange(e) {
         e.preventDefault();
         this.props.changeTitle(e.target.value);
+        this.props.setHasChanges(true);
     }
     
     render() {
@@ -65,7 +67,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    changeTitle: (title) => dispatch({type: CHANGE_TITLE, title: title})
+    changeTitle: (title) => dispatch({type: CHANGE_TITLE, title: title}),
+    setHasChanges: (hasChanges) => dispatch({type: SET_HAS_CHANGES, hasChanges: hasChanges })
   }
 }
 

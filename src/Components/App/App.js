@@ -30,11 +30,7 @@ class App extends React.Component {
           id: -1,
           hasBlocks: false,
           readyToSave: false,
-          currentColor: `rgba(80, 100, 140, 1)`,
-          blockMap: [],
           levelList: [],
-          paletteBlocks: [],
-          currentPaletteIndex: 0,
           listName: '',
           highScore: 0,
           resetHighScore: false
@@ -42,8 +38,6 @@ class App extends React.Component {
 
       this.componentWillMount = this.componentWillMount.bind(this);
       this.componentDidUpdate = this.componentDidUpdate.bind(this);
-      this.setCurrentBlock = this.setCurrentBlock.bind(this);
-      this.setBlockMap = this.setBlockMap.bind(this);
       this.setLevelList = this.setLevelList.bind(this);
       this.saveLevel = this.saveLevel.bind(this);
       this.confirmChanges = this.confirmChanges.bind(this);
@@ -63,11 +57,8 @@ class App extends React.Component {
       this.getLevelForListState = this.getLevelForListState.bind(this);
       this.getDialogMessage = this.getDialogMessage.bind(this);
       this.syncListStateWithStorage = this.syncListStateWithStorage.bind(this);
-      this.syncPaletteStateWithStorage = this.syncPaletteStateWithStorage.bind(this);
       this.exportLevel = this.exportLevel.bind(this);
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
-      // this.changeTitle = this.changeTitle.bind(this);
-      this.setBlockFromCell = this.setBlockFromCell.bind(this);
       this.launchGame = this.launchGame.bind(this);
       this.closeGame = this.closeGame.bind(this);
       this.getGameLayer = this.getGameLayer.bind(this);
@@ -78,7 +69,6 @@ class App extends React.Component {
       this.saveHighScore = this.saveHighScore.bind(this);
       this.swapLevels = this.swapLevels.bind(this);
       this.insertLevel = this.insertLevel.bind(this);
-      this.changeColor = this.changeColor.bind(this);
   }
 
 
@@ -91,10 +81,6 @@ class App extends React.Component {
         LevelStorage.retrieveLevels();
         this.syncListStateWithStorage();
         
-        BlockManager.initPalette();
-        this.syncPaletteStateWithStorage();
-
-        this.setBlockMap(LevelStorage.getBlankLevel(), false);
         LevelStorage.retrieveHighScore();
         this.setState({
             highScore: LevelStorage.getHighScore()
@@ -151,41 +137,6 @@ class App extends React.Component {
         highScore: val
     });
     this.saveHighScore(val);
-  }
-
-  // changeTitle(newTitle) {
-  //   if (newTitle !== '') {
-  //       this.setState({
-  //           title: newTitle
-  //       });
-  //       this.setState({
-  //           hasChanges: true
-            
-  //       });
-  //   }
-  // }
-
-  setCurrentBlock(block, index) {
-      if(block) {
-          this.setState({
-              currentBlock: block,
-              currentBlockIndex: index
-            });
-      }
-  }
-
-  setBlockMap(map, val) {
-    
-    this.setState({
-        blockMap: map    
-    });
-    this.setState({
-        hasChanges: val     
-    });
-    this.setState({
-        hasBlocks: val
-    });
-    
   }
 
   setLevelList(list) {
@@ -424,28 +375,6 @@ class App extends React.Component {
       });
   }
 
-  syncPaletteStateWithStorage() {
-      const tPalette = BlockManager.getPalette();
-
-      const tBlocks = [];
-
-      if (!tPalette) {
-          return;
-      }
-
-      tPalette.forEach(paletteBlock => {
-          const tType = paletteBlock.type;
-          const tColor = paletteBlock.color;
-          const tHp = paletteBlock.hp;
-          
-          tBlocks.push({type: tType, color: tColor, hp: tHp});
-
-          this.setState({
-            paletteBlocks: tBlocks
-          });
-      })
-  }
-
   //placeholder
   exportLevel() {
     const levelDupe = this.getLevelForOutput();
@@ -534,16 +463,6 @@ class App extends React.Component {
     }
   }
 
-  setBlockFromCell(cellBlock) {
-    this.setState({
-      currentBlock: cellBlock
-    });
-    const tColor = cellBlock.color.replace(")", ", 1)");
-    this.setState({
-      currentColor: tColor
-    })
-  }
-
   launchGame() {
     
     const tLvls = LevelStorage.getLevelsForGame();
@@ -589,14 +508,10 @@ class App extends React.Component {
       if (!this.state.gameActive) {
           return (
             <MenuBar 
-                changeColor={this.changeColor}
-                color={this.state.currentColor}
                 titleFail={this.state.titleFail}
-                onChangeBlock={this.setCurrentBlock}
                 newLevel={this.newLevel}
                 saveLevel={this.saveLevel}
                 launchGame={this.launchGame}
-                currentColor={this.state.currentColor}
             />
           )
       } else {
@@ -612,13 +527,7 @@ class App extends React.Component {
           return (
             <div className="ViewColumn">
                 <LevelView 
-                    setBlock={this.setViewBlock}
-                    currentColor={this.state.currentColor}
-                    setBlockMap={this.setBlockMap}
-                    blockMap={this.state.blockMap}
                     readyToLoad={this.state.readyToLoad}
-                    currentBlock={this.state.currentBlock}
-                    eyedrop={this.setBlockFromCell}
                 />
                 <LevelList levelList={this.state.levelList}
                     loadConfirm={this.promptLoad}

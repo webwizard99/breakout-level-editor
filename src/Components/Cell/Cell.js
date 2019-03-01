@@ -1,7 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './Cell.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants';
 import CanvasTools from '../../Utils/CanvasTools';
+import { SET_BLOCK,
+  CHANGE_COLOR,
+  CHANGE_PALETTE_BLOCK } from '../../actions/types';
 
 class Cell extends React.Component {
     constructor(props) {
@@ -71,16 +75,17 @@ class Cell extends React.Component {
             if (e.shiftKey) {
               // set current block to block in cell
               if (this.props.block) {
-                this.props.eyedrop(this.props.block);
+                this.props.eyedrop(
+                  this.props.block);
               }
               return;
             }
 
             if (this.props.block !== this.props.currentBlock) {
-                this.props.setViewBlock(
-                    this.props.row,
-                    this.props.col,
-                    this.props.currentColor);
+                
+              this.props.setBlock(this.props.canvasBlock, 
+                  { y: this.props.row,
+                    x: this.props.col });
             }
         }
     }
@@ -102,4 +107,11 @@ class Cell extends React.Component {
     }
 };
 
-export default Cell;
+const mapStateToProps = state => {
+  return {
+    canvasBlock: state.palette.blocks[state.palette.currentIndex]
+  }
+}
+
+
+export default connect(mapStateToProps)(Cell);

@@ -262,6 +262,22 @@ const LevelStorage = (function(){
           const lvl1 = levels.splice(index1, 1)[0];
           const index2 = getIndexById(id2);
           levels.splice(index2 + direction, 0, lvl1);
+        },
+
+        generateBlankLevel: function() {
+          let tMap = [];
+          for (let row = 0; row < Constants.getRowsProto(); row++) {
+              
+              let tRow = [];
+              for (let col= 0; col < Constants.getColumnsProto(); col++ ) {
+                  tRow.push(false);
+              }
+  
+              tMap.push(tRow);
+  
+          }
+  
+          return tMap;
         }
     }
 }());

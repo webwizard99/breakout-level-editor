@@ -1,8 +1,7 @@
 import { CHANGE_TITLE } from '../actions/types';
 
 const initialState = {
-  title: '', 
-  hasChanges: false
+  title: ''
 };
 
 export default function(state = initialState, action) {
@@ -11,8 +10,7 @@ export default function(state = initialState, action) {
     case CHANGE_TITLE:
       return {
         ...state,
-        title: action.title,
-        hasChanges: true
+        title: action.title
       }
     default:
       return state;

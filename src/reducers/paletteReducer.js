@@ -1,4 +1,8 @@
-import { CHANGE_PALETTE_BLOCK_COLOR, CHANGE_PALETTE_INDEX } from '../actions/types';
+import { 
+  CHANGE_PALETTE_BLOCK_COLOR, 
+  CHANGE_PALETTE_INDEX,
+  CHANGE_PALETTE_BLOCK,
+  SAVE_PALETTE } from '../actions/types';
 import BlockManager from '../Utils/BlockManager';
 
 if (BlockManager.getPalette().length < 1) {
@@ -27,6 +31,17 @@ export default function(state = initialState, action) {
         ...state,
         currentIndex: action.index
       }
+
+    case CHANGE_PALETTE_BLOCK:
+      let refreshedBlocks = JSON.parse(JSON.stringify(state.blocks));
+      refreshedBlocks[state.currentIndex] = JSON.parse(JSON.stringify(action.block));
+      return {
+        ...state,
+        blocks: refreshedBlocks
+      }
+    
+    case SAVE_PALETTE:
+      
     default:
       return state;
   }

@@ -1,17 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './LevelView.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants';
-import Cell from '../Cell/Cell'
+import Cell from '../Cell/Cell';
+import LevelStorage from '../../Utils/LevelStorage';
+
+import { SET_BLOCK_MAP,
+  INITIALIZE_BLOCK_MAP,
+  SET_BLOCK,
+  CHANGE_COLOR,
+  CHANGE_PALETTE_BLOCK } from '../../actions/types';
 
 class LevelView extends React.Component {
     constructor(props) {
         super(props);
  
-        this.generateBlankLevel = this.generateBlankLevel.bind(this);
         this.setViewBlock = this.setViewBlock.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.eyedrop = this.eyedrop.bind(this);
         this.getLevelForRender = this.getLevelForRender.bind(this);
     }
     
@@ -20,7 +28,7 @@ class LevelView extends React.Component {
     ///**//**//**//**//**//**///
 
     componentWillMount() {
-        //this.generateBlankLevel();
+      this.props.initializeBlockMap(LevelStorage.generateBlankLevel());
     }
 
     shouldComponentUpdate(nextProps) {
@@ -39,12 +47,8 @@ class LevelView extends React.Component {
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
 
-    setViewBlock(row, col, color) {
-        let tMap = this.props.blockMap;
-        let tBlock = JSON.parse(JSON.stringify(this.props.currentBlock));
-        tBlock.color = color;
-        tMap[row][col] = tBlock;
-        this.props.setBlockMap(tMap, true);
+    setViewBlock(block, {y, x}) {
+        this.props.setBlock(block, {y, x});
         
     }
 
@@ -78,9 +82,9 @@ class LevelView extends React.Component {
                                 key={keyCount}
                                 currentBlock={this.props.currentBlock}
                                 currentColor={this.props.currentColor}
+                                setBlock={this.props.setBlock}
                                 serial={keyCount}
-                                setViewBlock={this.setViewBlock}
-                                eyedrop={this.props.eyedrop}
+                                eyedrop={this.eyedrop}
                             />
                         );
                     })}
@@ -90,21 +94,11 @@ class LevelView extends React.Component {
             );
         }
     }
-    
-    generateBlankLevel() {
-        let tMap = [];
-        for (let row = 0; row < Constants.getRowsProto(); row++) {
-            
-            let tRow = [];
-            for (let col= 0; col < Constants.getColumnsProto(); col++ ) {
-                tRow.push(false);
-            }
 
-            tMap.push(tRow);
-
-        }
-
-        this.props.setBlockMap(tMap, false);
+    eyedrop(block) {
+      console.log(block);
+      this.props.setColor(block.color);
+      this.props.setPaletteBlock(block);
     }
 
     render() {
@@ -124,4 +118,27 @@ class LevelView extends React.Component {
     }
 };
 
-export default LevelView;
+const mapStateToProps = state => {
+  return {
+    blockMap: state.blockMap.blockMap
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    initializeBlockMap: (blockMap) => dispatch({type: INITIALIZE_BLOCK_MAP, blockMap: blockMap}),
+    setBlock: (canvasBlock, pos) => dispatch({ type: SET_BLOCK, block: canvasBlock, pos: pos }),
+    setColor: (color) => dispatch({ type: CHANGE_COLOR, color: color }),
+    setPaletteBlock: (block) => dispatch({type: CHANGE_PALETTE_BLOCK, block: block})
+  }
+}
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     setBlock: (canvasBlock, pos) => dispatch({ type: SET_BLOCK, block: canvasBlock, pos: pos }),
+//     setColor: (color) => dispatch({ type: CHANGE_COLOR, color: color }),
+//     setPaletteBlock: (block) => dispatch({type: CHANGE_PALETTE_BLOCK, block: block})
+//   }
+// }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(LevelView);
