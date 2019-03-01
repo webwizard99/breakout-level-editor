@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { SAVE_PALETTE } from '../../actions/types';
+import { SAVE_PALETTE,
+  CHANGE_PALETTE_INDEX } from '../../actions/types';
 import PaletteBlock from '../PaletteBlock/PaletteBlock';
 import './Palette.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
@@ -31,6 +32,7 @@ class Palette extends React.Component {
         return <PaletteBlock color={block.color}
           key={n}
           blockNumber={n}
+          changePaletteIndex={this.props.changePaletteIndex}
           width={Constants.getCell().width * sizeFactor}
           height={Constants.getCell().height}
           />
@@ -61,9 +63,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    savePalette: (title) => dispatch({ type: SAVE_PALETTE, title: title })
+    savePalette: (title) => dispatch({ type: SAVE_PALETTE, title: title }),
+    changePaletteIndex: (index) => dispatch({type: CHANGE_PALETTE_INDEX, index: index})
   }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Palette);

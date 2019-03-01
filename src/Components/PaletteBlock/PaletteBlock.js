@@ -1,6 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { CHANGE_PALETTE_INDEX } from '../../actions/types';
 import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
 import CanvasTools from '../../Utils/CanvasTools';
 import './PaletteBlock.css';
@@ -67,11 +65,5 @@ class PaletteBlock extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
-  return {
-    changePaletteIndex: (index) => dispatch({type: CHANGE_PALETTE_INDEX, index: index})
-  }
-}
 
-
-export default connect(null, mapDispatchToProps)(PaletteBlock);
+export default PaletteBlock;

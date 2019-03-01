@@ -15,7 +15,6 @@ class LevelView extends React.Component {
     constructor(props) {
         super(props);
  
-        this.setViewBlock = this.setViewBlock.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
@@ -47,11 +46,6 @@ class LevelView extends React.Component {
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
 
-    setViewBlock(block, {y, x}) {
-        this.props.setBlock(block, {y, x});
-        
-    }
-
     getLevelForRender() {
         
         const levelMap = this.props.blockMap;
@@ -80,8 +74,7 @@ class LevelView extends React.Component {
                                 col={colN}
                                 block={tCell}
                                 key={keyCount}
-                                currentBlock={this.props.currentBlock}
-                                currentColor={this.props.currentColor}
+                                canvasBlock={this.props.canvasBlock}
                                 setBlock={this.props.setBlock}
                                 serial={keyCount}
                                 eyedrop={this.eyedrop}
@@ -96,7 +89,6 @@ class LevelView extends React.Component {
     }
 
     eyedrop(block) {
-      console.log(block);
       this.props.setColor(block.color);
       this.props.setPaletteBlock(block);
     }
@@ -120,7 +112,8 @@ class LevelView extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    blockMap: state.blockMap.blockMap
+    blockMap: state.blockMap.blockMap,
+    canvasBlock: state.palette.blocks[state.palette.currentIndex]
   }
 }
 
@@ -132,13 +125,6 @@ const mapDispatchToProps = dispatch => {
     setPaletteBlock: (block) => dispatch({type: CHANGE_PALETTE_BLOCK, block: block})
   }
 }
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     setBlock: (canvasBlock, pos) => dispatch({ type: SET_BLOCK, block: canvasBlock, pos: pos }),
-//     setColor: (color) => dispatch({ type: CHANGE_COLOR, color: color }),
-//     setPaletteBlock: (block) => dispatch({type: CHANGE_PALETTE_BLOCK, block: block})
-//   }
-// }
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(LevelView);

@@ -25,7 +25,7 @@ class ColorPicker extends React.Component {
   render() {
     return (
       <div className="ColorPicker"
-          >
+          color={this.props.color}>
         <div className="SaturationContainer">
           <Saturation {...this.props}
             onChange={this.handleChange}

@@ -1,11 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import './Cell.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants';
 import CanvasTools from '../../Utils/CanvasTools';
-import { SET_BLOCK,
-  CHANGE_COLOR,
-  CHANGE_PALETTE_BLOCK } from '../../actions/types';
 
 class Cell extends React.Component {
     constructor(props) {
@@ -107,11 +103,4 @@ class Cell extends React.Component {
     }
 };
 
-const mapStateToProps = state => {
-  return {
-    canvasBlock: state.palette.blocks[state.palette.currentIndex]
-  }
-}
-
-
-export default connect(mapStateToProps)(Cell);
+export default Cell;
