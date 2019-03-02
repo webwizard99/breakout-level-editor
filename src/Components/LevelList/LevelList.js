@@ -1,27 +1,43 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import LevelStorage from '../../Utils/LevelStorage';
 import './LevelList.css';
 import Level from '../Level/Level';
 import LevelListTitle from '../LevelListTitle/LevelListTitle';
-import { INITIALIZE_LEVEL_LIST } from '../../actions/types';
+import { INITIALIZE_LEVEL_LIST,
+  SET_BLOCK_MAP } from '../../actions/types';
 
 
 class LevelList extends React.Component {
     constructor(props) {
         super(props);
         
-        
+        this.componentWillMount.bind = this.componentWillMount.bind(this);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.getListForRender = this.getListForRender.bind(this);
         this.sortLevels = this.sortLevels.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
+        this.loadLevel = this.loadLevel.bind(this);
+        this.deleteLevel = this.deleteLevel.bind(this);
     }
 
     ////**//**//**//**//**//**//
     // lifecycle Methods
     ///**//**//**//**//**//**///
 
+    componentWillMount() {
+      LevelStorage.retrieveLevels();
+      const stagedLevels = LevelStorage.getLevels();
+      const stagedId = LevelStorage.getListId();
+      const stagedName = LevelStorage.getListName();
+      this.props.initLevelList(
+        stagedLevels,
+        stagedId,
+        stagedName
+      );
+    }
+    
     componentDidUpdate() {
         this.getListForRender();
     }
@@ -34,6 +50,11 @@ class LevelList extends React.Component {
         }
     }
 
+    ////**//**//**//**//**//**//
+    ///**//**//**//**//**//**///
+    ////**//**//**//**//**//**//
+
+
     sortLevels(index1, index2) {
       if (index1 <= 0 || index1 > this.props.levelList.length ||
         index2 <= 0 || index2 > this.props.levelList.length) {
@@ -43,10 +64,14 @@ class LevelList extends React.Component {
       const id2 = this.props.levelList[index2 - 1].id;
       this.props.swapLevels(id1, id2);
     }
+    
+    loadLevel() {
 
-    ////**//**//**//**//**//**//
-    ///**//**//**//**//**//**///
-    ////**//**//**//**//**//**//
+    }
+
+    deleteLevel() {
+
+    }
 
     getListForRender() {
         
@@ -131,13 +156,15 @@ class LevelList extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    
+    levelList: state.levelList.levels,
+    id: state.levelList.id,
+    listName: state.levelList.name
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    initLevelList: (list, id, name) => dispatch({type: INITIALIZE_LEVEL_LIST, list: list, id: id, name: name })
+    initLevelList: (levels, id, name) => dispatch({type: INITIALIZE_LEVEL_LIST, levels: levels, id: id, name: name })
   }
 }
 

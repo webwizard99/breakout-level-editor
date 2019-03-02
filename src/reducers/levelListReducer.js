@@ -9,8 +9,12 @@ const initialState = {
 export default function(state = initialState, action) {
   switch(action.type) {
     case INITIALIZE_LEVEL_LIST:
+      
       return {
-        ...state
+        ...state,
+        id: action.id,
+        name: action.name,
+        levels: action.levels
       }
     default:
       return state;

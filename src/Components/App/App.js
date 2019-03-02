@@ -30,8 +30,6 @@ class App extends React.Component {
           id: -1,
           hasBlocks: false,
           readyToSave: false,
-          levelList: [],
-          listName: '',
           highScore: 0,
           resetHighScore: false
       }
@@ -53,10 +51,8 @@ class App extends React.Component {
       this.promptLoad = this.promptLoad.bind(this);
       this.promptDelete = this.promptDelete.bind(this);
       this.commitChanges = this.commitChanges.bind(this);
-      this.getLevelForStorage = this.getLevelForStorage.bind(this);
       this.getLevelForListState = this.getLevelForListState.bind(this);
       this.getDialogMessage = this.getDialogMessage.bind(this);
-      this.syncListStateWithStorage = this.syncListStateWithStorage.bind(this);
       this.exportLevel = this.exportLevel.bind(this);
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
       this.launchGame = this.launchGame.bind(this);
@@ -78,8 +74,7 @@ class App extends React.Component {
 
     componentWillMount() {
         
-        LevelStorage.retrieveLevels();
-        this.syncListStateWithStorage();
+        // this.syncListStateWithStorage();
         
         LevelStorage.retrieveHighScore();
         this.setState({
@@ -300,7 +295,7 @@ class App extends React.Component {
     this.setState({
         highScore: 0
     });
-    this.syncListStateWithStorage();
+    // this.syncListStateWithStorage();
   }
 
   approveDelete() {
@@ -342,7 +337,7 @@ class App extends React.Component {
         highScore: 0
     });
     
-    this.syncListStateWithStorage();
+    // this.syncListStateWithStorage();
 
     this.setState({
         hasChanges: false
@@ -355,26 +350,6 @@ class App extends React.Component {
     
   }
 
-  syncListStateWithStorage() {
-      const tLevels = LevelStorage.getLevels();
-      const tListName = LevelStorage.getListName();
-    //   const tListState = this.state.levelList;
-      const tList = [];
-
-      if (!tLevels) return;
-
-      tLevels.forEach(level => {
-        const tId = level.id;
-        const tName = level.name;
-        tList.push({name: tName, id: tId});
-      });
-
-      this.setState({
-        levelList: tList,
-        listName: tListName
-      });
-  }
-
   //placeholder
   exportLevel() {
     const levelDupe = this.getLevelForOutput();
@@ -385,16 +360,6 @@ class App extends React.Component {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
-  }
-
-  getLevelForStorage() {
-    const storeMap = this.getLevelForOutput().map;    
-    let outputLevel = { 
-        id: this.state.id,
-        name: this.state.title,
-        map: storeMap };
-
-    return outputLevel;
   }
 
   getLevelForListState(lvl) {
@@ -529,10 +494,9 @@ class App extends React.Component {
                 <LevelView 
                     readyToLoad={this.state.readyToLoad}
                 />
-                <LevelList levelList={this.state.levelList}
+                <LevelList 
                     loadConfirm={this.promptLoad}
                     deleteConfirm={this.promptDelete}
-                    listName={this.state.listName}
                     highScore={this.state.highScore}
                     swapLevels={this.swapLevels}
                     insertLevel={this.insertLevel}
@@ -551,7 +515,7 @@ class App extends React.Component {
   swapLevels(id1, id2) {
     
     LevelStorage.swapLevels(id1, id2);
-    this.syncListStateWithStorage();
+    // this.syncListStateWithStorage();
     LevelStorage.setHighScore(0);
     LevelStorage.saveHighScore();
     this.setState({
@@ -562,7 +526,7 @@ class App extends React.Component {
 
   insertLevel(id1, id2, direction) {
     LevelStorage.insertLevel(id1, id2, direction);
-    this.syncListStateWithStorage();
+    // this.syncListStateWithStorage();
     LevelStorage.setHighScore(0);
     LevelStorage.saveHighScore();
     this.setState({

@@ -5,6 +5,7 @@ import colorReducer from './colorReducer';
 import blockMapReducer from './blockMapReducer';
 import appStateReducer from './appStateReducer';
 import levelListReducer from './levelListReducer';
+import dialogBoxReducer from './dialogBoxReducer';
 
 export default combineReducers({
   appState: appStateReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
   palette: paletteReducer,
   color: colorReducer,
   blockMap: blockMapReducer,
-  levelList: levelListReducer
+  levelList: levelListReducer,
+  dialog: dialogBoxReducer
 });

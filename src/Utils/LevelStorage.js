@@ -64,7 +64,7 @@ const LevelStorage = (function(){
 
     return {
         getLevels: function() {
-            return levels;
+            return JSON.parse(JSON.stringify(levels));
         },
 
         setLevels: function(lvls) {
@@ -125,7 +125,7 @@ const LevelStorage = (function(){
             const foundLevel = getLevelById(id);
             if (foundLevel) {
                 
-                return foundLevel;
+                return JSON.parse(JSON.stringify(foundLevel));
             } else {
                 return false;
             }
@@ -160,7 +160,6 @@ const LevelStorage = (function(){
         getBlankLevel: function() {
             const r = Constants.getRowsProto();
             const c = Constants.getColumnsProto();
-            console.log(`getBlankLevel: r: ${r}, c: ${c}`);
             let tLvl = [];
             for (let row = 0; row < r; row++) {
                 let tRow = [];
@@ -264,20 +263,14 @@ const LevelStorage = (function(){
           levels.splice(index2 + direction, 0, lvl1);
         },
 
-        generateBlankLevel: function() {
-          let tMap = [];
-          for (let row = 0; row < Constants.getRowsProto(); row++) {
-              
-              let tRow = [];
-              for (let col= 0; col < Constants.getColumnsProto(); col++ ) {
-                  tRow.push(false);
-              }
-  
-              tMap.push(tRow);
-  
-          }
-  
-          return tMap;
+        getLevelForStorage: function() {
+          const storeMap = this.getLevelForOutput().map;    
+          let outputLevel = { 
+              id: this.state.id,
+              name: this.state.title,
+              map: storeMap };
+      
+          return outputLevel;
         }
     }
 }());

@@ -27,7 +27,7 @@ class LevelView extends React.Component {
     ///**//**//**//**//**//**///
 
     componentWillMount() {
-      this.props.initializeBlockMap(LevelStorage.generateBlankLevel());
+      this.props.initializeBlockMap(LevelStorage.getBlankLevel());
     }
 
     shouldComponentUpdate(nextProps) {
