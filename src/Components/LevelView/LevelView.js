@@ -9,6 +9,7 @@ import { SET_BLOCK_MAP,
   INITIALIZE_BLOCK_MAP,
   SET_BLOCK,
   CHANGE_COLOR,
+  SET_HAS_CHANGES,
   CHANGE_PALETTE_BLOCK } from '../../actions/types';
 
 class LevelView extends React.Component {
@@ -19,6 +20,7 @@ class LevelView extends React.Component {
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.eyedrop = this.eyedrop.bind(this);
+        this.setViewBlock = this.setViewBlock.bind(this);
         this.getLevelForRender = this.getLevelForRender.bind(this);
     }
     
@@ -75,7 +77,7 @@ class LevelView extends React.Component {
                                 block={tCell}
                                 key={keyCount}
                                 canvasBlock={this.props.canvasBlock}
-                                setBlock={this.props.setBlock}
+                                setBlock={this.setViewBlock}
                                 serial={keyCount}
                                 eyedrop={this.eyedrop}
                             />
@@ -89,8 +91,14 @@ class LevelView extends React.Component {
     }
 
     eyedrop(block) {
-      this.props.setColor(block.color);
+      const colorDrop = block.color.replace(')', ', 1)');
+      this.props.setColor(colorDrop);
       this.props.setPaletteBlock(block);
+    }
+
+    setViewBlock(block, pos) {
+      this.props.setHasChanges(true);
+      this.props.setBlock(block, pos);
     }
 
     render() {
@@ -122,7 +130,8 @@ const mapDispatchToProps = dispatch => {
     initializeBlockMap: (blockMap) => dispatch({type: INITIALIZE_BLOCK_MAP, blockMap: blockMap}),
     setBlock: (canvasBlock, pos) => dispatch({ type: SET_BLOCK, block: canvasBlock, pos: pos }),
     setColor: (color) => dispatch({ type: CHANGE_COLOR, color: color }),
-    setPaletteBlock: (block) => dispatch({type: CHANGE_PALETTE_BLOCK, block: block})
+    setPaletteBlock: (block) => dispatch({type: CHANGE_PALETTE_BLOCK, block: block}),
+    setHasChanges: (val) => dispatch({ type: SET_HAS_CHANGES, hasChanges: val })
   }
 }
 

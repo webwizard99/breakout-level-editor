@@ -20,12 +20,12 @@ class Level extends React.Component {
 
     handleLoad = function() {
         const tId = this.props.lvlId;
-        this.props.loadConfirm(tId);
+        this.props.loadLevel(tId);
     }
 
     handleDelete = function() {
         const tId = this.props.lvlId;
-        this.props.deleteConfirm(tId);
+        this.props.deleteLevel(tId);
     }
 
     handleSortUp = function() {

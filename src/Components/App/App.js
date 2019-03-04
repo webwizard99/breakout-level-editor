@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './App.css';
 import MenuBar from '../MenuBar/MenuBar';
 import LevelView from '../LevelView/LevelView';
@@ -16,10 +17,7 @@ class App extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-          hasChanges: false,
           deleteApproved: false,
-          dialogVisible: false,
-          dialogPointer: false,
           gameActive: false,
           titleFail: false,
           confirmationType: '',
@@ -552,9 +550,7 @@ class App extends React.Component {
       <div className="App">
         {this.getMenuBar()}
         {this.getViewColumn()}
-        <DialogLayer pointer={this.state.dialogPointer ? 'all' : 'none'}
-            vis={this.state.dialogVisible ? 'visible' : 'hidden'}
-            dialogEnabled={this.state.dialogVisible}
+        <DialogLayer 
             dialogMessage={this.getDialogMessage()}
             processDialog={this.processDialog}
         />
@@ -567,5 +563,12 @@ class App extends React.Component {
 
 // ReactDOM.render(<App />, document.getElementById('App'));
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    dialogPointer: state.appState.dialogPointer,
+    dialogVisible: state.appState.dialogVisible
+  }
+}
+
+export default connect(mapStateToProps)(App);
 
