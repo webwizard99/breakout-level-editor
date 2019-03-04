@@ -20,37 +20,15 @@ class App extends React.Component {
           deleteApproved: false,
           gameActive: false,
           titleFail: false,
-          confirmationType: '',
-          confirmationNeeded: false,
-          levelToLoad: -1,
-          levelToDelete: -1,
-          readyToLoad: false,
-          id: -1,
-          hasBlocks: false,
-          readyToSave: false,
-          highScore: 0,
-          resetHighScore: false
       }
 
       this.componentWillMount = this.componentWillMount.bind(this);
       this.componentDidUpdate = this.componentDidUpdate.bind(this);
-      this.setLevelList = this.setLevelList.bind(this);
       this.saveLevel = this.saveLevel.bind(this);
-      this.confirmChanges = this.confirmChanges.bind(this);
-      this.callDialog = this.callDialog.bind(this);
-      this.processDialog = this.processDialog.bind(this);
-      this.hideDialog = this.hideDialog.bind(this);
-      this.dialogPrompt = this.dialogPrompt.bind(this);
-      this.approveDelete = this.approveDelete.bind(this);
       this.discardLevel = this.discardLevel.bind(this);
       this.newLevel = this.newLevel.bind(this);
-      this.loadLevel = this.loadLevel.bind(this);
-      this.deleteLevel = this.deleteLevel.bind(this);
-      this.promptLoad = this.promptLoad.bind(this);
-      this.promptDelete = this.promptDelete.bind(this);
       this.commitChanges = this.commitChanges.bind(this);
       this.getLevelForListState = this.getLevelForListState.bind(this);
-      this.getDialogMessage = this.getDialogMessage.bind(this);
       this.exportLevel = this.exportLevel.bind(this);
       this.getLevelForOutput = this.getLevelForOutput.bind(this);
       this.launchGame = this.launchGame.bind(this);
@@ -58,11 +36,6 @@ class App extends React.Component {
       this.getGameLayer = this.getGameLayer.bind(this);
       this.getMenuBar = this.getMenuBar.bind(this);
       this.getViewColumn = this.getViewColumn.bind(this);
-      this.highScoreReset = this.highScoreReset.bind(this);
-      this.setHighScore = this.setHighScore.bind(this);
-      this.saveHighScore = this.saveHighScore.bind(this);
-      this.swapLevels = this.swapLevels.bind(this);
-      this.insertLevel = this.insertLevel.bind(this);
   }
 
 
@@ -118,25 +91,6 @@ class App extends React.Component {
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
 
-
-  highScoreReset() {
-    this.setState({
-        resetHighScore: true
-    });
-  }
-
-  setHighScore(val) {
-    this.setState({
-        highScore: val
-    });
-    this.saveHighScore(val);
-  }
-
-  setLevelList(list) {
-      this.setState({
-          levelList: list
-      });
-  }
 
   saveLevel() {
      if (!this.state.hasChanges) {
@@ -201,68 +155,7 @@ class App extends React.Component {
     
   }
 
-  confirmChanges() {
-    this.setState({
-        dialogVisible: true,
-        dialogPointer: true
-    });
-  }
-
-  hideDialog() {
-    this.setState({
-        dialogVisible: false,
-        dialogPointer: false
-    });
-  }
-
-  dialogPrompt(type) {
-    const confirmationCases = ['new', 'load', 'delete'];  
-    if (confirmationCases.find(conCase => conCase === type)) {
-        this.setState({ confirmationType: type});
-        this.setState({ confirmationNeeded: true });
-    } else {
-        console.log('Invalid dialog promt in dialogPrompt!');
-    }
-  }
-
-  callDialog() {
-    
-    this.confirmChanges(); 
-  }
-
-  processDialog(res) {
-    // var res = response from dialog box
-    switch (this.state.confirmationType) {
-        case 'new':
-            if (res) {
-                this.approveDelete();
-            } 
-            break;
-        case 'load':
-            if (res) {
-                this.setState({
-                    readyToLoad: true,
-                    blockMap: []
-                });
-            }
-            break;
-        case 'delete':
-            if (res) {
-                this.deleteLevel()
-            }
-            break;
-        default:
-            break;
-
-    }
-
-    this.setState({
-        confirmationNeeded: false,
-        confirmationType: ''
-    });
-    this.hideDialog();
-  }
-
+  
   discardLevel() {
       if (!this.state.hasChanges || this.state.deleteApproved) {
         this.setState({
@@ -277,43 +170,6 @@ class App extends React.Component {
             blockMap: LevelStorage.getBlankLevel()
         });
       }
-  }
-
-  deleteLevel() {
-    const lvlToDelete = this.state.levelToDelete
-    LevelStorage.deleteLevel(lvlToDelete);
-    if (lvlToDelete === this.state.id) {
-        this.setState({
-            deleteApproved: true
-        });
-    }
-    LevelStorage.saveLevels();
-    LevelStorage.setHighScore(0);
-    LevelStorage.saveHighScore();
-    this.setState({
-        highScore: 0
-    });
-    // this.syncListStateWithStorage();
-  }
-
-  approveDelete() {
-      this.setState({deleteApproved: true});
-  }
-
-  promptLoad(id) {
-    this.setState({confirmationType: 'load'});
-    this.setState({levelToLoad: id});
-    if (this.state.hasChanges) {
-        this.callDialog();
-    } else {
-        this.loadLevel(id);
-    }
-  }
-
-  promptDelete(id) {
-      this.setState({confirmationType: 'delete'});
-      this.setState({levelToDelete:id});
-      this.callDialog();
   }
 
   commitChanges() {
@@ -403,29 +259,6 @@ class App extends React.Component {
     return outputLevel;
   }
 
-  getDialogMessage() {
-      if (this.state.dialogVisible) {
-        let levelName = '';
-        if (this.state.confirmationType === 'delete') {
-            const deleteId = this.state.levelToDelete;
-            const deleteName = LevelStorage.getLevel(deleteId).name.toUpperCase();
-            levelName = deleteName;
-        } else {
-            levelName = this.state.title.toUpperCase() || 'LEVEL';
-        }
-        return `Changes to ${levelName} will be lost. Proceed anyway?`
-      }
-  }
-
-  saveHighScore(val) {
-    
-    const tHighScore = val;
-    if (tHighScore > LevelStorage.getHighScore()) {
-        LevelStorage.setHighScore(tHighScore);
-        LevelStorage.saveHighScore();
-    }
-  }
-
   launchGame() {
     
     const tLvls = LevelStorage.getLevelsForGame();
@@ -489,16 +322,8 @@ class App extends React.Component {
       if (!this.state.gameActive) {
           return (
             <div className="ViewColumn">
-                <LevelView 
-                    readyToLoad={this.state.readyToLoad}
-                />
-                <LevelList 
-                    loadConfirm={this.promptLoad}
-                    deleteConfirm={this.promptDelete}
-                    highScore={this.state.highScore}
-                    swapLevels={this.swapLevels}
-                    insertLevel={this.insertLevel}
-                />
+                <LevelView/>
+                <LevelList/>
             </div>
           )
       } else {
@@ -510,50 +335,12 @@ class App extends React.Component {
       }
   }
 
-  swapLevels(id1, id2) {
-    
-    LevelStorage.swapLevels(id1, id2);
-    // this.syncListStateWithStorage();
-    LevelStorage.setHighScore(0);
-    LevelStorage.saveHighScore();
-    this.setState({
-        highScore: 0
-    });
-    LevelStorage.saveLevels();
-  }
-
-  insertLevel(id1, id2, direction) {
-    LevelStorage.insertLevel(id1, id2, direction);
-    // this.syncListStateWithStorage();
-    LevelStorage.setHighScore(0);
-    LevelStorage.saveHighScore();
-    this.setState({
-        highScore: 0
-    });
-    LevelStorage.saveLevels();
-  }
-
-  changeColor(color) {
-    this.setState({
-      currentColor: color
-    });
-
-    let tBlock = this.state.currentBlock;
-    tBlock.color = color;
-    this.setState({
-      currentBlock: tBlock
-    });
-  }
-  
   render() {
     return (
       <div className="App">
         {this.getMenuBar()}
         {this.getViewColumn()}
-        <DialogLayer 
-            dialogMessage={this.getDialogMessage()}
-            processDialog={this.processDialog}
-        />
+        <DialogLayer/>
         <MouseoverLayer />
         {this.getGameLayer()}
       </div>

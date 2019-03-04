@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import LevelStorage from '../../Utils/LevelStorage';
 import InputController from '../../Utils/InputController';
+import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
 import './LevelList.css';
 import Level from '../Level/Level';
 import LevelListTitle from '../LevelListTitle/LevelListTitle';
@@ -13,34 +14,40 @@ import { INITIALIZE_LEVEL_LIST,
   ACTIVATE_DIALOG_BOX,
   RESET_DIALOG_RESPONDED,
   SET_LEVEL_LIST,
-  SET_HAS_CHANGES } from '../../actions/types';
-
+  SET_HAS_CHANGES,
+  SET_HIGH_SCORE } from '../../actions/types';
+import Dialog from '../../Utils/Dialog';
 
 class LevelList extends React.Component {
+    wait = 0;
+  
     constructor(props) {
         super(props);
 
         this.state = {
           calledDialog: false,
           dialogType: '',
-          levelEffected: -1
+          levelEffected: -1,
+          levelSwapped: -1
         }
         
         this.componentWillMount = this.componentWillMount.bind(this);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.getListForRender = this.getListForRender.bind(this);
+        this.refreshScore = this.refreshScore.bind(this);
+        this.syncLevels = this.syncLevels.bind(this);
+        this.restoreSwappedLevel = this.restoreSwappedLevel.bind(this);
+        this.swapLevels = this.swapLevels.bind(this);
         this.sortLevels = this.sortLevels.bind(this);
+        this.insertLevel = this.insertLevel.bind(this);
         this.handleDrag = this.handleDrag.bind(this);
         this.loadLevel = this.loadLevel.bind(this);
         this.deleteLevel = this.deleteLevel.bind(this);
         this.processDialog = this.processDialog.bind(this);
     }
 
-    dialogs = {
-      loadLevel: 'loadLevel',
-      deleteLevel: 'deleteLevel'
-    }
+    dialogs = Dialog.createNewDialog({});
 
     ////**//**//**//**//**//**//
     // lifecycle Methods
@@ -65,11 +72,11 @@ class LevelList extends React.Component {
         }
     }
 
-    shouldComponentUpdate(nextProps) {
-        if (this.props === nextProps) {
-            return false;
-        } else {
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props !== nextProps || this.state !== nextState) {
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -77,6 +84,38 @@ class LevelList extends React.Component {
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
 
+    refreshScore() {
+      const savedScore = LevelStorage.getHighScore();
+      this.props.setHighScore(savedScore);
+      LevelStorage.saveHighScore();
+    }
+
+    syncLevels() {
+      this.props.setLevelList(
+        LevelStorage.getLevels(),
+        LevelStorage.getListId(),
+        LevelStorage.getListName());
+    }
+
+    restoreSwappedLevel() {
+      console.log('restoreSwappedLevel');
+      this.setState({
+        levelSwapped: -1
+      });
+    }
+    
+    swapLevels(id1, id2) {
+      LevelStorage.swapLevels(id1, id2);
+      // this.syncListStateWithStorage();
+      LevelStorage.setHighScore(0);
+      LevelStorage.saveHighScore();
+      this.setState({
+        levelSwapped: id1
+      });
+      this.syncLevels();
+      
+      this.refreshScore();
+    }
 
     sortLevels(index1, index2) {
       if (index1 <= 0 || index1 > this.props.levelList.length ||
@@ -85,7 +124,7 @@ class LevelList extends React.Component {
       }
       const id1 = this.props.levelList[index1 -1].id;
       const id2 = this.props.levelList[index2 - 1].id;
-      this.props.swapLevels(id1, id2);
+      this.swapLevels(id1, id2);
     }
     
     loadLevel(id) {
@@ -158,11 +197,11 @@ class LevelList extends React.Component {
 
         this.props.setHasChanges(false);
 
-        this.props.setLevelList(
-          LevelStorage.getLevels(),
-          LevelStorage.getListId(),
-          LevelStorage.getListName()
-        );
+        this.syncLevels();
+
+        LevelStorage.setHighScore(0);
+        LevelStorage.saveHighScore();
+        this.refreshScore();
 
       }
       
@@ -202,13 +241,20 @@ class LevelList extends React.Component {
     getListForRender() {
         
         let levelList = this.props.levelList;
-        
+        const swappedNum = this.state.levelSwapped;
+        let swapped = false;
+
         if (levelList.length > 0) {
 
             let keyCount = -1;
             return (
                 levelList.map((level, lvlN) => {
                     keyCount++;
+                    if (level.id === swappedNum) {
+                      swapped = true;
+                    } else {
+                      swapped = false;
+                    }
                     return (
                         <Level 
                             key={keyCount}
@@ -216,8 +262,9 @@ class LevelList extends React.Component {
                             name={level.name}
                             lvlId={level.id}
                             loadLevel={this.loadLevel}
+                            swapped={swapped}
+                            resetSwapAnimation={this.restoreSwappedLevel}
                             deleteLevel={this.deleteLevel}
-                            deleteConfirm={this.props.deleteConfirm}
                             length={levelList.length + 1}
                             sortLevels={this.sortLevels}
                             handleDrag={this.handleDrag}
@@ -228,6 +275,18 @@ class LevelList extends React.Component {
         } else {
             return <p>No Levels</p>;
         }
+    }
+
+    insertLevel(id1, id2, direction) {
+      LevelStorage.insertLevel(id1, id2, direction);
+      this.syncLevels();
+      LevelStorage.setHighScore(0);
+      LevelStorage.saveHighScore();
+      this.props.setHighScore(0);
+      LevelStorage.saveLevels();
+      this.setState({
+        levelSwapped: id1
+      });
     }
 
     handleDrag(id, x, y) {
@@ -260,7 +319,7 @@ class LevelList extends React.Component {
         }
       });
       
-      this.props.insertLevel(id, this.props.levelList[replaceTarget].id, direction);
+      this.insertLevel(id, this.props.levelList[replaceTarget].id, direction);
 
       // remove any borders from Level divs
       const lvls = document.querySelectorAll('.Level');
@@ -303,7 +362,8 @@ const mapDispatchToProps = dispatch => {
     createDialogBox: () => dispatch({ type: ACTIVATE_DIALOG_BOX }),
     resetDialog: () => dispatch({ type: RESET_DIALOG_RESPONDED }),
     setLevelList: (levels, id, name) => dispatch({ type: SET_LEVEL_LIST, levels: levels, id: id, name: name}),
-    setHasChanges: (val) => dispatch({ type: SET_HAS_CHANGES, hasChanges: val })
+    setHasChanges: (val) => dispatch({ type: SET_HAS_CHANGES, hasChanges: val }),
+    setHighScore: (score) => dispatch({ type: SET_HIGH_SCORE, score: score })
   }
 }
 

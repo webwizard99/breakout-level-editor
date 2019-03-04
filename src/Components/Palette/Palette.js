@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { SAVE_PALETTE,
-  CHANGE_PALETTE_INDEX,
-  CHANGE_COLOR } from '../../actions/types';
+import { CHANGE_PALETTE_INDEX,
+  CHANGE_COLOR, 
+  SET_PALETTE} from '../../actions/types';
 import PaletteBlock from '../PaletteBlock/PaletteBlock';
 import './Palette.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
+import BlockManager from '../../Utils/BlockManager';
+import blockMapReducer from '../../reducers/blockMapReducer';
 
 const sizeFactor = 1.1;
 
@@ -18,9 +20,23 @@ class Palette extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props !== prevProps) {
-      this.props.savePalette(this.props.title);
+    if (prevProps.id < 0 & this.props.id > 0) {
+      BlockManager.retrieveRecords();
+      BlockManager.retrievePalette(this.props.id);
+      
+      console.log(BlockManager.getPalette());
+      if (BlockManager.getPalette().length < 1) {
+        BlockManager.initPalette();
+      };
+      const tempPalette = BlockManager.getPalette();
+      this.props.setPalette(tempPalette);
     }
+
+    if (this.props.paletteBlocks !== prevProps.paletteBlocks & this.props.paletteBlocks.length > 0) {
+      BlockManager.setPalette(this.props.paletteBlocks);
+      BlockManager.savePalette(this.props.id);
+    }
+
   }
 
   getPaletteBlocks() {
@@ -59,16 +75,16 @@ class Palette extends React.Component {
 const mapStateToProps = state => {
   return {
     paletteBlocks: state.palette.blocks,
-    title: state.title.title
+    title: state.title.title,
+    id: state.levelList.id
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    savePalette: (title) => dispatch({ type: SAVE_PALETTE, title: title }),
-    changePaletteIndex: (index) => dispatch({type: CHANGE_PALETTE_INDEX, index: index}),
-    changeColor: (color) => dispatch({type: CHANGE_COLOR, color: color })
-
+    changePaletteIndex: (index) => dispatch({ type: CHANGE_PALETTE_INDEX, index: index }),
+    changeColor: (color) => dispatch({ type: CHANGE_COLOR, color: color }),
+    setPalette: (palette) => dispatch({ type: SET_PALETTE, palette: palette })
   }
 }
 

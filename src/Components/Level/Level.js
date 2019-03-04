@@ -1,21 +1,45 @@
 import React from 'react';
+import { CSSTransition } from 'react-transition-group';
 import './Level.css';
 import ReactPos from '../../Utils/ReactPosition';
+import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
 
 
 class Level extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+          swapped: false
+        }
 
+        this.componentWillMount = this.handleLoad.bind(this);
+        this.componentWillUpdate = this.componentWillUpdate.bind(this);
         this.handleLoad = this.handleLoad.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleSortUp = this.handleSortUp.bind(this);
         this.handleSortDown = this.handleSortDown.bind(this);
         this.handleSort = this.handleSort.bind(this);
+        this.startAnimation = this.startAnimation.bind(this);
+        this.endAnimation = this.endAnimation.bind(this);
         this.handleDragEnd = this.handleDragEnd.bind(this);
         this.handleDragOver = this.handleDragOver.bind(this);
         this.handleDragLeave = this.handleDragLeave.bind(this);
+    }
+
+    componentWillMount() {
+      if (this.props.swapped) {
+
+      }
+    }
+
+    componentWillUpdate(nextProps) {
+      if (!this.props.swapped & nextProps.swapped) {
+        this.setState({
+          swapped: true
+        })
+      }
+
     }
 
     handleLoad = function() {
@@ -90,9 +114,27 @@ class Level extends React.Component {
         }
       }
     }
+
+    startAnimation() {
+      console.log('startAnimation');
+      this.setState({ 
+        swapped: false});
+    }
+
+    endAnimation() {
+      this.props.resetSwapAnimation();
+    }
     
     render() {
+        const swappedVal = this.state.swapped;
         return (
+          <CSSTransition
+            in={swappedVal === true}
+            timeout={Constants.getSwapAnimationDelay()}
+            classNames="Level"
+            onEnter={() => {this.startAnimation()}}
+            onExit={() => {this.endAnimation()}}
+          >
             <div className="Level"
               draggable="true"
               style={{borderBottom: "none"}}
@@ -104,6 +146,7 @@ class Level extends React.Component {
                 
                 console.log('drag start');}}
               >
+                
                 <span className="levelListNumber">{this.props.num}</span>
                 <p>{this.props.name}</p>
                 <span className="loadSign"
@@ -118,7 +161,9 @@ class Level extends React.Component {
                   <p className="sortDown"
                     onClick={this.handleSortDown}>&#x25BC;</p>
                 </div>
+                
             </div>
+          </CSSTransition>
         );
     };
 };

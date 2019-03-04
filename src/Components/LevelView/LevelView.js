@@ -20,6 +20,7 @@ class LevelView extends React.Component {
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.eyedrop = this.eyedrop.bind(this);
+        this.handleMouseLeave = this.handleMouseLeave.bind(this);
         this.setViewBlock = this.setViewBlock.bind(this);
         this.getLevelForRender = this.getLevelForRender.bind(this);
     }
@@ -95,6 +96,12 @@ class LevelView extends React.Component {
       this.props.setColor(colorDrop);
       this.props.setPaletteBlock(block);
     }
+    
+    handleMouseLeave() {
+      const paletteRef = document.querySelector('.Palette');
+      paletteRef.focus();
+      paletteRef.blur();
+    }
 
     setViewBlock(block, pos) {
       this.props.setHasChanges(true);
@@ -105,7 +112,7 @@ class LevelView extends React.Component {
         
         return (
             <div className="LevelView"
-                
+                onMouseLeave={this.handleMouseLeave}
                 height={Constants.getLevelSize().y + 10}
                 width={Constants.getLevelSize().x}        
                 
