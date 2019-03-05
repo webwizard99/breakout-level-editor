@@ -346,6 +346,7 @@ const mapStateToProps = state => {
     id: state.levelList.id,
     listName: state.levelList.name,
     hasChanges: state.appState.hasChanges,
+    highScore: state.highScore.score,
     dialogResponded: state.dialog.responded,
     currentLvlTitle: state.title.title,
     currentLvlId: state.blockMap.id

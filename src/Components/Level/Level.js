@@ -123,6 +123,8 @@ class Level extends React.Component {
 
     endAnimation() {
       this.props.resetSwapAnimation();
+      this.setState({ 
+        swapped: false});
     }
     
     render() {

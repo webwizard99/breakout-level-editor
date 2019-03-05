@@ -306,7 +306,6 @@ class App extends React.Component {
             <MenuBar 
                 titleFail={this.state.titleFail}
                 newLevel={this.newLevel}
-                saveLevel={this.saveLevel}
                 launchGame={this.launchGame}
             />
           )

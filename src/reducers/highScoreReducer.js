@@ -5,7 +5,7 @@ const initialState = {
 }
 
 export default function(state = initialState, action) {
-  switch(actions.type) {
+  switch(action.type) {
 
     case SET_HIGH_SCORE:
       return {

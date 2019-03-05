@@ -10,7 +10,8 @@ import { SET_BLOCK_MAP,
   SET_BLOCK,
   CHANGE_COLOR,
   SET_HAS_CHANGES,
-  CHANGE_PALETTE_BLOCK } from '../../actions/types';
+  CHANGE_PALETTE_BLOCK,
+  SET_HAS_BLOCKS } from '../../actions/types';
 
 class LevelView extends React.Component {
     constructor(props) {
@@ -105,6 +106,7 @@ class LevelView extends React.Component {
 
     setViewBlock(block, pos) {
       this.props.setHasChanges(true);
+      this.props.setHasBlocks(true);
       this.props.setBlock(block, pos);
     }
 
@@ -138,7 +140,8 @@ const mapDispatchToProps = dispatch => {
     setBlock: (canvasBlock, pos) => dispatch({ type: SET_BLOCK, block: canvasBlock, pos: pos }),
     setColor: (color) => dispatch({ type: CHANGE_COLOR, color: color }),
     setPaletteBlock: (block) => dispatch({type: CHANGE_PALETTE_BLOCK, block: block}),
-    setHasChanges: (val) => dispatch({ type: SET_HAS_CHANGES, hasChanges: val })
+    setHasChanges: (val) => dispatch({ type: SET_HAS_CHANGES, value: val }),
+    setHasBlocks: (val) => dispatch({ type: SET_HAS_BLOCKS, value: val })
   }
 }
 

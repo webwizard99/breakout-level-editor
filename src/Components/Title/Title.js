@@ -68,7 +68,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     changeTitle: (title) => dispatch({type: CHANGE_TITLE, title: title}),
-    setHasChanges: (hasChanges) => dispatch({type: SET_HAS_CHANGES, hasChanges: hasChanges })
+    setHasChanges: (value) => dispatch({type: SET_HAS_CHANGES, value: value })
   }
 }
 

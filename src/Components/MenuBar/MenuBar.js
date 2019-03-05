@@ -24,9 +24,7 @@ class MenuBar extends React.Component {
     render() {
         return (
             <div className="MenuBar">
-                <Title 
-                  titleFail={this.props.titleFail}
-                />
+                <Title/>
                 <div className="Blocks">
                   <BlockPicker 
                     color={this.props.color}
@@ -36,7 +34,6 @@ class MenuBar extends React.Component {
                 </div>
                 <ColorPicker/>
                 <Utilities 
-                  saveLevel={this.props.saveLevel}
                   newLevel={this.props.newLevel}
                   launchGame={this.props.launchGame}
                 />
