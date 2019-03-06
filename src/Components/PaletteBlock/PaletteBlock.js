@@ -57,9 +57,10 @@ class PaletteBlock extends React.Component {
 
   
   render() {
+    const activeClass = `${this.props.paletteIndex === this.props.blockNumber ? 'PaletteBlock-active' : ''}`;
     return (
       <div className="PaletteBlockContainer">
-        <canvas className={`PaletteBlock PaletteBlock-${this.props.blockNumber}`}
+        <canvas className={`PaletteBlock PaletteBlock-${this.props.blockNumber} ${activeClass}`} 
           width={Constants.getCell().width}
           height={Constants.getCell().height}
           onClick={this.handleClick}

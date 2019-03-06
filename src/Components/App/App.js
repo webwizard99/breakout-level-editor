@@ -11,7 +11,8 @@ import GameLayer from '../GameLayer/GameLayer';
 
 import Levels from '../../Game/breakout/resources/js/utils/Levels';
 import LevelStorage from '../../Utils/LevelStorage';
-import BlockManager from '../../Utils/BlockManager';
+import InputController from '../../Utils/InputController';
+import { SET_HIGH_SCORE } from '../../actions/types';
 
 class App extends React.Component {
   constructor(props) {
@@ -46,11 +47,9 @@ class App extends React.Component {
     componentWillMount() {
         
         // this.syncListStateWithStorage();
-        
+        InputController.init();
         LevelStorage.retrieveHighScore();
-        this.setState({
-            highScore: LevelStorage.getHighScore()
-        });
+        this.props.setHighScore(LevelStorage.getHighScore());
         
     }
     
@@ -297,11 +296,7 @@ class App extends React.Component {
   getMenuBar() {
       if (!this.props.gameActive) {
           return (
-            <MenuBar 
-                titleFail={this.state.titleFail}
-                newLevel={this.newLevel}
-                launchGame={this.launchGame}
-            />
+            <MenuBar/>
           )
       } else {
           return (
@@ -351,5 +346,11 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    setHighScore: (score) => dispatch({ type: SET_HIGH_SCORE, score: score })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
 

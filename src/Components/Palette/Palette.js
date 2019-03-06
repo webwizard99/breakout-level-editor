@@ -7,7 +7,8 @@ import PaletteBlock from '../PaletteBlock/PaletteBlock';
 import './Palette.css';
 import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
 import BlockManager from '../../Utils/BlockManager';
-import blockMapReducer from '../../reducers/blockMapReducer';
+import InputController from '../../Utils/InputController';
+
 
 const sizeFactor = 1.1;
 
@@ -15,8 +16,19 @@ class Palette extends React.Component {
   constructor(props) {
     super(props);
 
+    this.componentWillMount = this.componentWillMount.bind(this);
+    this.componentWillUnmount = this.componentWillUnmount.bind(this);
     this.getPaletteBlocks = this.getPaletteBlocks.bind(this);
     this.componentDidUpdate = this.componentDidUpdate.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+  }
+
+  componentWillMount() {
+    document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown);
   }
 
   componentDidUpdate(prevProps) {
@@ -39,6 +51,37 @@ class Palette extends React.Component {
 
   }
 
+  handleKeyDown(e) {
+    const isPaused = InputController.getKeyBreak();
+    if (isPaused) return;
+    if (document.activeElement === document.querySelector('.Title-text')) {
+      return;
+    }
+    const direction = InputController.getDirectionInput();
+    console.log(direction);
+    const index = this.props.paletteIndex;
+    if (direction.up) {
+      if (index > 3) {
+        this.props.changePaletteIndex(index - 4);
+      }
+    }
+    if (direction.right) {
+      if (index < Constants.getPaletteBlocks() -1) {
+        this.props.changePaletteIndex(index + 1);
+      }
+    }
+    if (direction.down) {
+      if (index < Constants.getPaletteBlocks() -5) {
+        this.props.changePaletteIndex(index + 4)
+      }
+    }
+    if (direction.left) {
+      if (index > 0) {
+        this.props.changePaletteIndex(index -1);
+      }
+    }
+  }
+
   getPaletteBlocks() {
     const numberOfBlocks = Constants.getPaletteBlocks();
 
@@ -49,6 +92,7 @@ class Palette extends React.Component {
         return <PaletteBlock color={block.color}
           key={n}
           blockNumber={n}
+          paletteIndex={this.props.paletteIndex}
           changePaletteIndex={this.props.changePaletteIndex}
           changeColor={this.props.changeColor}
           width={Constants.getCell().width * sizeFactor}
@@ -60,8 +104,9 @@ class Palette extends React.Component {
   
   render() {
     return (
-      <div className="PaletteContainer">
-        <div className="Palette"
+      <div className="PaletteContainer"
+        onScroll={this.handleKeyDown}>
+        <div className="Palette"  
           width={Constants.getCell().width * 4}
           height={Constants.getCell().height * 4}
         >
@@ -76,7 +121,8 @@ const mapStateToProps = state => {
   return {
     paletteBlocks: state.palette.blocks,
     title: state.title.title,
-    id: state.levelList.id
+    id: state.levelList.id,
+    paletteIndex: state.palette.currentIndex
   }
 }
 

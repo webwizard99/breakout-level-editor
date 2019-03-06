@@ -42,11 +42,16 @@ class Title extends React.Component {
         this.props.changeTitle(e.target.value);
         this.props.setHasChanges(true);
     }
+
+    handleMouseLeave() {
+      document.activeElement.blur();
+    }
     
     render() {
         return (
             <div className="Title">
                 <input className="Title-text"
+                    onMouseLeave={this.handleMouseLeave}
                     onChange={this.handleTitleChange}
                     placeholder={this.props.titleFail ? "must name level!" : "New Level"}
                     spellCheck="false"
@@ -61,7 +66,8 @@ class Title extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    title: state.title.title
+    title: state.title.title,
+    titleFail: state.appState.titleFail
   }
 }
 

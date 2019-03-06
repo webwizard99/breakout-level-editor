@@ -8,6 +8,7 @@ import './GameLayer.css';
 import '../../Game/breakout/resources/css/reset.css';
 import '../../Game/breakout/resources/css/style.css';
 import soundfile from './Crystal_Jewel_Collect_2.wav';
+import LevelStorage from '../../Utils/LevelStorage';
 
 class GameLayer extends React.Component {
     timer = 0
@@ -53,7 +54,8 @@ class GameLayer extends React.Component {
         let tScore = Breakout.getHighScoreReact();
         if (tScore > this.props.highScore) {
             this.props.setHighScore(tScore);
-            
+            LevelStorage.setHighScore(tScore);
+            LevelStorage.saveHighScore();
         }
         
     }

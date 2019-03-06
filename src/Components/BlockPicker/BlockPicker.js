@@ -57,6 +57,9 @@ class BlockPicker extends React.Component {
                     height={Constants.getCell().height * this.state.pickerMain}
                 >
                 </canvas>
+                <div className="Eyedrop-indicator">
+                  <p className="Shift">Shift</p><span className="Cursor"></span><span className="Eyedrop"></span>
+                </div>
             </div>
         );
     };

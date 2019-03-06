@@ -1,16 +1,48 @@
 .BlockPicker {
     width: 35%;
     height: 100%;
+    /* position: relative;
+    top: 1rem; */
     display: flex;
     justify-content: center;
     align-items: center;
-    
+    flex-direction: column;
+    margin: auto;
 }
 
 .PickerView {
     /* width: 90%;
     height: 90%; */
     background: rgb(230,230,250);
-    margin: auto;
+    
 }
 
+.Eyedrop-indicator {
+  width: 100%;
+  margin-top: .4rem;
+  display: flex;
+}
+
+.Shift {
+  border: 1px solid rgba(240, 245, 250, 0.9);
+  padding: 2px;
+  width: 3rem;
+}
+
+.Cursor {
+  height: 1.2rem;
+  width: 1.2rem;
+  margin-left: .6rem;
+  background: url('./cursor.svg');
+  background-size: cover;
+  overflow: hidden;
+}
+
+.Eyedrop {
+  height: 1.2rem;
+  width: 1.2rem;
+  margin-left: 2.2rem;
+  background: url('./eyedropper-64\ \(1\).png');
+  background-size: cover;
+  overflow: hidden;
+}
