@@ -9,11 +9,14 @@ import { SET_TITLE_FAIL,
   SET_BLOCK_MAP,
   CHANGE_TITLE,
   ACTIVATE_DIALOG_BOX,
-  RESET_DIALOG_RESPONDED
+  RESET_DIALOG_RESPONDED,
+  SET_GAME_ACTIVE
    } from '../../actions/types';
 import LevelStorage from '../../Utils/LevelStorage';
 import Dialog from '../../Utils/Dialog';
 import InputController from '../../Utils/InputController';
+import Levels from '../../Game/breakout/resources/js/utils/Levels.js';
+import Level from '../Level/Level';
 
 class Utilities extends React.Component {
     constructor(props) {
@@ -128,7 +131,7 @@ class Utilities extends React.Component {
       LevelStorage.setHighScore(0);
       LevelStorage.saveHighScore();
       this.props.setHighScore(0);
-
+      
       this.props.setHasChanges(false);
     }
 
@@ -166,11 +169,26 @@ class Utilities extends React.Component {
       this.props.setLevelMap(LevelStorage.getBlankLevel());
       this.props.setLevelTitle('');
       
-      this.props.newLevel();
+      this.setState({
+        calledDialog: false,
+        dialogType: ''
+      });
+      this.props.resetDialog();
+
+      // this.props.newLevel();
     }
 
     handleLaunch() {
-        this.props.launchGame();
+      
+      const tLvls = LevelStorage.getLevelsForGame();
+
+      if (!tLvls) return;
+      Levels.setLevels(tLvls);
+
+      console.log('handleLaunch before setGameActive');
+
+      this.props.setGameActive(true);  
+      // this.props.launchGame();
     }
     
     render() {
@@ -219,7 +237,8 @@ const mapDispatchToProps = dispatch => {
     setHighScore: (score) => dispatch({ type: SET_HIGH_SCORE, score: score }),
     setDialogText: (text) => dispatch({ type: SET_DIALOG_TEXT, text: text }),
     createDialogBox: () => dispatch({ type: ACTIVATE_DIALOG_BOX }),
-    resetDialog: () => dispatch({ type: RESET_DIALOG_RESPONDED })
+    resetDialog: () => dispatch({ type: RESET_DIALOG_RESPONDED }),
+    setGameActive: (value) => dispatch({ type: SET_GAME_ACTIVE, value: value })
   }
 }
 

@@ -2,14 +2,16 @@ import { SET_HAS_CHANGES,
   ACTIVATE_DIALOG_BOX,
   DEACTIVATE_DIALOG_BOX,
   SET_TITLE_FAIL,
-  SET_HAS_BLOCKS } from '../actions/types';
+  SET_HAS_BLOCKS,
+  SET_GAME_ACTIVE } from '../actions/types';
 
 const initialState = {
   hasChanges: false,
   hasBlocks: false,
   dialogPointer: false,
   dialogEnabled: false,
-  titleFail: false
+  titleFail: false,
+  gameActive: false
 }
 
 export default function(state = initialState, action) {
@@ -43,6 +45,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         hasBlocks: action.value
+      }
+
+    case SET_GAME_ACTIVE:
+      return {
+        ...state,
+        gameActive: action.value
       }
     default:
       return state;

@@ -1,5 +1,8 @@
 import React from 'react';
 import Breakout from '../../Game/breakout/resources/js/modules/Controller';
+import { connect } from 'react-redux';
+import { SET_GAME_ACTIVE,
+  SET_HIGH_SCORE } from '../../actions/types'
 
 import './GameLayer.css';
 import '../../Game/breakout/resources/css/reset.css';
@@ -65,7 +68,7 @@ class GameLayer extends React.Component {
         // Breakout.stop();
 
         // this.launchInWindow('.GameFrame', '');
-        this.props.closeGame();
+        this.props.setGameActive(false);
     }
 
     launchGame() {
@@ -77,9 +80,11 @@ class GameLayer extends React.Component {
 
     render() {
         this.myRef = React.createRef();
+        console.log(`this.props.vis: ${this.props.vis}`);
+        const gameVisible = this.props.vis ? 'visible' : 'hidden';
         return (
             <div className="GameLayer"
-            style={{visibility: this.props.vis}}>
+            style={{ visibility: gameVisible }}>
                 <section id="mainContainer">
                     <h1 id="title">BREAKOUT</h1>
                     <canvas id="myCanvas" width="640" height="480"></canvas>  
@@ -103,4 +108,18 @@ class GameLayer extends React.Component {
     }
 }
 
-export default GameLayer;
+const mapStateToProps = state => {
+  return {
+    vis: state.appState.gameActive,
+    highScore: state.highScore.score
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setGameActive: (value) => dispatch({ type: SET_GAME_ACTIVE, value: value }),
+    setHighScore: (score) => dispatch({ type: SET_HIGH_SCORE, score: score })
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameLayer);

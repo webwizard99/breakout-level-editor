@@ -283,15 +283,9 @@ class App extends React.Component {
   }
 
   getGameLayer() {
-      if (this.state.gameActive) {
+      if (this.props.gameActive) {
           return (
-            <GameLayer
-                vis={this.state.gameActive ? 'visible' : 'hidden'}
-                closeGame={this.closeGame}
-                highScore={this.state.highScore}
-                setHighScore={this.setHighScore}
-                
-            />
+            <GameLayer/>
           );
       } else {
           return (
@@ -301,7 +295,7 @@ class App extends React.Component {
   }
 
   getMenuBar() {
-      if (!this.state.gameActive) {
+      if (!this.props.gameActive) {
           return (
             <MenuBar 
                 titleFail={this.state.titleFail}
@@ -318,7 +312,7 @@ class App extends React.Component {
   }
 
   getViewColumn() {
-      if (!this.state.gameActive) {
+      if (!this.props.gameActive) {
           return (
             <div className="ViewColumn">
                 <LevelView/>
@@ -352,7 +346,8 @@ class App extends React.Component {
 const mapStateToProps = state => {
   return {
     dialogPointer: state.appState.dialogPointer,
-    dialogVisible: state.appState.dialogVisible
+    dialogVisible: state.appState.dialogVisible,
+    gameActive: state.appState.gameActive
   }
 }
 
