@@ -13,6 +13,7 @@ class ColorPicker extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleHueChange = this.handleHueChange.bind(this);
+    this.handleMouseUp = this.handleMouseUp.bind(this);
   }
   
   handleChange(color) {
@@ -40,6 +41,10 @@ class ColorPicker extends React.Component {
     this.props.onChange(color);
   }
 
+  handleMouseUp() {
+    document.activeElement.blur();
+  }
+
   render() {
     return (
       <div className="ColorPicker"
@@ -48,11 +53,13 @@ class ColorPicker extends React.Component {
           <div className="SaturationContainer">
             <Saturation {...this.props}
               onChange={this.handleChange}
+              onMouseUp={this.handleMouseUp}
             />
           </div>
           <div className="HueContainer">
             <Hue {...this.props}
               onChange={this.handleHueChange}
+              onMouseUp={this.handleMouseUp}
               direction="horizontal"
             />
           </div>

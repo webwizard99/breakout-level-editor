@@ -63,21 +63,30 @@ class Palette extends React.Component {
     if (direction.up) {
       if (index > 3) {
         this.props.changePaletteIndex(index - 4);
+        const tBlocks = BlockManager.getPalette();
+        console.log(tBlocks[index - 4].color);
+        this.props.changeColor(tBlocks[index - 4].color);
       }
     }
     if (direction.right) {
       if (index < Constants.getPaletteBlocks() -1) {
         this.props.changePaletteIndex(index + 1);
+        const tBlocks = BlockManager.getPalette();
+        this.props.changeColor(tBlocks[index + 1].color);
       }
     }
     if (direction.down) {
       if (index < Constants.getPaletteBlocks() -4) {
-        this.props.changePaletteIndex(index + 4)
+        this.props.changePaletteIndex(index + 4);
+        const tBlocks = BlockManager.getPalette();
+        this.props.changeColor(tBlocks[index + 4].color);
       }
     }
     if (direction.left) {
       if (index > 0) {
         this.props.changePaletteIndex(index -1);
+        const tBlocks = BlockManager.getPalette();
+        this.props.changeColor(tBlocks[index - 1].color);
       }
     }
   }

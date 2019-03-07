@@ -7,9 +7,14 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case CHANGE_COLOR:
+      let colorCheck = action.color;
+      const commaCount = colorCheck.match(/[\,]/g);
+      if (commaCount.length === 2) {
+        colorCheck = colorCheck.replace(')', ', 1)');
+      }
       return {
         ...state,
-        color: action.color
+        color: colorCheck
       }
     default:
       return state;
