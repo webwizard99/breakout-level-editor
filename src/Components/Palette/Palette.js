@@ -71,7 +71,7 @@ class Palette extends React.Component {
       }
     }
     if (direction.down) {
-      if (index < Constants.getPaletteBlocks() -5) {
+      if (index < Constants.getPaletteBlocks() -4) {
         this.props.changePaletteIndex(index + 4)
       }
     }

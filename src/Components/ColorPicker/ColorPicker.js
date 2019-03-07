@@ -44,16 +44,18 @@ class ColorPicker extends React.Component {
     return (
       <div className="ColorPicker"
           color={this.props.color}>
-        <div className="SaturationContainer">
-          <Saturation {...this.props}
-            onChange={this.handleChange}
-          />
-        </div>
-        <div className="HueContainer">
-          <Hue {...this.props}
-            onChange={this.handleHueChange}
-            direction="horizontal"
-          />
+        <div className="UIComponentsContainer">
+          <div className="SaturationContainer">
+            <Saturation {...this.props}
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="HueContainer">
+            <Hue {...this.props}
+              onChange={this.handleHueChange}
+              direction="horizontal"
+            />
+          </div>
         </div>
       </div>
     );

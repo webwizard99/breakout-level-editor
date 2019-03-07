@@ -47,6 +47,7 @@ const BlockManager = (function(){
 
   return {
     initPalette: function() {
+        if (blocks.length > 0) return;
         blocks = [];
         if (blocks.length !== 0) {
             return false;

@@ -5,6 +5,13 @@
     margin: auto;
 }
 
+.UIComponentsContainer {
+  margin-top: 0.6rem;
+  padding: 0.2rem;
+  width: 12rem;
+  box-shadow: 1px 1px 3px rgba(30, 30, 30, .6);
+}
+
 .SaturationContainer {
   width: 12rem;
   height: 8rem;
@@ -15,6 +22,6 @@
 .HueContainer {
   width: 12rem;
   height: .6rem;
-  margin-top: .1rem;
+  margin-top: .2rem;
   position: relative;
 }

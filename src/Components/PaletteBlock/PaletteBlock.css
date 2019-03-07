@@ -12,10 +12,6 @@
 }
 
 .PaletteBlock-active {
-  /* box-shadow: 1px 1px rgba(220, 230, 120, 0.95),
-              -1px 1px rgba(220, 230, 120, 0.95),
-              1px -1px rgba(220, 230, 120, 0.95),
-              -1px -1px rgba(220, 230, 120, 0.95); */
   border: solid 2px rgba(220, 230, 120, 0.55);
   margin: -2px;
 }
