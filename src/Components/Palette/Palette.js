@@ -64,7 +64,6 @@ class Palette extends React.Component {
       if (index > 3) {
         this.props.changePaletteIndex(index - 4);
         const tBlocks = BlockManager.getPalette();
-        console.log(tBlocks[index - 4].color);
         this.props.changeColor(tBlocks[index - 4].color);
       }
     }

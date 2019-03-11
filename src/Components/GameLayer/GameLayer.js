@@ -87,23 +87,37 @@ class GameLayer extends React.Component {
         return (
             <div className="GameLayer"
             style={{ visibility: gameVisible }}>
-                <section id="mainContainer">
-                    <h1 id="title">BREAKOUT</h1>
-                    <canvas id="myCanvas" width="640" height="480"></canvas>  
-                    <div id="scoreFrame">
-                        <p id="score">0</p>
-                        <p id="highScore">0</p>
-                    </div>
-                    <div id="LivesView"></div> 
-                    <audio id="BallHit"
-                        ref={this.myRef}
-                        src={soundfile}
-                    />
-
-                </section> 
-                <div className="CloseButton"
-                    onClick={this.handleCloseGame}>X
+              <section id="mainContainer">
+                <h1 id="title">BREAKOUT</h1>
+                <div class="canvas-wrapper">
+                  <canvas id="Canvas-background" class="Canvas" width="640" height="480" layer="0">
+                  </canvas>
                 </div>
+                <div class="canvas-wrapper">
+                  <canvas id="Canvas-player" class="Canvas" width="640" height="480" layer="1">
+                  </canvas>
+                </div>
+                <div class="canvas-wrapper">
+                  <canvas id="Canvas-blocks" class="Canvas" width="640" height="480" layer="2">
+                  </canvas>
+                </div>
+                <div class="canvas-wrapper">
+                  <canvas id="Canvas-hud" class="Canvas" width="640" height="480" layer="3">
+                  </canvas>
+                </div>
+                <div class="canvas-wrapper">
+                  <canvas id="Canvas-effects" class="Canvas" width="640" height="480" layer="4">
+                  </canvas>
+                </div>
+                <audio id="BallHit"
+                    ref={this.myRef}
+                    src={soundfile}
+                />
+
+              </section> 
+              <div className="CloseButton"
+                  onClick={this.handleCloseGame}>X
+              </div>
                 
             </div>
         )
