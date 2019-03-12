@@ -158,7 +158,8 @@ const LevelStorage = (function(){
         },
 
         getBlankLevel: function() {
-            const r = Constants.getRowsProto();
+            const r = Constants.getRowsProtoEditor();
+            console.log(r);
             const c = Constants.getColumnsProto();
             let tLvl = [];
             for (let row = 0; row < r; row++) {
