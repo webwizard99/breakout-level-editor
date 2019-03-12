@@ -10,7 +10,8 @@ import { SET_TITLE_FAIL,
   CHANGE_TITLE,
   ACTIVATE_DIALOG_BOX,
   RESET_DIALOG_RESPONDED,
-  SET_GAME_ACTIVE
+  SET_GAME_ACTIVE,
+  SET_LEVEL_LIST
    } from '../../actions/types';
 import LevelStorage from '../../Utils/LevelStorage';
 import Dialog from '../../Utils/Dialog';
@@ -131,6 +132,11 @@ class Utilities extends React.Component {
       LevelStorage.setHighScore(0);
       LevelStorage.saveHighScore();
       this.props.setHighScore(0);
+      this.props.setLevelList(
+        LevelStorage.getLevels(),
+        LevelStorage.getListId(),
+        LevelStorage.getListName()
+      );
       
       this.props.setHasChanges(false);
     }
@@ -238,7 +244,8 @@ const mapDispatchToProps = dispatch => {
     setDialogText: (text) => dispatch({ type: SET_DIALOG_TEXT, text: text }),
     createDialogBox: () => dispatch({ type: ACTIVATE_DIALOG_BOX }),
     resetDialog: () => dispatch({ type: RESET_DIALOG_RESPONDED }),
-    setGameActive: (value) => dispatch({ type: SET_GAME_ACTIVE, value: value })
+    setGameActive: (value) => dispatch({ type: SET_GAME_ACTIVE, value: value }),
+    setLevelList: (levels, id, name) => dispatch({ type: SET_LEVEL_LIST, levels: levels, id: id, name: name})
   }
 }
 

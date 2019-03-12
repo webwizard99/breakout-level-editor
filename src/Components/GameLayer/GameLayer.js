@@ -9,6 +9,7 @@ import '../../Game/breakout/resources/css/reset.css';
 import '../../Game/breakout/resources/css/style.css';
 import soundfile from './Crystal_Jewel_Collect_2.wav';
 import LevelStorage from '../../Utils/LevelStorage';
+import Constants from '../../Game/breakout/resources/js/utils/Constants';
 
 class GameLayer extends React.Component {
     timer = 0
@@ -82,6 +83,7 @@ class GameLayer extends React.Component {
 
     render() {
         this.myRef = React.createRef();
+        const tSize = Constants.getLevelSize()
         console.log(`this.props.vis: ${this.props.vis}`);
         const gameVisible = this.props.vis ? 'visible' : 'hidden';
         return (
@@ -89,24 +91,24 @@ class GameLayer extends React.Component {
             style={{ visibility: gameVisible }}>
               <section id="mainContainer">
                 <h1 id="title">BREAKOUT</h1>
-                <div class="canvas-wrapper">
-                  <canvas id="Canvas-background" class="Canvas" width="640" height="480" layer="0">
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-background" className="Canvas" width={tSize.x} height={tSize.y} layer="0">
                   </canvas>
                 </div>
-                <div class="canvas-wrapper">
-                  <canvas id="Canvas-player" class="Canvas" width="640" height="480" layer="1">
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-player" className="Canvas" width={tSize.x} height={tSize.y} layer="1">
                   </canvas>
                 </div>
-                <div class="canvas-wrapper">
-                  <canvas id="Canvas-blocks" class="Canvas" width="640" height="480" layer="2">
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-blocks" className="Canvas" width={tSize.x} height={tSize.y} layer="2">
                   </canvas>
                 </div>
-                <div class="canvas-wrapper">
-                  <canvas id="Canvas-hud" class="Canvas" width="640" height="480" layer="3">
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-hud" className="Canvas" width={tSize.x} height={tSize.y} layer="3">
                   </canvas>
                 </div>
-                <div class="canvas-wrapper">
-                  <canvas id="Canvas-effects" class="Canvas" width="640" height="480" layer="4">
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-effects" className="Canvas" width={tSize.x} height={tSize.y} layer="4">
                   </canvas>
                 </div>
                 <audio id="BallHit"

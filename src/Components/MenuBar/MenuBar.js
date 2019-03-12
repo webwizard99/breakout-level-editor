@@ -26,17 +26,11 @@ class MenuBar extends React.Component {
             <div className="MenuBar">
                 <Title/>
                 <div className="Blocks">
-                  <BlockPicker 
-                    color={this.props.color}
-                    onChangeBlock={this.props.onChangeBlock}
-                  />
+                  <BlockPicker/>
                   <Palette/>
                 </div>
                 <ColorPicker/>
-                <Utilities 
-                  newLevel={this.props.newLevel}
-                  launchGame={this.props.launchGame}
-                />
+                <Utilities/>
             </div>
         );
     }
