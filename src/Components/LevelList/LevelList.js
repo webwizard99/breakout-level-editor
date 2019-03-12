@@ -106,6 +106,7 @@ class LevelList extends React.Component {
     
     swapLevels(id1, id2) {
       LevelStorage.swapLevels(id1, id2);
+      LevelStorage.saveLevels();
       // this.syncListStateWithStorage();
       LevelStorage.setHighScore(0);
       LevelStorage.saveHighScore();
