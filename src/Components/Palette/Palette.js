@@ -36,7 +36,6 @@ class Palette extends React.Component {
       BlockManager.retrieveRecords();
       BlockManager.retrievePalette(this.props.id);
       
-      console.log(BlockManager.getPalette());
       if (BlockManager.getPalette().length < 1) {
         BlockManager.initPalette();
       };
@@ -58,7 +57,6 @@ class Palette extends React.Component {
       return;
     }
     const direction = InputController.getDirectionInput();
-    console.log(direction);
     const index = this.props.paletteIndex;
     if (direction.up) {
       if (index > 3) {
