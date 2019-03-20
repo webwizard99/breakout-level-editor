@@ -1,3 +1,9 @@
+## Breakout Level Maker
+
+A level maker for a Breakout game made with React and Redux.
+
+Live site: http://webwizard99-breakout-level-editor.s3-website-us-west-1.amazonaws.com/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

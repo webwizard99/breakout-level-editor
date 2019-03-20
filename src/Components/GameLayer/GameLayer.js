@@ -92,6 +92,7 @@ class GameLayer extends React.Component {
               <section id="mainContainer">
                 <h1 id="title">BREAKOUT</h1>
                 <div className="canvas-wrapper">
+<<<<<<< HEAD
                   <canvas id="Canvas-background" className="Canvas" width={tSize.x} height={tSize.y} layer="0">
                   </canvas>
                 </div>
@@ -109,6 +110,25 @@ class GameLayer extends React.Component {
                 </div>
                 <div className="canvas-wrapper">
                   <canvas id="Canvas-effects" className="Canvas" width={tSize.x} height={tSize.y} layer="4">
+=======
+                  <canvas id="Canvas-background" className="Canvas" width="640" height="480" layer="0">
+                  </canvas>
+                </div>
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-player" className="Canvas" width="640" height="480" layer="1">
+                  </canvas>
+                </div>
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-blocks" className="Canvas" width="640" height="480" layer="2">
+                  </canvas>
+                </div>
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-hud" className="Canvas" width="640" height="480" layer="3">
+                  </canvas>
+                </div>
+                <div className="canvas-wrapper">
+                  <canvas id="Canvas-effects" className="Canvas" width="640" height="480" layer="4">
+>>>>>>> 56f7168b69b68035d4e2edc78d2a4de6191c71aa
                   </canvas>
                 </div>
                 <audio id="BallHit"
