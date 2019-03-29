@@ -1,0 +1,17 @@
+.TypePicker {
+  height: 4rem;
+  width: 8rem;
+  margin-top: .8rem;
+}
+
+.type-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.2rem;
+  margin-right: 0.6rem;
+}
+
+.type-select {
+  font-family: 'Bungee', cursive;
+  font-size: 1rem;
+  width: 3rem;
+}

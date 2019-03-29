@@ -4,6 +4,7 @@ import Title from '../Title/Title';
 import BlockPicker from '../BlockPicker/BlockPicker';
 import ColorPicker from '../ColorPicker/ColorPicker';
 import Palette from '../Palette/Palette';
+import TypePicker from '../TypePicker/TypePicker';
 import Utilities from '../Utilities/Utilities';
 
 class MenuBar extends React.Component {
@@ -29,7 +30,10 @@ class MenuBar extends React.Component {
                   <BlockPicker/>
                   <Palette/>
                 </div>
-                <ColorPicker/>
+                <div className="ColorType">
+                  <ColorPicker/>
+                  <TypePicker/>
+                </div>
                 <Utilities/>
             </div>
         );
