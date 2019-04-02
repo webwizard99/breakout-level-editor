@@ -1,7 +1,10 @@
 .ColorPicker {
-    width: auto;
+    width: 50%;
     height: auto;
     margin: auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .UIComponentsContainer {

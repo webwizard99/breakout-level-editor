@@ -16,31 +16,26 @@ class TypePicker extends React.Component {
   }
 
   getTypeOptions() {
-    const currentType = this.props.canvasBlock.type;
     return (
       possibleTypes.map((type, n) => {
-        if (type === currentType) {
-          return (<option selected value={type} key={n}>{type}</option>)
-        } else {
-          return (<option value={type} key={n}>{type}</option>)
-        }
+        return (<option value={type} key={n}>{type}</option>)
       })
     )
   }
 
   handleTypeChange(e) {
     const updatedBlock = JSON.parse(JSON.stringify(this.props.canvasBlock));
-    console.log(updatedBlock);
-    console.log(e.target.value);
     updatedBlock.type = e.target.value;
     this.props.setPaletteBlock(updatedBlock);
   }
 
   render() {
+    const currentType = this.props.canvasBlock.type;
     return (
       <div className="TypePicker">
         <label className="type-label" htmlFor="type-select">Type</label>
         <select id="type-select"
+          value={currentType}
           onChange={this.handleTypeChange}>
           {this.getTypeOptions()}
         </select>

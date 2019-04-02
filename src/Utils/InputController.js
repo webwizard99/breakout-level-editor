@@ -26,7 +26,6 @@ const InputController = (function(){
   const keyPause = 600;
 
   const setEventListeners = function() {
-    console.log('setEventListeners in InputController');
     document.addEventListener('keydown', (e) => {
       handleKeypress(e);
     });

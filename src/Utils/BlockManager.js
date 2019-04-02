@@ -78,11 +78,9 @@ const BlockManager = (function(){
 
     retrievePalette: function(id) {
       if (!hasStorage) return;
-      console.log(id);
       name= `palette-${id}`;
       const TPalette = JSON.parse(localStorage.getItem(name));
 
-      console.log(TPalette);
       if (TPalette == null || TPalette === undefined) {
         return;
       }

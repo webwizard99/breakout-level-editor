@@ -59,6 +59,22 @@ class Cell extends React.Component {
             Constants.getBlockProto().height,
             Constants.getBlockProto().width);
 
+        if (this.props.block.type === 'healer') {
+          CanvasTools.drawRectOutline(blockCTX, 'green', 2,
+          startX,
+          startY,
+          Constants.getBlockProto().height,
+          Constants.getBlockProto().width);
+        }
+
+        if (this.props.block.type === 'strong') {
+          CanvasTools.drawRectOutline(blockCTX, 'rgba(140,140,140,1)', 2,
+          startX,
+          startY,
+          Constants.getBlockProto().height,
+          Constants.getBlockProto().width);
+        }
+
     }
 
 

@@ -96,6 +96,7 @@ class Palette extends React.Component {
     return (
       paletteBlocksT.map((block, n) => {
         return <PaletteBlock color={block.color}
+          type={block.type}
           key={n}
           blockNumber={n}
           paletteIndex={this.props.paletteIndex}

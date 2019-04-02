@@ -53,6 +53,22 @@ class PaletteBlock extends React.Component {
         Constants.getBlockProto().height,
         Constants.getBlockProto().width);
 
+        if (this.props.type === 'healer') {
+          CanvasTools.drawRectOutline(blockCTX, 'green', 2,
+          startX,
+          startY,
+          Constants.getBlockProto().height,
+          Constants.getBlockProto().width);
+        }
+
+        if (this.props.type === 'strong') {
+          CanvasTools.drawRectOutline(blockCTX, 'rgba(140,140,140,1)', 2,
+          startX,
+          startY,
+          Constants.getBlockProto().height,
+          Constants.getBlockProto().width);
+        }
+
   }
 
   
