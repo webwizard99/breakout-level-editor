@@ -32,8 +32,10 @@ class LevelList extends React.Component {
         }
         
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.initializeLevelList = this.initializeLevelList.bind(this);
         this.getListForRender = this.getListForRender.bind(this);
         this.refreshScore = this.refreshScore.bind(this);
         this.syncLevels = this.syncLevels.bind(this);
@@ -54,15 +56,11 @@ class LevelList extends React.Component {
     ///**//**//**//**//**//**///
 
     componentWillMount() {
-      LevelStorage.retrieveLevels();
-      const stagedLevels = LevelStorage.getLevels();
-      const stagedId = LevelStorage.getListId();
-      const stagedName = LevelStorage.getListName();
-      this.props.initLevelList(
-        stagedLevels,
-        stagedId,
-        stagedName
-      );
+      
+    }
+
+    componentDidMount() {
+      this.initializeLevelList();
     }
     
     componentDidUpdate() {
@@ -83,6 +81,18 @@ class LevelList extends React.Component {
     ////**//**//**//**//**//**//
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
+
+    initializeLevelList() {
+      LevelStorage.retrieveLevels();
+      const stagedLevels = LevelStorage.getLevels();
+      const stagedId = LevelStorage.getListId();
+      const stagedName = LevelStorage.getListName();
+      this.props.initLevelList(
+        stagedLevels,
+        stagedId,
+        stagedName
+      );
+    }
 
     refreshScore() {
       const savedScore = LevelStorage.getHighScore();

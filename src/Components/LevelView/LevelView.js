@@ -18,6 +18,7 @@ class LevelView extends React.Component {
         super(props);
  
         this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.eyedrop = this.eyedrop.bind(this);
@@ -31,9 +32,13 @@ class LevelView extends React.Component {
     ///**//**//**//**//**//**///
 
     componentWillMount() {
-      if (this.props.blockMap.length < 1) {
-        this.props.initializeBlockMap(LevelStorage.getBlankLevel());
-      }
+      
+    }
+
+    componentDidMount() {
+      // if (this.props.blockMap.length < 1) {
+      //   this.props.initializeBlockMap(LevelStorage.getBlankLevel());
+      // }
     }
 
     shouldComponentUpdate(nextProps) {
@@ -91,6 +96,13 @@ class LevelView extends React.Component {
                     );
                 })
             );
+        } else {
+          return (
+            <div className="DummyLevelView"
+              height={Constants.getLevelSize().y}
+              width={Constants.getLevelSize().x}>
+            </div>
+          )
         }
     }
 
