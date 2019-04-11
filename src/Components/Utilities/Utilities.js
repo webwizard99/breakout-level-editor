@@ -191,10 +191,7 @@ class Utilities extends React.Component {
       if (!tLvls) return;
       Levels.setLevels(tLvls);
 
-      console.log('handleLaunch before setGameActive');
-
       this.props.setGameActive(true);  
-      // this.props.launchGame();
     }
     
     render() {
