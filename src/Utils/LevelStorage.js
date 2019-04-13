@@ -1,4 +1,5 @@
 import Constants from '../Game/breakout/resources/js/utils/Constants';
+import LevelCompression from './LevelCompression';
 
 const LevelStorage = (function(){
     let name = 'levelList';
@@ -178,18 +179,27 @@ const LevelStorage = (function(){
                 records.push(name);
                 
             }
-            localStorage.setItem(name, JSON.stringify(levels));
+
+            const compressedLvls = LevelCompression.compressLevelText(JSON.stringify(levels));
+            localStorage.setItem(name, JSON.stringify(compressedLvls));
             hasStorage = true;
             saveRecords();
         },
 
         retrieveLevels: function() {
             if (!hasStorage) return;
-            const tLevels = JSON.parse(localStorage.getItem(name));
+            const tLevels = localStorage.getItem(name);
+            
             if (tLevels === null || tLevels === undefined) {
                 return;
             }
-            levels = tLevels;
+
+            console.log(tLevels);
+            const uncompressedLevels = LevelCompression.decompressLevelText(tLevels);
+            console.log(uncompressedLevels);
+            const trimmedLevels = uncompressedLevels.substring(1, uncompressedLevels.length - 1);
+            console.log(trimmedLevels);
+            levels = JSON.parse(trimmedLevels);
             
             
         },

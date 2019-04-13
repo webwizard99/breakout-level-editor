@@ -8,6 +8,7 @@ import DialogLayer from '../DialogLayer/DialogLayer';
 import MouseoverLayer from '../MouseoverLayer/MouseoverLayer';
 import GameLayer from '../GameLayer/GameLayer';
 
+import LevelCompression from '../../Utils/LevelCompression';
 
 import Levels from '../../Game/breakout/resources/js/utils/Levels';
 import LevelStorage from '../../Utils/LevelStorage';

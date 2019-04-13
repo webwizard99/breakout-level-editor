@@ -39,6 +39,16 @@ class Title extends React.Component {
 
     handleTitleChange(e) {
         e.preventDefault();
+        
+        // filter out non alphanumeric values
+        const lastLetter = e.target.value[e.target.value.length - 1].charCodeAt(0);
+        if ((lastLetter >= 48 && lastLetter <=57) ||
+          (lastLetter >= 65 && lastLetter <= 90) ||
+          (lastLetter >= 97 && lastLetter <= 122)) {
+          
+        } else {
+          return;
+        }
         this.props.changeTitle(e.target.value);
         this.props.setHasChanges(true);
     }
