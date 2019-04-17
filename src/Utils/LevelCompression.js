@@ -46,8 +46,10 @@ const LevelCompression = (function(){
       
       Object.entries(conversionKeys).forEach(key => {
         const keyRegExp = regexpKeys[key[0]];
+        console.log(keyRegExp);
         
         const filteredText = newText.replace(keyRegExp, key[1]);
+        console.log(filteredText);
         
         newText = filteredText;
       });
@@ -77,9 +79,5 @@ const LevelCompression = (function(){
   }
 }());
 
-const compText = LevelCompression.compressLevelText(LevelCompression.getTestText());
-console.log(compText);
-const revertText = LevelCompression.decompressLevelText(compText);
-console.log(revertText);
 
 export default LevelCompression;

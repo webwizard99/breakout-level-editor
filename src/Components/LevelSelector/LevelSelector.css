@@ -1,0 +1,10 @@
+.LevelSelector {
+  height: auto;
+  width: 12rem;
+  margin-left: 5rem;
+}
+
+.LevelListSelect {
+  color: black;
+  background-color: rgb(230, 230, 230);
+}

@@ -11,6 +11,11 @@ const LevelStorage = (function(){
 
     let hasStorage = true;
 
+    const defaultRecord = { name: 'FunkyTime',
+      id: 2,
+      levels: `[{"id":6,"name":"Burger","map":[[false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,false,false,false,false,false,false,false,false,false],[false,false,false,{"width":1,"hp":5,"density":1,"type":"basic","row":3,"col":3,"color":"rgba(128, 114, 76)"},false,{"width":1,"hp":5,"density":1,"type":"basic","row":3,"col":5,"color":"rgba(145, 131, 93)"},false,false,false,false,false,false],[false,false,false,{"width":1,"hp":5,"density":1,"type":"basic","row":4,"col":3,"color":"rgba(145, 131, 93)"},{"width":1,"hp":5,"density":1,"type":"basic","row":4,"col":4,"color":"rgba(128, 114, 76)"},{"width":1,"hp":5,"density":1,"type":"basic","row":4,"col":5,"color":"rgba(145, 131, 93)"},false,false,{"width":1,"hp":5,"density":1,"type":"strong","row":4,"col":8,"color":"rgba(219, 206, 152)"},false,false,false],[false,false,{"width":1,"hp":5,"density":1,"type":"basic","row":5,"col":2,"color":"rgb`
+    }
+
     let levels = [];
 
     const maxLength = 20;
@@ -194,11 +199,9 @@ const LevelStorage = (function(){
                 return;
             }
 
-            console.log(tLevels);
             const uncompressedLevels = LevelCompression.decompressLevelText(tLevels);
-            console.log(uncompressedLevels);
             const trimmedLevels = uncompressedLevels.substring(1, uncompressedLevels.length - 1);
-            console.log(trimmedLevels);
+            
             levels = JSON.parse(trimmedLevels);
             
             
@@ -214,6 +217,10 @@ const LevelStorage = (function(){
             records = tRecords;
             
 
+        },
+
+        getRecords: function() {
+          return JSON.parse(JSON.stringify(records));
         },
         
         getListName: function() {
