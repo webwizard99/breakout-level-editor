@@ -200,8 +200,12 @@ const LevelStorage = (function(){
             }
 
             const uncompressedLevels = LevelCompression.decompressLevelText(tLevels);
-            const trimmedLevels = uncompressedLevels.substring(1, uncompressedLevels.length - 1);
-            
+            let trimmedLevels = uncompressedLevels;
+            console.log(trimmedLevels);
+            if (uncompressedLevels[0]=== `"`) {
+                trimmedLevels = uncompressedLevels.substring(1, uncompressedLevels.length - 1);
+            }
+            console.log(trimmedLevels);
             levels = JSON.parse(trimmedLevels);
             
             
