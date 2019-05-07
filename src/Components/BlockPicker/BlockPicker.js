@@ -58,7 +58,10 @@ class BlockPicker extends React.Component {
                 >
                 </canvas>
                 <div className="Eyedrop-indicator">
-                  <p className="Shift">Shift</p><span className="Cursor"></span><span className="Eyedrop"></span>
+                  <p className="Shift">Shift</p><span className="Cursor"></span><span className="Eyedrop toolWindow"></span>
+                </div>
+                <div className="Eyedrop-indicator">
+                  <p className="Shift">Alt</p><span className="Cursor"></span><span className="Eraser toolWindow"></span>
                 </div>
             </div>
         );

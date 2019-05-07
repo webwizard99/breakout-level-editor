@@ -40,15 +40,26 @@
   overflow: hidden;
 }
 
-.Eyedrop {
+.toolWindow {
   height: 1.4rem;
   width: 1.2rem;
   margin-left: 1.4rem;
   padding-left: 1.2rem;
   border: 1px solid rgba(30, 30, 30, .7);
+}
+
+.Eyedrop {
   background: url('./eyedropper-64\ \(1\).png'),rgb(80, 80, 80);
   background-position: right;
   background-repeat: no-repeat;
   background-size: 48%;
+  overflow: hidden;
+}
+
+.Eraser {
+  background: url('./eraser.svg'),rgb(80, 80, 80);
+  background-position: right;
+  background-repeat: no-repeat;
+  background-size: 38%;
   overflow: hidden;
 }

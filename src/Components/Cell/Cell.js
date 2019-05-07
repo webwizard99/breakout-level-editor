@@ -84,6 +84,8 @@ class Cell extends React.Component {
                 return;
             }
 
+            console.log(e);
+
             if (e.shiftKey) {
               // set current block to block in cell
               if (this.props.block) {
@@ -93,9 +95,9 @@ class Cell extends React.Component {
               return;
             }
 
-            if (this.props.block !== this.props.currentBlock) {
+            if (this.props.block !== this.props.currentBlock || !e.altKey) {
                 
-              this.props.setBlock(this.props.canvasBlock, 
+              this.props.setBlock(!e.altKey ? this.props.canvasBlock : false, 
                   { y: this.props.row,
                     x: this.props.col });
             }

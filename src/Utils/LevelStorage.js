@@ -185,8 +185,8 @@ const LevelStorage = (function(){
                 
             }
 
-            const compressedLvls = LevelCompression.compressLevelText(JSON.stringify(levels));
-            localStorage.setItem(name, JSON.stringify(compressedLvls));
+            const retrievedLevels = JSON.stringify(levels);
+            localStorage.setItem(name, retrievedLevels);
             hasStorage = true;
             saveRecords();
         },
@@ -201,11 +201,9 @@ const LevelStorage = (function(){
 
             const uncompressedLevels = LevelCompression.decompressLevelText(tLevels);
             let trimmedLevels = uncompressedLevels;
-            console.log(trimmedLevels);
             if (uncompressedLevels[0]=== `"`) {
                 trimmedLevels = uncompressedLevels.substring(1, uncompressedLevels.length - 1);
             }
-            console.log(trimmedLevels);
             levels = JSON.parse(trimmedLevels);
             
             

@@ -16,19 +16,19 @@ const LevelCompression = (function(){
 
   const regexpKeys = {
     '{"id":' : new RegExp('\{"id":', 'g'),
-    ',"name":' : new RegExp('\\,"name":', 'g'),
-    ',"map":[[' : new RegExp('\\,"map":\\[\\[', 'g'),
-    'false,' : new RegExp('false\\,', 'g'),
-    '{"width":1,"hp":5,"density":1,"type":"basic","row":' : new RegExp('\{"width":1\,"hp":5\,"density":1\,"type":"basic"\,"row":', 'g'),
-    '{"width":1,"hp":5,"density":1,"type":"strong","row":' : new RegExp('\{"width":1\,"hp":5\,"density":1\,"type":"strong"\,"row":', 'g'),
-    '{"width":1,"hp":5,"density":1,"type":"healer","row":' : new RegExp('\{"width":1\,"hp":5\,"density":1\,"type":"healer"\,"row":', 'g'),
-    ',"col":' : new RegExp('\,"col":', 'g'),
-    ',"color":"rgba(' : new RegExp('\,"color":"rgba\\(', 'g'),
-    ')"},' : new RegExp('\\)"\}\,', 'g')
+    ',"name":' : new RegExp(',"name":', 'g'),
+    ',"map":[[' : new RegExp(',"map":\\[\\[', 'g'),
+    'false,' : new RegExp('false,', 'g'),
+    '{"width":1,"hp":5,"density":1,"type":"basic","row":' : new RegExp('\{"width":1,"hp":5,"density":1,"type":"basic","row":', 'g'),
+    '{"width":1,"hp":5,"density":1,"type":"strong","row":' : new RegExp('\{"width":1,"hp":5,"density":1,"type":"strong","row":', 'g'),
+    '{"width":1,"hp":5,"density":1,"type":"healer","row":' : new RegExp('\{"width":1,"hp":5,"density":1,"type":"healer","row":', 'g'),
+    ',"col":' : new RegExp(',"col":', 'g'),
+    ',"color":"rgba(' : new RegExp(',"color":"rgba\\(', 'g'),
+    ')"},' : new RegExp('\\)"\},', 'g')
   }
 
   const regexpProps = {
-    '&' : new RegExp(`\&`, 'g'),
+    '&' : new RegExp(`\\&`, 'g'),
     '~' : new RegExp(`~`, 'g'),
     '?' : new RegExp(`\\?`, 'g'),
     '#' : new RegExp(`#`, 'g'),
@@ -68,7 +68,7 @@ const LevelCompression = (function(){
       
         newText = filteredText;
       });
-      
+
       return newText;
     },
 
