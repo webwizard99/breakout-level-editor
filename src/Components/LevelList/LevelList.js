@@ -5,6 +5,7 @@ import InputController from '../../Utils/InputController';
 import Constants from '../../Game/breakout/resources/js/utils/Constants.js';
 import './LevelList.css';
 import Level from '../Level/Level';
+import DummyLevel from '../Level/DummyLevel';
 import LevelListTitle from '../LevelListTitle/LevelListTitle';
 import { INITIALIZE_LEVEL_LIST,
   SET_BLOCK_MAP,
@@ -28,7 +29,11 @@ class LevelList extends React.Component {
           calledDialog: false,
           dialogType: '',
           levelEffected: -1,
-          levelSwapped: -1
+          levelSwapped: -1,
+          dragEle: '',
+          dragTargetId: -1,
+          dragTarget: -1,
+          direction: ''
         }
         
         this.componentWillMount = this.componentWillMount.bind(this);
@@ -47,6 +52,10 @@ class LevelList extends React.Component {
         this.loadLevel = this.loadLevel.bind(this);
         this.deleteLevel = this.deleteLevel.bind(this);
         this.processDialog = this.processDialog.bind(this);
+        this.resetDragDummy = this.resetDragDummy.bind(this);
+        this.setDragEle = this.setDragEle.bind(this);
+        this.setDragTarget = this.setDragTarget.bind(this);
+        this.setDirection = this.setDirection.bind(this);
     }
 
     dialogs = Dialog.createNewDialog({});
@@ -81,6 +90,40 @@ class LevelList extends React.Component {
     ////**//**//**//**//**//**//
     ///**//**//**//**//**//**///
     ////**//**//**//**//**//**//
+
+    resetDragDummy() {
+      this.setState({
+        dragEle: '',
+        dragEleId: -1,
+        dragTarget: -1,
+        direction: ''
+      });
+    }
+
+    setDragEle(ele) {
+      this.setState({
+        dragEle: ele
+      });
+    }
+
+    setDragTarget(cell) {
+      const cellNum = cell.num;
+      const cellId = cell.ele;
+      if (cellNum > 0) {
+        this.setState({
+          dragTarget: cellNum,
+          dragTargetId: cellId
+        });
+      }
+    }
+
+    setDirection(dirText) {
+      if (!!dirText) {
+        this.setState({
+          direction: dirText
+        });
+      }
+    }
 
     initializeLevelList() {
       LevelStorage.retrieveLevels();
@@ -252,11 +295,31 @@ class LevelList extends React.Component {
     getListForRender() {
         
         let levelList = this.props.levelList;
+        // swappedNum is for post-swapping animation
         const swappedNum = this.state.levelSwapped;
         let swapped = false;
+        // dummy is used during drag events
+        const dummy = { target: this.state.dragTarget - 1, direction: this.state.direction };
+        let dummyEle;
+        if (dummy.target > 0) {
+          dummyEle = (
+            <DummyLevel 
+              key={'dragDummy'}
+              num={this.state.dragEle.num}
+              name={this.state.dragEle.name}
+              setDragTarget={this.setDragTarget}
+              setDirection={this.setDirection}
+            />
+          )
+        }
+
+        let dragBackground = {
+          opacity: .4
+        }
 
         if (levelList.length > 0) {
-
+            let draggedEle = this.state.dragEle.num;
+            
             let keyCount = -1;
             return (
                 levelList.map((level, lvlN) => {
@@ -266,8 +329,15 @@ class LevelList extends React.Component {
                     } else {
                       swapped = false;
                     }
+                    let isBeingDragged = false;
+                    if (lvlN === draggedEle) {
+                      isBeingDragged = true;
+                    }
+                    
                     return (
-                        <Level 
+                        <div>
+                          {dummy.target === lvlN && dummy.direction === 'top' ? dummyEle : (<span key="topdummy"></span>)}
+                          <Level 
                             key={keyCount}
                             num={lvlN + 1} 
                             name={level.name}
@@ -279,7 +349,13 @@ class LevelList extends React.Component {
                             length={levelList.length + 1}
                             sortLevels={this.sortLevels}
                             handleDrag={this.handleDrag}
-                        />
+                            setDragEle={this.setDragEle}
+                            setDragTarget={this.setDragTarget}
+                            setDirection={this.setDirection}
+                            beingDragged={isBeingDragged}
+                          />
+                          {dummy.target === lvlN && dummy.direction === 'bottom' ? dummyEle : (<span key="bottomdummy"></span>)}
+                        </div>
                     )
                 })
             );
@@ -300,43 +376,29 @@ class LevelList extends React.Component {
       });
     }
 
-    handleDrag(id, x, y) {
-      // get position info on all Level components
-      const clientMaster = document.querySelector('.LevelList');
-      const clientHeights = Array.from(clientMaster.querySelectorAll('.Level'))
-        .map(lev => {
-          const levRect = lev.getBoundingClientRect();
-          return {
-            x: levRect.x,
-            y: levRect.y,
-            height: levRect.height
-          }
-        });
+    handleDrag(x, y) {
       
-
-      // find the nearest Level component to the
-      // dragEnd positon
-      let matchY = Math.abs(clientHeights[0].y - y);
+      
+      const id = this.state.dragEle.id;
       let replaceTarget = 0;
       // direction: is target above or below element
       let direction = 0;
       
-      clientHeights.forEach((tLvlHeight, lvlN) => {
-        const tMatchY = Math.abs(tLvlHeight.y - y);
-        if (tMatchY < matchY) {
-          matchY = tMatchY;
-          replaceTarget = lvlN;
-          direction = (tLvlHeight.y - y) > 0 ? 0 : -1;
+      if (this.state.dragTarget > 0) {
+        replaceTarget = this.state.dragTarget - 1;
+        
+        if (this.state.direction === 'top') {
+          // replaceTarget -= 1;
+          direction = -1;
+        } else if (this.state.direction === 'bottom') {
+          // replaceTarget += 1;
+          direction = 1;
         }
-      });
+      }
       
       this.insertLevel(id, this.props.levelList[replaceTarget].id, direction);
 
-      // remove any borders from Level divs
-      const lvls = document.querySelectorAll('.Level');
-      lvls.forEach(lvl => {
-        lvl.style.borderBottom = "none";
-      });
+      this.resetDragDummy();
     }
     
     render() {

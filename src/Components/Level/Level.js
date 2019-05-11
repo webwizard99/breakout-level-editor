@@ -81,15 +81,27 @@ class Level extends React.Component {
 
       // get the Level object to apply border
       let fTarget = e.target;
+      
       if (!fTarget.classList.contains('Level')) {
         fTarget = fTarget.parentNode;
       }
-
-      if (fTarget.classList.contains('Level')) {
-        if (fTarget.style.borderBottom !== '8px solid rgba(240, 245, 250, 0.8)') {
-          fTarget.style.borderBottom = '8px solid rgba(240, 245, 250, 0.8)';
-        }  
+      const reactPos = ReactPos.getCurrentDragPos();
+      const loc = {
+        x: reactPos.x,
+        y: reactPos.y
+      };
+      const tSector = this.sectorize(fTarget, loc);
+      
+      if (this.props.num > 0) {
+        this.props.setDragTarget({ele: this.props.lvlId, num: this.props.num});
+        this.props.setDirection(tSector);
       }
+      
+      // if (fTarget.classList.contains('Level')) {
+      //   if (fTarget.style.borderBottom !== '8px solid rgba(240, 245, 250, 0.8)') {
+      //     fTarget.style.borderBottom = '8px solid rgba(240, 245, 250, 0.8)';
+      //   }  
+      // }
 
     }
 
@@ -115,6 +127,23 @@ class Level extends React.Component {
       }
     }
 
+    sectorize(element, coords) {
+      const eleRect = element.getBoundingClientRect();
+      const yOffset = coords.y - eleRect.y;
+      const yTotal = eleRect.height;
+      let sectorResponse = '';
+      const margins = 0.48;
+      if (yOffset / yTotal < margins) {
+        sectorResponse = 'top';
+      } else if (yOffset / yTotal > 1 - margins) {
+        sectorResponse = 'bottom';
+      } else {
+        sectorResponse = 'middle';
+      }
+
+      return sectorResponse;
+    }
+
     startAnimation() {
       console.log('startAnimation');
       this.setState({ 
@@ -129,6 +158,12 @@ class Level extends React.Component {
     
     render() {
         const swappedVal = this.state.swapped;
+        let opacityStyling = '';
+        if (this.props.beingDragged) {
+          opacityStyling = '.4';
+        } else {
+          opacityStyling = '1';
+        }
         return (
           <CSSTransition
             in={swappedVal === true}
@@ -139,13 +174,16 @@ class Level extends React.Component {
           >
             <div className="Level"
               draggable="true"
-              style={{borderBottom: "none"}}
+              style={{ opacity: opacityStyling}}
               onDragEnd={this.handleDragEnd}
               onDragOver={this.handleDragOver}
               onDragLeave={this.handleDragLeave}
               onDragStart={(e) => {
                 e.dataTransfer.setData('text',''); 
-                
+                this.props.setDragEle({
+                  num: this.props.num - 1,
+                  name: this.props.name,
+                  id: this.props.lvlId });
                 console.log('drag start');}}
               >
                 
