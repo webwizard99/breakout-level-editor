@@ -335,7 +335,7 @@ class LevelList extends React.Component {
                     }
                     
                     return (
-                        <div>
+                        <div key={lvlN}>
                           {dummy.target === lvlN && dummy.direction === 'top' ? dummyEle : (<span key="topdummy"></span>)}
                           <Level 
                             key={keyCount}
