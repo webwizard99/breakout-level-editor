@@ -25,7 +25,9 @@ class MenuBar extends React.Component {
     render() {
         return (
             <div className="MenuBar">
-                <Title/>
+                <div className="topBar">
+                  <Title/>
+                </div>
                 <div className="Blocks">
                   <BlockPicker/>
                   <Palette/>

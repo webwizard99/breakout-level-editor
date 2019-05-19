@@ -7,6 +7,7 @@ import LevelList from '../LevelList/LevelList';
 import DialogLayer from '../DialogLayer/DialogLayer';
 import MouseoverLayer from '../MouseoverLayer/MouseoverLayer';
 import GameLayer from '../GameLayer/GameLayer';
+import Navbar from '../Navbar/Navbar';
 
 import LevelCompression from '../../Utils/LevelCompression';
 
@@ -28,6 +29,7 @@ class App extends React.Component {
       this.getGameLayer = this.getGameLayer.bind(this);
       this.getMenuBar = this.getMenuBar.bind(this);
       this.getViewColumn = this.getViewColumn.bind(this);
+      this.getNavbar = this.getNavbar.bind(this);
   }
 
 
@@ -106,9 +108,14 @@ class App extends React.Component {
       }
   }
 
+  getNavbar() {
+    return <Navbar />
+  }
+
   render() {
     return (
       <div className="App">
+        {this.getNavbar()}
         {this.getMenuBar()}
         {this.getViewColumn()}
         <DialogLayer/>
