@@ -1,0 +1,36 @@
+.DropdownHead {
+  height: 80%;
+  margin-top: .2rem;
+  margin-bottom: auto;
+  margin-right: .2rem;
+  width: 6rem;
+  cursor: pointer;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.DropdownHead:hover {
+  border: inset 1px rgba(120, 125, 130, .3);
+  background: rgb(220, 230, 235);
+  color: rgb(60, 65, 70);
+}
+
+.HeadContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DropdownItem {
+  height: 2.2rem;
+  position: absolute;
+  top: 1.98rem;
+  width: 8rem;
+  padding-left: .2rem;
+  border-top: 1px solid rgb(60, 65, 70);
+  background: inherit;
+  z-index: 10;
+}
